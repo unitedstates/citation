@@ -3,8 +3,6 @@ Citation
 
 A JavaScript library for detecting US Code citations, and other kinds of legal citations, in blocks of text.
 
-Includes a minimal Node.JS API so that its functionality can be used by other languages.
-
 
 Example Usage
 =============
@@ -36,3 +34,12 @@ Current Status
 ==============
 
 Proof of concept only - under active development.
+
+
+Upcoming
+========
+
+* A test suite!
+* Many more US Code citation formats.
+* More citation types: US bills, public laws, Code of Federal Regulations.
+* A minimal Node.JS API so that it can be used by other languages (and so that we can stand up a public API for community use).
