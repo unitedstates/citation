@@ -1,11 +1,9 @@
-Citation
-========
+# Citation
 
 A JavaScript library for detecting US Code citations, and other kinds of legal citations, in blocks of text.
 
 
-Example Usage
-=============
+## Example Usage
 
 Calling:
 
@@ -30,14 +28,12 @@ Returns:
 	}]
 
 
-Current Status
-==============
+## Current Status
 
 Proof of concept only - under active development.
 
 
-Upcoming
-========
+## Upcoming
 
 * A test suite!
 * Many more US Code citation formats.
