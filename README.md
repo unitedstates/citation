@@ -33,9 +33,14 @@ Returns:
 Proof of concept only - under active development.
 
 
+### HTTP API
+
+A minimal Node.js wrapper over this library can be found at [citation-api](https://github.com/sunlightlabs/citation-api).
+
+
 ### Upcoming
 
 * A test suite!
 * Many more US Code citation formats.
 * More citation types: US bills, public laws, Code of Federal Regulations.
-* A minimal Node.JS API so that it can be used by other languages (and so that we can stand up a public API for community use).
+* A public instance of [citation-api](https://github.com/sunlightlabs/citation-api) for community use.
