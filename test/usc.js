@@ -140,6 +140,5 @@ exports.testCasualWithSubsections = function(test) {
   test.equal(citation.usc.section_id, "31_usc_5362-10c");
   test.equal(citation.usc.id, "31_usc_5362-10c_5");
 
-
   test.done();
 };
