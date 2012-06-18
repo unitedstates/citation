@@ -14,12 +14,12 @@ var Citation = require('../lib/citation');
 // http://www.gpo.gov/fdsys/pkg/BILLS-112hr3604ih/xml/BILLS-112hr3604ih.xml
 
 exports.testBasicPattern = function(test) {
-  test.expect(5);
+  test.expect(6);
 
   var text = "All regulations in effect immediately before " +
     "the enactment of subsection (f) that were promulgated under " +
     "the authority of this section shall be repealed in accordance " +
-    "with section 552(a)(1)(E) of the Administrative Procedure Act (5 U.S.C. 552(a)(1)(E))";
+    "... of the Administrative Procedure Act (5 U.S.C. 552) ...";
 
   var found = Citation.find(text);
   test.equal(found.length, 1);
@@ -28,7 +28,29 @@ exports.testBasicPattern = function(test) {
   test.equal(citation.match, "5 U.S.C. 552");
   test.equal(citation.usc.title, "5");
   test.equal(citation.usc.section, "552");
+  test.deepEqual(citation.usc.subsections, [])
   test.equal(citation.usc.id, "5-usc-552");
+
+  test.done();
+};
+
+exports.testBasicWithSubsections = function(test) {
+  test.expect(6);
+
+  var text = "All regulations in effect immediately before " +
+    "the enactment of subsection (f) that were promulgated under " +
+    "the authority of this section shall be repealed in accordance " +
+    "... of the Administrative Procedure Act (5 U.S.C. 552(a)(1)(E)) ...";
+
+  var found = Citation.find(text);
+  test.equal(found.length, 1);
+
+  var citation = found[0];
+  test.equal(citation.match, "5 U.S.C. 552(a)(1)(E)");
+  test.equal(citation.usc.title, "5");
+  test.equal(citation.usc.section, "552");
+  test.deepEqual(citation.usc.subsections, ["a", "1", "E"])
+  test.equal(citation.usc.id, "5-usc-552-a-1-E");
 
   test.done();
 };
@@ -38,7 +60,7 @@ exports.testBasicPattern = function(test) {
 // http://www.gpo.gov/fdsys/pkg/BILLS-111s3663pcs/xml/BILLS-111s3663pcs.xml
 
 exports.testCasualPattern = function(test) {
-  test.expect(5);
+  test.expect(6);
 
   var text = "Nothing in this section shall be considered to limit the authority " +
     "of the Coast Guard to enforce this or any other Federal law " +
@@ -51,7 +73,31 @@ exports.testCasualPattern = function(test) {
   test.equal(citation.match, "section 89 of title 14");
   test.equal(citation.usc.title, "14");
   test.equal(citation.usc.section, "89");
+  test.deepEqual(citation.usc.subsections, [])
   test.equal(citation.usc.id, "14-usc-89");
 
   test.done();
-}
+};
+
+
+// "section 5362(5) of title 31"
+// http://www.gpo.gov/fdsys/pkg/BILLS-112hr3261ih/xml/BILLS-112hr3261ih.xml
+
+exports.testCasualWithSubsections = function(test) {
+  test.expect(6);
+
+  var text = "(11) INTERNET- The term Internet has the meaning given " +
+    "that term in section 5362(5) of title 31, United States Code."
+
+  var found = Citation.find(text);
+  test.equal(found.length, 1);
+
+  var citation = found[0];
+  test.equal(citation.match, "section 5362(5) of title 31");
+  test.equal(citation.usc.title, "31");
+  test.equal(citation.usc.section, "5362");
+  test.deepEqual(citation.usc.subsections, ["5"])
+  test.equal(citation.usc.id, "31-usc-5362-5");
+
+  test.done();
+};
