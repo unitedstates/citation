@@ -1,6 +1,6 @@
 /**
 
-  Tests for extracting US Code citations. 
+  Tests for extracting US Code citations from legislation. 
 
   Each test should be based on a real world circumstance, with a link to it if possible.
 
@@ -139,6 +139,31 @@ exports.testCasualWithSubsections = function(test) {
   test.deepEqual(citation.usc.subsections, ["5"])
   test.equal(citation.usc.section_id, "31_usc_5362-10c");
   test.equal(citation.usc.id, "31_usc_5362-10c_5");
+
+  test.done();
+};
+
+
+/*
+  This library should also handle strings not necessarily cited in legal documents,
+  but search strings users might enter into a search engine.
+*/
+
+exports.testIgnoresSectionSymbol = function(test) {
+  test.expect(7);
+
+  var text = "  5 USC § 552 "; // spaces left intentionally
+
+  var found = Citation.find(text);
+  test.equal(found.length, 1);
+
+  var citation = found[0];
+  test.equal(citation.match, "5 USC § 552");
+  test.equal(citation.usc.title, "5");
+  test.equal(citation.usc.section, "552");
+  test.deepEqual(citation.usc.subsections, [])
+  test.equal(citation.usc.section_id, "5_usc_552");
+  test.equal(citation.usc.id, "5_usc_552");
 
   test.done();
 };
