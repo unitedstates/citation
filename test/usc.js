@@ -14,7 +14,7 @@ var Citation = require('../lib/citation');
 // http://www.gpo.gov/fdsys/pkg/BILLS-112hr3604ih/xml/BILLS-112hr3604ih.xml
 
 exports.testBasicPattern = function(test) {
-  test.expect(6);
+  test.expect(7);
 
   var text = "All regulations in effect immediately before " +
     "the enactment of subsection (f) that were promulgated under " +
@@ -29,14 +29,18 @@ exports.testBasicPattern = function(test) {
   test.equal(citation.usc.title, "5");
   test.equal(citation.usc.section, "552");
   test.deepEqual(citation.usc.subsections, [])
-  test.equal(citation.usc.id, "5-usc-552");
+  test.equal(citation.usc.section_id, "5_usc_552");
+  test.equal(citation.usc.id, "5_usc_552");
 
   test.done();
 };
 
-exports.testBasicWithSubsections = function(test) {
-  test.expect(6);
 
+
+exports.testBasicWithSubsections = function(test) {
+  test.expect(14);
+
+  // http://www.gpo.gov/fdsys/pkg/BILLS-112hr3604ih/xml/BILLS-112hr3604ih.xml
   var text = "All regulations in effect immediately before " +
     "the enactment of subsection (f) that were promulgated under " +
     "the authority of this section shall be repealed in accordance " +
@@ -50,17 +54,36 @@ exports.testBasicWithSubsections = function(test) {
   test.equal(citation.usc.title, "5");
   test.equal(citation.usc.section, "552");
   test.deepEqual(citation.usc.subsections, ["a", "1", "E"])
-  test.equal(citation.usc.id, "5-usc-552-a-1-E");
+  test.equal(citation.usc.section_id, "5_usc_552");
+  test.equal(citation.usc.id, "5_usc_552_a_1_E");
+
+
+  // more complicated section handle
+
+  // http://www.gpo.gov/fdsys/pkg/BILLS-111s3611es/xml/BILLS-111s3611es.xml
+  var text = "National Counter Proliferation Center.--Section 119A(a) of the " +
+    "National Security Act of 1947 (50 U.S.C. 404o-1(a)) is amended--";
+
+  var found = Citation.find(text);
+  test.equal(found.length, 1);
+
+  var citation = found[0];
+  test.equal(citation.match, "50 U.S.C. 404o-1(a)");
+  test.equal(citation.usc.title, "50");
+  test.equal(citation.usc.section, "404o-1");
+  test.deepEqual(citation.usc.subsections, ["a"])
+  test.equal(citation.usc.section_id, "50_usc_404o-1");
+  test.equal(citation.usc.id, "50_usc_404o-1_a");
 
   test.done();
-};
+}
 
 
 // "section 89 of title 14"
 // http://www.gpo.gov/fdsys/pkg/BILLS-111s3663pcs/xml/BILLS-111s3663pcs.xml
 
 exports.testCasualPattern = function(test) {
-  test.expect(6);
+  test.expect(7);
 
   var text = "Nothing in this section shall be considered to limit the authority " +
     "of the Coast Guard to enforce this or any other Federal law " +
@@ -74,7 +97,8 @@ exports.testCasualPattern = function(test) {
   test.equal(citation.usc.title, "14");
   test.equal(citation.usc.section, "89");
   test.deepEqual(citation.usc.subsections, [])
-  test.equal(citation.usc.id, "14-usc-89");
+  test.equal(citation.usc.section_id, "14_usc_89");
+  test.equal(citation.usc.id, "14_usc_89");
 
   test.done();
 };
@@ -84,7 +108,7 @@ exports.testCasualPattern = function(test) {
 // http://www.gpo.gov/fdsys/pkg/BILLS-112hr3261ih/xml/BILLS-112hr3261ih.xml
 
 exports.testCasualWithSubsections = function(test) {
-  test.expect(6);
+  test.expect(14);
 
   var text = "(11) INTERNET- The term Internet has the meaning given " +
     "that term in section 5362(5) of title 31, United States Code."
@@ -97,7 +121,25 @@ exports.testCasualWithSubsections = function(test) {
   test.equal(citation.usc.title, "31");
   test.equal(citation.usc.section, "5362");
   test.deepEqual(citation.usc.subsections, ["5"])
-  test.equal(citation.usc.id, "31-usc-5362-5");
+  test.equal(citation.usc.section_id, "31_usc_5362");
+  test.equal(citation.usc.id, "31_usc_5362_5");
+
+  
+  // fake example for now
+  var text = "(11) INTERNET- The term Internet has the meaning given " +
+    "that term in section 5362-10c(5) of title 31, United States Code."
+
+  var found = Citation.find(text);
+  test.equal(found.length, 1);
+
+  var citation = found[0];
+  test.equal(citation.match, "section 5362-10c(5) of title 31");
+  test.equal(citation.usc.title, "31");
+  test.equal(citation.usc.section, "5362-10c");
+  test.deepEqual(citation.usc.subsections, ["5"])
+  test.equal(citation.usc.section_id, "31_usc_5362-10c");
+  test.equal(citation.usc.id, "31_usc_5362-10c_5");
+
 
   test.done();
 };
