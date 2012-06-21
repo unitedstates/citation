@@ -7,40 +7,40 @@ A JavaScript library for detecting US Code citations, and other kinds of legal c
 
 Calling:
 
-  Citation.find(
-    "(11) INTERNET- The term Internet has the meaning given " +
-    "that term in section 5362(5) of title 31, United States Code." +
-    "All regulations in effect immediately before " +
-    "the enactment of subsection (f) that were promulgated under " +
-    "the authority of this section shall be repealed in accordance " +
-    "... of the Administrative Procedure Act (5 U.S.C. 552(a)(1)(E)) ..."
-  )
+	Citation.find(
+		"(11) INTERNET- The term Internet has the meaning given " +
+		"that term in section 5362(5) of title 31, United States Code." +
+		"All regulations in effect immediately before " +
+		"the enactment of subsection (f) that were promulgated under " +
+		"the authority of this section shall be repealed in accordance " +
+		"... of the Administrative Procedure Act (5 U.S.C. 552(a)(1)(E)) ..."
+	)
 
 Returns:
 
-  [{
-    match: "5 U.S.C. 552(a)(1)(E)",
-    type: "usc",
-    usc: {
-      section: "552",
-      title: "5",
-      subsections: ["a", "1", "E"]
-      id: "5_usc_552_a_1_E",
-      section_id: "5_usc_552",
-      display: "5 USC 552(a)(1)(E)"
-    }
-  }, {
-    match: "section 5362(5) of title 31",
-    type: "usc",
-    usc: {
-      section: "5362",
-      title: "31",
-      subsections: ["5"],
-      id: "31_usc_5362_5",
-      section_id: "31_usc_5362",
-      display: "31 USC 5362(5)"
-    }
-  }]
+	[{
+		match: "5 U.S.C. 552(a)(1)(E)",
+		type: "usc",
+		usc: {
+			section: "552",
+			title: "5",
+			subsections: ["a", "1", "E"]
+			id: "5_usc_552_a_1_E",
+			section_id: "5_usc_552",
+			display: "5 USC 552(a)(1)(E)"
+		}
+	}, {
+		match: "section 5362(5) of title 31",
+		type: "usc",
+		usc: {
+			section: "5362",
+			title: "31",
+			subsections: ["5"],
+			id: "31_usc_5362_5",
+			section_id: "31_usc_5362",
+			display: "31 USC 5362(5)"
+		}
+	}]
 
 
 ### Current Status
