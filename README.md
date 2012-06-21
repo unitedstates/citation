@@ -22,8 +22,8 @@ Returns:
 		match: "5 U.S.C. 552(a)(1)(E)",
 		type: "usc",
 		usc: {
-			section: "552",
 			title: "5",
+			section: "552",
 			subsections: ["a", "1", "E"]
 			id: "5_usc_552_a_1_E",
 			section_id: "5_usc_552",
@@ -33,8 +33,8 @@ Returns:
 		match: "section 5362(5) of title 31",
 		type: "usc",
 		usc: {
-			section: "5362",
 			title: "31",
+			section: "5362",
 			subsections: ["5"],
 			id: "31_usc_5362_5",
 			section_id: "31_usc_5362",
