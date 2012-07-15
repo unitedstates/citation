@@ -51,31 +51,39 @@ exports.testContext = function(test) {
   test.expect(90);
 
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr2045ih/html/BILLS-112hr2045ih.htm
-  var text = "(B) the term `dietary ingredient' means an " +
+  var tests = [
+    ["21 U.S.C. 321(ff)(1)", 
+      "(B) the term `dietary ingredient' means an " +
                 "ingredient listed in subparagraphs (A) through (F) of " +
                 "section 201(ff)(1) (21 U.S.C. 321(ff)(1)) of the " +
                 "Federal Food, Drug, and Cosmetic Act that is included " +
                 "in, or that is intended to be included in, a dietary " +
-                "supplement.";
-
-  var text2 = "dient listed in subparagraphs (A) through (F) of " +
+                "supplement."],
+    ["21 U.S.C. 321(ff)(1)", 
+      "dient listed in subparagraphs (A) through (F) of " +
                 "section 201(ff)(1) (21 U.S.C. 321(ff)(1)) of the " +
                 "Federal Food, Drug, and Cosmetic Act that is included " +
-                "in, or that is intended to be include";
+                "in, or that is intended to be include"],
+    ["21 U.S.C. 321",
+      "(B) the term `dietary ingredient' means an " +
+                "ingredient listed in subparagraphs (A) through (F) of " +
+                "section 201(ff)(1) (21 U.S.C. 321) of the " +
+                "Federal Food, Drug, and Cosmetic Act that is included " +
+                "in, or that is intended to be included in, a dietary " +
+                "supplement."]
+  ];
 
   // try out a ton of different context sizes, on both strings
   _.each([0, 1, 5, 10, 15, 20, 25, 30, 35, 50, 75, 90, 100, 125, 150], function(context) {
-    var found = Citation.find(text, {context: context});
-    var found2 = Citation.find(text2, {context: context});
-    test.equal(found.length, 1);
-    test.equal(found2.length, 1);
-
-    var citation = found[0];
-    var citation2 = found2[0];
-    test.equal(citation.match, "21 U.S.C. 321(ff)(1)");
-    test.equal(citation2.match, "21 U.S.C. 321(ff)(1)");
-    test.equal(citation.usc.id, "21_usc_321_ff_1");
-    test.equal(citation2.usc.id, "21_usc_321_ff_1");
+    _.each(tests, function(items) {
+      var match = items[0];
+      var text = items[1];
+      
+      var found = Citation.find(text, {context: context});
+      test.equal(found.length, 1);
+      var citation = found[0];
+      test.equal(citation.match, match);
+    });
   });
 
   test.done();
