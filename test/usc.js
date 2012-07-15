@@ -14,12 +14,17 @@ var Citation = require('../lib/citation');
 // http://www.gpo.gov/fdsys/pkg/BILLS-112hr3604ih/xml/BILLS-112hr3604ih.xml
 
 exports.testBasicPattern = function(test) {
-  test.expect(7);
+  test.expect(10);
 
   var text = "All regulations in effect immediately before " +
     "the enactment of subsection (f) that were promulgated under " +
     "the authority of this section shall be repealed in accordance " +
-    "... of the Administrative Procedure Act (5 U.S.C. 552) ...";
+    "... of the Administrative Procedure Act (5 U.S.C. 552) and some more things... " +
+    "(8) Add at the end the following new subsections: (f) ... " +
+    "Upon receipt of an allotment application, but in any event not " +
+    "later than 6 months after receiving such application, the Secretary " +
+    "shall notify any person or entity having an interest in land " +
+    "potentially adverse to the applicant of their right to initiate...";
 
   var found = Citation.find(text);
   test.equal(found.length, 1);
@@ -31,6 +36,13 @@ exports.testBasicPattern = function(test) {
   test.deepEqual(citation.usc.subsections, [])
   test.equal(citation.usc.section_id, "5_usc_552");
   test.equal(citation.usc.id, "5_usc_552");
+
+  var foundContext = Citation.find(text, {excerpt: 5});
+  test.equal(foundContext.length, 1);
+
+  var citationContext = foundContext[0];
+  test.equal(citationContext.match, "5 U.S.C. 552");
+  test.equal(citationContext.context, "Act (5 U.S.C. 552) and")
 
   test.done();
 };
@@ -83,7 +95,7 @@ exports.testBasicWithSubsections = function(test) {
 // http://www.gpo.gov/fdsys/pkg/BILLS-111s3663pcs/xml/BILLS-111s3663pcs.xml
 
 exports.testCasualPattern = function(test) {
-  test.expect(7);
+  test.expect(10);
 
   var text = "Nothing in this section shall be considered to limit the authority " +
     "of the Coast Guard to enforce this or any other Federal law " +
@@ -99,6 +111,13 @@ exports.testCasualPattern = function(test) {
   test.deepEqual(citation.usc.subsections, [])
   test.equal(citation.usc.section_id, "14_usc_89");
   test.equal(citation.usc.id, "14_usc_89");
+
+  var foundContext = Citation.find(text, {excerpt: 5});
+  test.equal(foundContext.length, 1);
+
+  var citationContext = foundContext[0];
+  test.equal(citationContext.match, "section 89 of title 14");
+  test.equal(citationContext.context, "nder section 89 of title 14, Uni");
 
   test.done();
 };
