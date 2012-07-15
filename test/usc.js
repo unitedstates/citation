@@ -48,8 +48,6 @@ exports.testBasicPattern = function(test) {
 };
 
 exports.testContext = function(test) {
-  test.expect(90);
-
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr2045ih/html/BILLS-112hr2045ih.htm
   var tests = [
     ["21 U.S.C. 321(ff)(1)", 
@@ -73,8 +71,12 @@ exports.testContext = function(test) {
                 "supplement."]
   ];
 
+  var contexts = [0, 1, 5, 10, 15, 20, 25, 30, 35, 50, 75, 90, 100, 125, 150];
+
+  test.expect(2 * tests.length * contexts.length);
+
   // try out a ton of different context sizes, on both strings
-  _.each([0, 1, 5, 10, 15, 20, 25, 30, 35, 50, 75, 90, 100, 125, 150], function(context) {
+  _.each(contexts, function(context) {
     _.each(tests, function(items) {
       var match = items[0];
       var text = items[1];
