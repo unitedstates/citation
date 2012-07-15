@@ -37,7 +37,7 @@ exports.testBasicPattern = function(test) {
   test.equal(citation.usc.section_id, "5_usc_552");
   test.equal(citation.usc.id, "5_usc_552");
 
-  var foundContext = Citation.find(text, {excerpt: 5});
+  var foundContext = Citation.find(text, {context: 5});
   test.equal(foundContext.length, 1);
 
   var citationContext = foundContext[0];
@@ -112,7 +112,7 @@ exports.testCasualPattern = function(test) {
   test.equal(citation.usc.section_id, "14_usc_89");
   test.equal(citation.usc.id, "14_usc_89");
 
-  var foundContext = Citation.find(text, {excerpt: 5});
+  var foundContext = Citation.find(text, {context: 5});
   test.equal(foundContext.length, 1);
 
   var citationContext = foundContext[0];
