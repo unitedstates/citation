@@ -1,7 +1,7 @@
 {
   "name": "citation",
   "author": "Sunlight Labs <eric@sunlightfoundation.com",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "dependencies": {
       "underscore": "*"
   }
