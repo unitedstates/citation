@@ -47,6 +47,24 @@ exports.testBasicPattern = function(test) {
   test.done();
 };
 
+exports.testNearby = function(test) {
+  test.expect(4);
+
+  var text = "[E] Section 824(g) is codified at 22 U.S.C. § 4064(g) See also U.S.AID " +
+    "waiver authority under 22 U.S.C. § 23850 to waive the offset " +
+    "requirement under 5 U.S.C. §§ 8344 and 8468 in order to facilitate " +
+    "assignment of persons to Iraq, Pakistan, and Afghanistan.";
+
+  var found = Citation.find(text, {context: 250});
+  test.equal(found.length, 3); // will increase to 4 someday! (8468!!)
+
+  test.equal(found[0].match, "22 U.S.C. § 4064(g)");
+  test.equal(found[1].match, "22 U.S.C. § 23850");
+  test.equal(found[2].match, "5 U.S.C. §§ 8344")
+
+  test.done();
+}
+
 exports.testContext = function(test) {
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr2045ih/html/BILLS-112hr2045ih.htm
   var tests = [
