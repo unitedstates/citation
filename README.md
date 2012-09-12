@@ -1,4 +1,4 @@
-# Citation
+# Citation.js
 
 A JavaScript library for detecting US Code citations, and other kinds of legal citations, in blocks of text.
 
