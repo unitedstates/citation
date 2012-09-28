@@ -4,5 +4,6 @@
   "version": "0.1.2",
   "dependencies": {
       "underscore": "*"
-  }
+  },
+  "main": "./lib/citation.js"
 }
