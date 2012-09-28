@@ -3,6 +3,17 @@
 A JavaScript library for detecting US Code citations, and other kinds of legal citations, in blocks of text.
 
 
+### Current Status
+
+Support for two very simple (but very common) kinds of US Code citations. Valuable enough that it's in production use, but **lots** of room to expand.
+
+### TODO
+
+* Many more US Code citation formats, including ranges and comma-separated lists.
+* More citation types: US bills, public and private laws, Code of Federal Regulations.
+* Support for recognizing popular bill/law names.
+
+
 ### Example Usage
 
 Calling:
@@ -88,25 +99,13 @@ Returns:
 	}]
 
 
-### Current Status
-
-Version 0.1.1, available in npm.
-
-Under active development. Currently just uses simple pattern matching, for self-contained citations only.
-
-
 ### Real world examples
 
 You can see Citation.js in action in the Sunlight Foundation's government search and alert service, [Scout](http://scout.sunlightfoundation.com).
 
 For example, a search for ["5 usc 552"](https://scout.sunlightfoundation.com/search/federal_bills/5%20usc%20552) or ["section 601 of title 5"](https://scout.sunlightfoundation.com/search/federal_bills/section%20601%20of%20title%205) will return results matching multiple formats and subsections, with highlighted excerpts.
 
-To accomplish this, bills and regulations are pre-processed in regular batches by a Ruby script that [submits their text](https://github.com/sunlightlabs/realtimecongress/blob/master/tasks/utils.rb#L17) to an instance of [citation-api](https://github.com/sunlightlabs/citation-api) and stores the extracted citations and excerpts, which are then exposed via API.
-
-### TODO
-
-* Many more US Code citation formats.
-* More citation types: US bills, slip laws, Code of Federal Regulations.
+To accomplish this, bills and regulations are pre-processed in regular batches by a Ruby script that [submits their text](https://github.com/sunlightlabs/realtimecongress/blob/master/tasks/utils.rb#L17) to the included Citation.js API and stores the extracted citations and excerpts, which are then exposed via API.
 
 
 ## HTTP API
@@ -114,28 +113,22 @@ To accomplish this, bills and regulations are pre-processed in regular batches b
 To use Citation.js in other languages, a tiny Node.js API is provided with a single endpoint that text can be sent to, extracted through Citation.js, and have results returned as JSON or JSONP.
 
 
-### Setup
-
-[Install Node.js and NPM](http://nodejs.org/#download), then run:
-
-    node app.js
-
-It should be running on localhost:3000, by default.
-
-
 ### Usage
 
-It has one endpoint, a wrapper around Citation's `find` method.
+[Install Node.js and NPM](http://nodejs.org/#download) and run `npm install` if you haven't already, then run:
+
+    node app
+
+It should be running on localhost:3000, by default. It has one endpoint, a wrapper around Citation's `find` method.
 
 Hitting it via either GET or POST with a "text" parameter, like so:
 
     # "5 USC 522 and also section 543 of title 26"
     /citation/find.json?text=5%20USC%20522%20and%20also%20section%20543%20of%20title%2026
 
-Will return:
+Will return the results of running Citation.find() on the block of text, under a 'results' key:
 
     {
-      text: "5 USC 522 and also section 543 of title 26",
       results: [
         {
           match: "5 USC 522",
