@@ -20,7 +20,8 @@ var route = function(req, res) {
       json = "" + req.query.callback + "(" + json + ")";
     }
 
-    res.send(json, {'Content-Type': 'application/json'});
+    res.set({'Content-Type': 'application/json'})
+    res.send(json);
   } else {
     res.send("Include a block of text to scan for citations in the 'text' parameter.", 500);
   }
@@ -53,7 +54,7 @@ app.configure('production', function(){
 
 // GET or POST to the main route
 
-app.get('/citation/find.json', route);
+app.get( '/citation/find.json', route);
 app.post('/citation/find.json', route);
 
 
