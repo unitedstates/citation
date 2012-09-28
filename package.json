@@ -12,12 +12,13 @@
   },
 
   "dependencies": {
-      // used by the JS lib
       "underscore": "*",
-
-      // used by the API
       "express": "3.x",
       "reloader": "*"
+  },
+
+  "devDependencies": {
+    "nodeunit": "*"
   },
 
   "engines": {
