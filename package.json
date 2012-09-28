@@ -13,7 +13,7 @@
 
   "dependencies": {
       "underscore": "*",
-      "express": "*",
+      "express": "3.x",
       "reloader": "*",
       "jade": "*"
   },
