@@ -1,9 +1,26 @@
 {
   "name": "citation",
-  "author": "Sunlight Labs <eric@sunlightfoundation.com",
-  "version": "0.1.2",
-  "dependencies": {
-      "underscore": "*"
+  "author": "Eric Mill <eric@sunlightfoundation.com",
+  "description": "Library for extracting legal citations from text. Standalone lib, and optional Node API.",
+  "version": "0.2.0",
+  "license": "MIT",
+  "keywords": ["congress", "laws", "legal", "citations", "us code", "regulations"],
+
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unitedstates/citation"
   },
+
+  "dependencies": {
+      "underscore": "*",
+      "express": "*",
+      "reloader": "*",
+      "jade": "*"
+  },
+
+  "engines": {
+    "node": ">=0.8"
+  },
+
   "main": "./lib/citation.js"
 }

@@ -103,13 +103,60 @@ For example, a search for ["5 usc 552"](https://scout.sunlightfoundation.com/sea
 
 To accomplish this, bills and regulations are pre-processed in regular batches by a Ruby script that [submits their text](https://github.com/sunlightlabs/realtimecongress/blob/master/tasks/utils.rb#L17) to an instance of [citation-api](https://github.com/sunlightlabs/citation-api) and stores the extracted citations and excerpts, which are then exposed via API.
 
-
-### HTTP API
-
-A minimal Node.js wrapper over this library can be found at [citation-api](https://github.com/sunlightlabs/citation-api).
-
-
-### Upcoming
+### TODO
 
 * Many more US Code citation formats.
 * More citation types: US bills, slip laws, Code of Federal Regulations.
+
+
+## HTTP API
+
+To use Citation.js in other languages, a tiny Node.js API is provided with a single endpoint that text can be sent to, extracted through Citation.js, and have results returned as JSON or JSONP.
+
+
+### Setup
+
+[Install Node.js and NPM](http://nodejs.org/#download), then run:
+
+    node app.js
+
+It should be running on localhost:3000, by default.
+
+
+### Usage
+
+It has one endpoint, a wrapper around Citation's `find` method.
+
+Hitting it via either GET or POST with a "text" parameter, like so:
+
+    # "5 USC 522 and also section 543 of title 26"
+    /citation/find.json?text=5%20USC%20522%20and%20also%20section%20543%20of%20title%2026
+
+Will return:
+
+    {
+      text: "5 USC 522 and also section 543 of title 26",
+      results: [
+        {
+          match: "5 USC 522",
+          type: "usc",
+          usc: {
+            title: "5",
+            section: "522"
+          }
+        },
+        {
+          match: "section 543 of title 26",
+          type: "usc",
+          usc: {
+            section: "543",
+            title: "26"
+          }
+        }
+      ]
+    }
+
+
+### JSONP
+
+Pass a `callback` parameter to surround the response with a JSONP callback.
