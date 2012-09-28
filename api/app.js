@@ -1,6 +1,6 @@
 // tiny API over Citation.js' find command
 
-var Citation = require('./lib/citation');
+var Citation = require('../lib/citation');
 
 var route = function(req, res) {
   var text = req.param("text");
