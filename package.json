@@ -14,8 +14,7 @@
   "dependencies": {
       "underscore": "*",
       "express": "3.x",
-      "reloader": "*",
-      "jade": "*"
+      "reloader": "*"
   },
 
   "engines": {
