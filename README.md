@@ -7,6 +7,7 @@ A JavaScript library for detecting US Code citations, and other kinds of legal c
 
 Support for two very simple (but very common) kinds of US Code citations. Valuable enough that it's in production use, but **lots** of room to expand.
 
+
 ### TODO
 
 * Many more US Code citation formats, including ranges and comma-separated lists.
@@ -105,7 +106,7 @@ You can see Citation.js in action in the Sunlight Foundation's government search
 
 For example, a search for ["5 usc 552"](https://scout.sunlightfoundation.com/search/federal_bills/5%20usc%20552) or ["section 601 of title 5"](https://scout.sunlightfoundation.com/search/federal_bills/section%20601%20of%20title%205) will return results matching multiple formats and subsections, with highlighted excerpts.
 
-To accomplish this, bills and regulations are pre-processed in regular batches by a Ruby script that [submits their text](https://github.com/sunlightlabs/realtimecongress/blob/master/tasks/utils.rb#L17) to the included Citation.js API and stores the extracted citations and excerpts, which are then exposed via API.
+To accomplish this, bills and regulations are pre-processed in regular batches by a Ruby script that [submits their text](https://github.com/sunlightlabs/realtimecongress/blob/master/tasks/utils.rb#L17) to Citation.js and stores the extracted citations and excerpts, which are then exposed via API.
 
 
 ## HTTP API
