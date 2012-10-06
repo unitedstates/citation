@@ -243,3 +243,56 @@ exports.testIgnoresSectionSymbol = function(test) {
 
   test.done();
 };
+
+// exports.testAppendix = function(test) {
+//   test.expect(7);
+
+//   var text = ""
+
+//   var found = Citation.find(text);
+//   test.equal(found.length, 1);
+
+//   var citation = found[0];
+//   test.equal(citation.match, "5 USC § 552");
+//   test.equal(citation.usc.title, "5");
+//   test.equal(citation.usc.section, "552");
+//   test.deepEqual(citation.usc.subsections, [])
+//   test.equal(citation.usc.section_id, "5_usc_552");
+//   test.equal(citation.usc.id, "5_usc_552");
+
+//   test.done();
+// };
+
+exports.testNotators = function(test) {
+  test.expect(14);
+
+  // http://www.gpo.gov/fdsys/pkg/BILLS-112hr6567ih/xml/BILLS-112hr6567ih.xml
+  var text = "Education Amendments of 1972 (20 U.S.C. 1681 et seq.); or";
+
+  var found = Citation.find(text);
+  test.equal(found.length, 1);
+
+  var citation = found[0];
+  test.equal(citation.match, "20 U.S.C. 1681 et seq.");
+  test.equal(citation.usc.title, "20");
+  test.equal(citation.usc.section, "1681");
+  test.deepEqual(citation.usc.subsections, ["et-seq"])
+  test.equal(citation.usc.section_id, "20_usc_1681");
+  test.equal(citation.usc.id, "20_usc_1681_et-seq");
+
+  // http://www.gpo.gov/fdsys/pkg/BILLS-112hr6567ih/xml/BILLS-112hr6567ih.xml
+  text = "commodity supplemental food program) (7 U.S.C. 612c note).";
+
+  var found = Citation.find(text);
+  test.equal(found.length, 1);
+
+  var citation = found[0];
+  test.equal(citation.match, "7 U.S.C. 612c note");
+  test.equal(citation.usc.title, "7");
+  test.equal(citation.usc.section, "612c");
+  test.deepEqual(citation.usc.subsections, ["note"])
+  test.equal(citation.usc.section_id, "7_usc_612c");
+  test.equal(citation.usc.id, "7_usc_612c_note");
+
+  test.done();
+}
