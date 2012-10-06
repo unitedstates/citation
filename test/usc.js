@@ -152,7 +152,7 @@ exports.testBasicWithSubsections = function(test) {
 // http://www.gpo.gov/fdsys/pkg/BILLS-111s3663pcs/xml/BILLS-111s3663pcs.xml
 
 exports.testCasualPattern = function(test) {
-  test.expect(10);
+  test.expect(17);
 
   var text = "Nothing in this section shall be considered to limit the authority " +
     "of the Coast Guard to enforce this or any other Federal law " +
@@ -175,6 +175,20 @@ exports.testCasualPattern = function(test) {
   var citationContext = foundContext[0];
   test.equal(citationContext.match, "section 89 of title 14");
   test.equal(citationContext.context, "nder section 89 of title 14, Uni");
+
+  // comma version
+  text = "under section 89, title 14, United States Code.";
+
+  var found = Citation.find(text);
+  test.equal(found.length, 1);
+
+  var citation = found[0];
+  test.equal(citation.match, "section 89, title 14");
+  test.equal(citation.usc.title, "14");
+  test.equal(citation.usc.section, "89");
+  test.deepEqual(citation.usc.subsections, [])
+  test.equal(citation.usc.section_id, "14_usc_89");
+  test.equal(citation.usc.id, "14_usc_89");
 
   test.done();
 };
@@ -244,44 +258,31 @@ exports.testIgnoresSectionSymbol = function(test) {
   test.done();
 };
 
-// exports.testAppendix = function(test) {
-//   test.expect(7);
+exports.testAppendix = function(test) {
+  test.expect(7);
 
-//   var text = ""
-
-//   var found = Citation.find(text);
-//   test.equal(found.length, 1);
-
-//   var citation = found[0];
-//   test.equal(citation.match, "5 USC § 552");
-//   test.equal(citation.usc.title, "5");
-//   test.equal(citation.usc.section, "552");
-//   test.deepEqual(citation.usc.subsections, [])
-//   test.equal(citation.usc.section_id, "5_usc_552");
-//   test.equal(citation.usc.id, "5_usc_552");
-
-//   test.done();
-// };
-
-exports.testNotators = function(test) {
-  test.expect(14);
-
-  // http://www.gpo.gov/fdsys/pkg/BILLS-112hr6567ih/xml/BILLS-112hr6567ih.xml
-  var text = "Education Amendments of 1972 (20 U.S.C. 1681 et seq.); or";
+  // http://www.gpo.gov/fdsys/pkg/BILLS-112s3608is/xml/BILLS-112s3608is.xml
+  var text = "Civil Relief Act (50 U.S.C. App. 595) is amended"
 
   var found = Citation.find(text);
   test.equal(found.length, 1);
 
   var citation = found[0];
-  test.equal(citation.match, "20 U.S.C. 1681 et seq.");
-  test.equal(citation.usc.title, "20");
-  test.equal(citation.usc.section, "1681");
-  test.deepEqual(citation.usc.subsections, ["et-seq"])
-  test.equal(citation.usc.section_id, "20_usc_1681");
-  test.equal(citation.usc.id, "20_usc_1681_et-seq");
+  test.equal(citation.match, "50 U.S.C. App. 595");
+  test.equal(citation.usc.title, "50-app");
+  test.equal(citation.usc.section, "595");
+  test.deepEqual(citation.usc.subsections, [])
+  test.equal(citation.usc.section_id, "50-app_usc_595");
+  test.equal(citation.usc.id, "50-app_usc_595");
+
+  test.done();
+};
+
+exports.testNote = function(test) {
+  test.expect(7);
 
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr6567ih/xml/BILLS-112hr6567ih.xml
-  text = "commodity supplemental food program) (7 U.S.C. 612c note).";
+  var text = "commodity supplemental food program) (7 U.S.C. 612c note).";
 
   var found = Citation.find(text);
   test.equal(found.length, 1);
