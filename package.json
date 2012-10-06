@@ -3,7 +3,7 @@
   "author": "Eric Mill <eric@sunlightfoundation.com",
   "description": "Library for extracting legal citations from text. Standalone lib, and optional Node API.",
   "version": "0.2.0",
-  "license": "MIT",
+  "license": "unlicense",
   "keywords": ["congress", "laws", "legal", "citations", "us code", "regulations"],
 
   "repository": {
