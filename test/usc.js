@@ -1,11 +1,7 @@
-/**
-
+/*
   Tests for extracting US Code citations from legislation. 
-
   Each test should be based on a real world circumstance, with a link to it if possible.
-
 */
-
 
 var Citation = require('../lib/citation');
 
