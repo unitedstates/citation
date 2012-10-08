@@ -236,8 +236,7 @@ exports.testRange = function(test) {
     test.deepEqual(citation.usc.subsections, ["2"])
     test.equal(citation.usc.section_id, "41_usc_10c");
     test.equal(citation.usc.id, "41_usc_10c_2");
-  } else
-    console.log(found)
+  }
 
   test.done();
 };
