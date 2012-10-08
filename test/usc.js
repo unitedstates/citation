@@ -107,7 +107,7 @@ exports.testContext = function(test) {
 
 
 exports.testBasicWithSubsections = function(test) {
-  test.expect(14);
+  test.expect(7);
 
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr3604ih/xml/BILLS-112hr3604ih.xml
   var text = "All regulations in effect immediately before " +
@@ -126,26 +126,156 @@ exports.testBasicWithSubsections = function(test) {
   test.equal(citation.usc.section_id, "5_usc_552");
   test.equal(citation.usc.id, "5_usc_552_a_1_E");
 
+  test.done();
+}
 
-  // more complicated section handle
+// this is the worst kind of hyphen, a valid section entry with a number on either end
+// for what produces this, see:
+// http://www.law.cornell.edu/uscode/text/50/chapter-15/subchapter-I
+exports.testSectionWithHyphen = function(test) {
+  test.expect();
 
   // http://www.gpo.gov/fdsys/pkg/BILLS-111s3611es/xml/BILLS-111s3611es.xml
   var text = "National Counter Proliferation Center.--Section 119A(a) of the " +
     "National Security Act of 1947 (50 U.S.C. 404o-1(a)) is amended--";
 
   var found = Citation.find(text);
-  test.equal(found.length, 1);
+  test.equal(found.length, 3);
 
-  var citation = found[0];
-  test.equal(citation.match, "50 U.S.C. 404o-1(a)");
-  test.equal(citation.usc.title, "50");
-  test.equal(citation.usc.section, "404o-1");
-  test.deepEqual(citation.usc.subsections, ["a"])
-  test.equal(citation.usc.section_id, "50_usc_404o-1");
-  test.equal(citation.usc.id, "50_usc_404o-1_a");
+  if (found.length == 3) {
+    var citation = found[0];
+    test.equal(citation.match, "50 U.S.C. 404o-1(a)");
+    test.equal(citation.usc.title, "50");
+    test.equal(citation.usc.section, "404o-1");
+    test.deepEqual(citation.usc.subsections, ["a"])
+    test.equal(citation.usc.section_id, "50_usc_404o-1");
+    test.equal(citation.usc.id, "50_usc_404o-1_a");
+
+    // even though these are wrong: for now, they are found
+    citation = found[1];
+    test.equal(citation.match, "50 U.S.C. 404o-1(a)");
+    test.equal(citation.usc.title, "50");
+    test.equal(citation.usc.section, "404o");
+    test.deepEqual(citation.usc.subsections, [])
+    test.equal(citation.usc.section_id, "50_usc_404o");
+    test.equal(citation.usc.id, "50_usc_404o");
+
+    citation = found[2];
+    test.equal(citation.match, "50 U.S.C. 404o-1(a)");
+    test.equal(citation.usc.title, "50");
+    test.equal(citation.usc.section, "1");
+    test.deepEqual(citation.usc.subsections, ["a"])
+    test.equal(citation.usc.section_id, "50_usc_1");
+    test.equal(citation.usc.id, "50_usc_1_a");
+  }
 
   test.done();
-}
+};
+
+
+// FOR NOW:
+// Range expansion just finds the first and last.
+// When the range does not have double section symbols, treat it as ambiguous,
+// and return it as both an original section, and as an expanded range.
+exports.testRange = function(test) {
+  test.expect();
+
+  // http://www.gpo.gov/fdsys/pkg/BILLS-112hr5972pcs/xml/BILLS-112hr5972pcs.xml
+  var text = "convicted of violating the Buy American Act (41 U.S.C. 10a-10c).";
+
+  var found = Citation.find(text);
+  test.equal(found.length, 3);
+
+  if (found.length == 3) {
+    var citation = found[0];
+    test.equal(citation.match, "41 U.S.C. 10a-10c");
+    test.equal(citation.usc.title, "41");
+    test.equal(citation.usc.section, "10a-10c");
+    test.deepEqual(citation.usc.subsections, [])
+    test.equal(citation.usc.section_id, "41_usc_10a-10c");
+    test.equal(citation.usc.id, "41_usc_10a-10c");
+
+    citation = found[1];
+    test.equal(citation.match, "41 U.S.C. 10a-10c");
+    test.equal(citation.usc.title, "41");
+    test.equal(citation.usc.section, "10a");
+    test.deepEqual(citation.usc.subsections, [])
+    test.equal(citation.usc.section_id, "41_usc_10a");
+    test.equal(citation.usc.id, "41_usc_10a");
+
+    citation = found[2];
+    test.equal(citation.match, "41 U.S.C. 10a-10c");
+    test.equal(citation.usc.title, "41");
+    test.equal(citation.usc.section, "10c");
+    test.deepEqual(citation.usc.subsections, [])
+    test.equal(citation.usc.section_id, "41_usc_10c");
+    test.equal(citation.usc.id, "41_usc_10c");
+  }
+
+  // modified version of
+  // http://www.gpo.gov/fdsys/pkg/BILLS-112hr5972pcs/xml/BILLS-112hr5972pcs.xml
+  var text = "convicted of violating the Buy American Act (41 U.S.C. 10a(1)-10c(2)).";
+
+  // ranges where there's a subsection on the left of a dash are non-ambiguous
+  var found = Citation.find(text);
+  test.equal(found.length, 2);
+
+  if (found.length == 2) {
+    citation = found[0];
+    test.equal(citation.match, "41 U.S.C. 10a(1)-10c(2)");
+    test.equal(citation.usc.title, "41");
+    test.equal(citation.usc.section, "10a");
+    test.deepEqual(citation.usc.subsections, ["1"])
+    test.equal(citation.usc.section_id, "41_usc_10a");
+    test.equal(citation.usc.id, "41_usc_10a_1");
+
+    citation = found[1];
+    test.equal(citation.match, "41 U.S.C. 10a(1)-10c(2)");
+    test.equal(citation.usc.title, "41");
+    test.equal(citation.usc.section, "10c");
+    test.deepEqual(citation.usc.subsections, ["2"])
+    test.equal(citation.usc.section_id, "41_usc_10c");
+    test.equal(citation.usc.id, "41_usc_10c_2");
+  } else
+    console.log(found)
+
+  test.done();
+};
+
+
+// // explicit ranges (with §§) interpret ranges unambiguously
+// exports.testRangeExplicit = function(test) {
+//   test.expect();
+
+//   // modified version of:
+//   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr5972pcs/xml/BILLS-112hr5972pcs.xml
+//   var text = "convicted of violating the Buy American Act (41 U.S.C. §§ 10a-10c).";
+
+//   var found = Citation.find(text);
+//   test.equal(found.length, 2);
+
+//   if (found.length == 2) {
+//     var citation = found[0];
+//     test.equal(citation.match, "41 U.S.C. §§ 10a-10c");
+//     test.equal(citation.usc.title, "41");
+//     test.equal(citation.usc.section, "10a");
+//     test.deepEqual(citation.usc.subsections, [])
+//     test.equal(citation.usc.section_id, "41_usc_10a");
+//     test.equal(citation.usc.id, "41_usc_10a");
+
+//     citation = found[1];
+//     test.equal(citation.match, "41 U.S.C. §§ 10a-10c");
+//     test.equal(citation.usc.title, "41");
+//     test.equal(citation.usc.section, "10c");
+//     test.deepEqual(citation.usc.subsections, [])
+//     test.equal(citation.usc.section_id, "41_usc_10c");
+//     test.equal(citation.usc.id, "41_usc_10c");
+//   }
+
+//   test.done();
+// };
+
+// todo: range with subsections on either side
 
 
 // "section 89 of title 14"
