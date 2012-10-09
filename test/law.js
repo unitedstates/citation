@@ -3,7 +3,7 @@
   Each test should link to a real world circumstance where possible.
 */
 
-var Citation = require('../lib/citation');
+var Citation = require('../citation');
 
 
 exports.testPatterns = function(test) {

@@ -3,25 +3,15 @@
   Each test should be based on a real world circumstance, with a link to it if possible.
 */
 
-var Citation = require('../lib/citation');
+var Citation = require('../citation');
 
-
-// "5 U.S.C. 552"
-// http://www.gpo.gov/fdsys/pkg/BILLS-112hr3604ih/xml/BILLS-112hr3604ih.xml
 
 exports.testBasicPattern = function(test) {
   test.expect(10);
 
-  var text = "All regulations in effect immediately before " +
-    "the enactment of subsection (f) that were promulgated under " +
-    "the authority of this section shall be repealed in accordance " +
-    "... of the Administrative Procedure Act (5 U.S.C. 552) and some more things... " +
-    "(8) Add at the end the following new subsections: (f) ... " +
-    "Upon receipt of an allotment application, but in any event not " +
-    "later than 6 months after receiving such application, the Secretary " +
-    "shall notify any person or entity having an interest in land " +
-    "potentially adverse to the applicant of their right to initiate...";
-
+  // http://www.gpo.gov/fdsys/pkg/BILLS-112hr3604ih/xml/BILLS-112hr3604ih.xml
+  var text = "of the Administrative Procedure Act (5 U.S.C. 552) and some";
+    
   var found = Citation.find(text);
   test.equal(found.length, 1);
 
