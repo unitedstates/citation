@@ -16,7 +16,7 @@ exports.testBasicPattern = function(test) {
   test.equal(found.length, 1);
 
   var citation = found[0];
-  test.equal(citation.match, "5 U.S.C. 552");
+  test.equal(citation.match, "5 U.S.C. 551");
   test.equal(citation.usc.title, "5");
   test.equal(citation.usc.section, "552");
   test.deepEqual(citation.usc.subsections, [])
