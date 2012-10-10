@@ -11,6 +11,10 @@
     "url": "https://github.com/unitedstates/citation"
   },
 
+  "scripts": {
+    "test": "nodeunit test"
+  },
+
   "dependencies": {
       "underscore": "*",
       "express": "3.x",
