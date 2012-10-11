@@ -3,5 +3,24 @@
 var args = require('optimist').argv;
 var fs = require('fs');
 
-if ()
-require
+
+var text; // file or STDIN?
+if (args._[0]) {
+  var filename = args._[0];
+  text = fs.readFileSync(filename, "utf8");
+  console.log(text);
+} else {
+  text = "";
+  process.stdin.resume();
+  process.stdin.on('data', function(data) {
+    console.log("data: " + data);
+  });
+  process.stdin.on('end', function() {
+    console.log("end!");
+  });
+}
+
+function cite(text) {
+  var Citation = require('../citation');
+  console.log(Citation.find(text));
+}
