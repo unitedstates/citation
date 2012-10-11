@@ -1,156 +1,136 @@
-# Citation.js
+# Citation
 
-A JavaScript library for detecting US Code citations, and other kinds of legal citations, in blocks of text.
+A fast, stand-alone legal citation extractor, and other kinds of legal citations, in blocks of text.
 
-
-### Current Status
-
-Support for two very simple (but very common) kinds of US Code citations. Valuable enough that it's in production use, but **lots** of room to expand.
+Currently supports the US Code, and slip laws. TODO: CFR, US bills, state codes, state bills.
 
 
-### TODO
+### Use
 
-* Many more US Code citation formats, including ranges and comma-separated lists.
-* More citation types: US bills, public and private laws, Code of Federal Regulations.
-* Support for recognizing popular bill/law names.
+Via the command line:
 
+```bash
+cite "5 U.S.C. 552(a)(1)(E)"
+```
 
-### Example Usage
+Calling from JavaScript directly:
 
-Calling:
+```javascript
+Citation.find("5 U.S.C. 552(a)(1)(E)")
+```
 
-	Citation.find(
-		"(11) INTERNET- The term Internet has the meaning given " +
-		"that term in section 5362(5) of title 31, United States Code. " +
-		"All regulations in effect immediately before " +
-		"the enactment of subsection (f) that were promulgated under " +
-		"the authority of this section shall be repealed in accordance " +
-		"with the Administrative Procedure Act (5 U.S.C. 552(a)(1)(E))"
-	)
+Or through the included mini-API:
 
-Returns:
+```bash
+curl http://localhost:3000/citation/find.json?text=5+U.S.C.+552%28a%29%281%29%28E%29
+```
 
-	[{
-		match: "5 U.S.C. 552(a)(1)(E)",
-		type: "usc",
-		usc: {
-			title: "5",
-			section: "552",
-			subsections: ["a", "1", "E"]
-			id: "5_usc_552_a_1_E",
-			section_id: "5_usc_552",
-			display: "5 USC 552(a)(1)(E)"
-		}
-	}, {
-		match: "section 5362(5) of title 31",
-		type: "usc",
-		usc: {
-			title: "31",
-			section: "5362",
-			subsections: ["5"],
-			id: "31_usc_5362_5",
-			section_id: "31_usc_5362",
-			display: "31 USC 5362(5)"
-		}
-	}]
+All of which yield:
 
+```json
+[{
+	"match": "5 U.S.C. 552(a)(1)(E)",
+	"type": "usc",
+  "index": "0",
+	"usc": {
+		"title": "5",
+		"section": "552",
+		"subsections": ["a", "1", "E"]
+		"id": "5_usc_552_a_1_E",
+		"section_id": "5_usc_552",
+		"display": "5 USC 552(a)(1)(E)"
+	}
+}]
+```
 
-Note: Citations are not necessarily returned in the order they appear in the source text.
+(The mini-API actually returns a JavaScript object with a key of `results` whose value is the above array.)
 
+### Excerpts
 
-Pass an optional "context" value (a number) to get an excerpt with up to that number of characters on either side of each detected citation.
+Passing a "context" option will include an excerpt in the response, with up to that number of characters on either side of each detected citation.
 
-	Citation.find(
-		"(11) INTERNET- The term Internet has the meaning given " +
-		"that term in section 5362(5) of title 31, United States Code. " +
-		"All regulations in effect immediately before " +
-		"the enactment of subsection (f) that were promulgated under " +
-		"the authority of this section shall be repealed in accordance " +
-		"with of the Administrative Procedure Act (5 U.S.C. 552(a)(1)(E))",
+```javascript
+Citation.find("that term in section 5362(5) of title 31, United States Code.", {context: 10})
+```
 
-		{context: 10}
-	)
+Yields:
 
-Returns:
-
-	[{
-		context: "dure Act (5 U.S.C. 552(a)(1)(E))",
-		match: "5 U.S.C. 552(a)(1)(E)",
-		type: "usc",
-		usc: {
-			title: "5",
-			section: "552",
-			subsections: ["a", "1", "E"]
-			id: "5_usc_552_a_1_E",
-			section_id: "5_usc_552",
-			display: "5 USC 552(a)(1)(E)"
-		}
-	}, {
-		context: "t term in section 5362(5) of title 31, United S",
-		match: "section 5362(5) of title 31",
-		type: "usc",
-		usc: {
-			title: "31",
-			section: "5362",
-			subsections: ["5"],
-			id: "31_usc_5362_5",
-			section_id: "31_usc_5362",
-			display: "31 USC 5362(5)"
-		}
-	}]
+```json
+[{
+  match: "section 5362(5) of title 31",
+	context: "t term in section 5362(5) of title 31, United S",
+  ...
+}]
+```
 
 
-### Real world examples
+### Shell command
 
-You can see Citation.js in action in the Sunlight Foundation's government search and alert service, [Scout](http://scout.sunlightfoundation.com).
+The shell command can accept a string to parse as an argument, through STDIN, or from a file. It can output results to STDOUT, or to a file.
 
-For example, a search for ["5 usc 552"](https://scout.sunlightfoundation.com/search/federal_bills/5%20usc%20552) or ["section 601 of title 5"](https://scout.sunlightfoundation.com/search/federal_bills/section%20601%20of%20title%205) will return results matching multiple formats and subsections, with highlighted excerpts.
+```bash
+cite "section 5362(5) of title 31"
 
-To accomplish this, bills and regulations are pre-processed in regular batches by a Ruby script that [submits their text](https://github.com/sunlightlabs/realtimecongress/blob/master/tasks/utils.rb#L17) to Citation.js and stores the extracted citations and excerpts, which are then exposed via API.
+echo "section 5362(5) of title 31" | cite
 
+cite --input=in-file.txt --output=out-file.json
+```
 
-## HTTP API
+To pretty-print the output:
 
-To use Citation.js in other languages, a tiny Node.js API is provided with a single endpoint that text can be sent to, extracted through Citation.js, and have results returned as JSON or JSONP.
+```bash
+cite "section 5362(5) of title 31" --pretty
+```
 
+#### Options
 
-### Usage
+* `--input`: Filename to read text from
+* `--output`: Filename to output text to
+* `--pretty`: prettify (indent) output
 
-[Install Node.js and NPM](http://nodejs.org/#download) and run `npm install` if you haven't already, then run:
+### HTTP API
 
-    node app
+[Install Node.js and NPM](http://nodejs.org/#download) and run `npm install`, then run:
 
-It should be running on localhost:3000, by default. It has one endpoint, a wrapper around Citation's `find` method.
+```bash
+node api/app.js [port]
+```
 
-Hitting it via either GET or POST with a "text" parameter, like so:
+GET or POST to `/citation/find.json` with a `text` parameter:
 
-    # "5 USC 522 and also section 543 of title 26"
-    /citation/find.json?text=5%20USC%20522%20and%20also%20section%20543%20of%20title%2026
+```bash    
+curl http://localhost:3000/citation/find.json?text=5+U.S.C.+552%28a%29%281%29%28E%29
 
-Will return the results of running Citation.find() on the block of text, under a 'results' key:
+curl -XPOST "http://localhost:3000/citation/find.json" -d "text=5 U.S.C. 552(a)(1)(E)"
+```
 
+Will return the results of running Citation.find() on the block of text, under a `results` key:
+
+```json
+{
+  results: [
     {
-      results: [
-        {
-          match: "5 USC 522",
-          type: "usc",
-          usc: {
-            title: "5",
-            section: "522"
-          }
-        },
-        {
-          match: "section 543 of title 26",
-          type: "usc",
-          usc: {
-            section: "543",
-            title: "26"
-          }
-        }
-      ]
+      "match": "5 U.S.C. 552(a)(1)(E)",
+      "type": "usc",
+      "index": "0",
+      "usc": {
+        "title": "5",
+        "section": "552",
+        "subsections": ["a", "1", "E"]
+        "id": "5_usc_552_a_1_E",
+        "section_id": "5_usc_552",
+        "display": "5 USC 552(a)(1)(E)"
+      }
     }
+  ]
+}
+
+#### Options
+
+* `options[context]`: include excerpts with up to this many characters around it.
+* `callback`: a function name to use as a JSONP callback.
 
 
-### JSONP
+### About
 
-Pass a `callback` parameter to surround the response with a JSONP callback.
+Originally written by [Eric Mill](http://twitter.com/konklone), at the [Sunlight Foundation](http://sunlightfoundation.com).
