@@ -11,6 +11,10 @@
     "url": "https://github.com/unitedstates/citation"
   },
 
+  "bin": {
+    "cite": "./bin/cite"
+  },
+
   "scripts": {
     "test": "nodeunit test"
   },
@@ -18,7 +22,8 @@
   "dependencies": {
       "underscore": "*",
       "express": "3.x",
-      "reloader": "*"
+      "reloader": "*",
+      "optimist": "*"
   },
 
   "devDependencies": {

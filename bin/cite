@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+
+var args = require('optimist').argv;
+var fs = require('fs');
+
+if ()
+require
