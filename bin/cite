@@ -4,23 +4,67 @@ var args = require('optimist').argv;
 var fs = require('fs');
 
 
-var text; // file or STDIN?
+/**
+  Read text from STDIN or a file, send it into Citation.find(), 
+  and output the resulting JSON into STDOUT or a file.
+*/
+
+// file input
 if (args._[0]) {
   var filename = args._[0];
-  text = fs.readFileSync(filename, "utf8");
-  console.log(text);
-} else {
-  text = "";
+  if (fs.existsSync(filename)) {
+    fs.readFile(filename, "utf8", function(err, text) {
+      if (!err)
+        cite(text)
+      else {
+        console.log(err);
+        process.exit(-1);
+      }
+    });
+  } else {
+    console.log("Can't find file: " + filename)
+    process.exit(-1);
+  }
+}
+
+// stdin
+else {
+  var text = "";
   process.stdin.resume();
+  
   process.stdin.on('data', function(data) {
-    console.log("data: " + data);
+    text += data;
   });
+  
+  process.stdin.on('error', function(error) {
+    console.log(err);
+    process.exit(-1);
+  });
+
   process.stdin.on('end', function() {
-    console.log("end!");
+    cite(text);
   });
 }
 
+// actually extract the citations
 function cite(text) {
-  var Citation = require('../citation');
-  console.log(Citation.find(text));
+  output(require('../citation').find(text));
+}
+
+// will either be output file or stdout
+function output(results) {
+  
+  var json;
+  if (args.pretty)
+    json = JSON.stringify(results, null, 4);
+  else
+    json = JSON.stringify(results);
+
+  if (args.output) {
+    fs.writeFileSync(args.output, json, "utf8");
+    console.log("Written to " + args.output + ".");
+  } else
+    console.log(json);
+
+  process.exit(0);
 }
