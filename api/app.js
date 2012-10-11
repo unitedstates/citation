@@ -58,10 +58,12 @@ app.post('/citation/find.json', route);
 
 
 // Start server
+var port = parseInt(process.argv[2]);
+if (isNaN(port)) port = 3000;
 
 var startServer = function() {
-  app.listen(3000, function() {
-    console.log("Express server listening on port 3000 in %s mode", app.settings.env);
+  app.listen(port, function() {
+    console.log("Express server listening on port %s in %s mode", port, app.settings.env);
   });
 }
 
