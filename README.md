@@ -22,7 +22,7 @@ Citation.find("5 U.S.C. 552(a)(1)(E)")
 Or through the included mini-API:
 
 ```bash
-curl http://localhost:3000/citation/find.json?text=5+U.S.C.+552%28a%29%281%29%28E%29
+curl "http://localhost:3000/citation/find.json?text=5+U.S.C.+552%28a%29%281%29%28E%29"
 ```
 
 All of which yield:
@@ -64,7 +64,7 @@ Yields:
 ```
 
 
-### Shell command
+## Command line
 
 The shell command can accept a string to parse as an argument, through STDIN, or from a file. It can output results to STDOUT, or to a file.
 
@@ -82,13 +82,13 @@ To pretty-print the output:
 cite "section 5362(5) of title 31" --pretty
 ```
 
-#### Options
+### Options
 
 * `--input`: Filename to read text from
 * `--output`: Filename to output text to
 * `--pretty`: prettify (indent) output
 
-### HTTP API
+## HTTP API
 
 [Install Node.js and NPM](http://nodejs.org/#download) and run `npm install`, then run:
 
@@ -108,7 +108,7 @@ Will return the results of running Citation.find() on the block of text, under a
 
 ```json
 {
-  results: [
+  "results": [
     {
       "match": "5 U.S.C. 552(a)(1)(E)",
       "type": "usc",
@@ -116,7 +116,7 @@ Will return the results of running Citation.find() on the block of text, under a
       "usc": {
         "title": "5",
         "section": "552",
-        "subsections": ["a", "1", "E"]
+        "subsections": ["a", "1", "E"],
         "id": "5_usc_552_a_1_E",
         "section_id": "5_usc_552",
         "display": "5 USC 552(a)(1)(E)"
@@ -126,12 +126,12 @@ Will return the results of running Citation.find() on the block of text, under a
 }
 ```
 
-#### Options
+### Options
 
 * `options[context]`: include excerpts with up to this many characters around it.
 * `callback`: a function name to use as a JSONP callback.
 
 
-### About
+## About
 
 Originally written by [Eric Mill](http://twitter.com/konklone), at the [Sunlight Foundation](http://sunlightfoundation.com).
