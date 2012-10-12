@@ -138,8 +138,10 @@ Will return the results of running Citation.find() on the block of text, under a
 
 ### Options
 
+* `text`: **required**, text to extract citations from.
 * `options[excerpt]`: include excerpts with up to this many characters around it.
 * `callback`: a function name to use as a JSONP callback.
+* `pretty`: prettify (indent) output.
 
 
 ## About

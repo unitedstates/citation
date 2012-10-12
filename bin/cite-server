@@ -7,6 +7,7 @@ var Citation = require('../citation');
 var route = function(req, res) {
   var text = req.param("text");
   var options = req.param("options");
+  var pretty = req.param("pretty");
 
   if (text) {
 
@@ -21,7 +22,11 @@ var route = function(req, res) {
     var response = {results: results};
     if (options) response.options = options;
 
-    var json = JSON.stringify(response);
+    var json;
+    if (pretty)
+      json = JSON.stringify(response, null, 4);
+    else
+      json = JSON.stringify(response);
     
     // JSONP
     if (req.query.callback)
