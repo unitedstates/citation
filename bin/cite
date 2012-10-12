@@ -2,9 +2,25 @@
 
 var fs = require('fs');
 
-var args = require('optimist')
+
+var optimist = require('optimist');
+var args = optimist
   .boolean("pretty")
+  .usage("Extract legal citations from text.")
+  .alias('input', 'i')
+  .alias('output', 'o')
+  .alias('help', 'h')
+  .describe('input', 'Path to file to read for input.')
+  .describe('output', 'Path to file to write output.')
+  .describe('pretty', 'Prettify JSON output.')
+  .describe('excerpt', 'Number of characters of excerpt surrounding matches to include.')
+  .describe('help', 'Show this message.')
   .argv;
+
+if (args.help) {
+  console.log(optimist.help())
+  process.exit(0)
+}
 
 
 /**
