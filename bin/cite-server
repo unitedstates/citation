@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 // tiny API over Citation.js' find command
 
 var Citation = require('../citation');
