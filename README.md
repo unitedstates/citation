@@ -19,7 +19,7 @@ Calling from JavaScript directly:
 Citation.find("5 U.S.C. 552(a)(1)(E)")
 ```
 
-Or through the included mini-API:
+Or through the included HTTP API:
 
 ```bash
 curl "http://localhost:3000/citation/find.json?text=5+U.S.C.+552%28a%29%281%29%28E%29"
@@ -42,7 +42,7 @@ All of which yield:
 }]
 ```
 
-(The mini-API actually returns a JavaScript object with a key of `results` whose value is the above array.)
+(The HTTP API actually returns a JavaScript object with a key of `results` whose value is the above array.)
 
 ### Excerpts
 
