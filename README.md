@@ -19,20 +19,20 @@ Or install it locally to a `node_modules` directory with `npm install citation`.
 Via the command line:
 
 ```bash
-cite "authorized by 5 U.S.C. 552(a)(1)(E) and"
+cite "pursuant to 5 U.S.C. 552(a)(1)(E) and"
 ```
 
 Calling from JavaScript directly:
 
 ```javascript
-Citation.find("authorized by 5 U.S.C. 552(a)(1)(E) and")
+Citation.find("pursuant to 5 U.S.C. 552(a)(1)(E) and")
 ```
 
 Or through the included HTTP API:
 
 ```bash
 cite-server
-curl "http://localhost:3000/citation/find.json?text=authorized+by+5+U.S.C.+552%28a%29%281%29%28E%29+and"
+curl "http://localhost:3000/citation/find.json?text=pursuant+to+5+U.S.C.+552%28a%29%281%29%28E%29+and"
 ```
 
 All of which yield:
