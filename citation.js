@@ -22,7 +22,7 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
 
 			// default: all types, no excerpt
 			var types = options.type ? [options.type] : _.keys(Citation.types);
-			var context = options.context || 0;
+			var excerpt = options.excerpt || 0;
 
 			// run through every pattern, accumulate matches
 			var results = _.map(types, function(type) {
@@ -42,17 +42,17 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
 						matchInfo.match = match[0];
 						matchInfo.index = match.index;
 
-						// use index to grab surrounding context
-						if (context > 0) {
+						// use index to grab surrounding excerpt
+						if (excerpt > 0) {
 							var index = matchInfo.index;
 
-							var proposedLeft = index - context;
+							var proposedLeft = index - excerpt;
 							var left = proposedLeft > 0 ? proposedLeft : 0;
 
-							var proposedRight = index + match[0].length + context;
+							var proposedRight = index + match[0].length + excerpt;
 							var right = (proposedRight <= text.length) ? proposedRight : (text.length - 1);
 
-							matchInfo.context = text.substring(left, right);
+							matchInfo.excerpt = text.substring(left, right);
 						}
 
 						// one match can generate one or many citation results (e.g. ranges)

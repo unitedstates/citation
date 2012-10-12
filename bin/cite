@@ -53,7 +53,10 @@ else {
 
 // actually extract the citations
 function cite(text) {
-  output(require('../citation').find(text));
+  var options = {};
+  if (args.excerpt) options.excerpt = args.excerpt;
+
+  output(require('../citation').find(text, options));
 }
 
 // will either be output file or stdout

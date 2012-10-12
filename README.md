@@ -29,17 +29,17 @@ All of which yield:
 
 ```json
 [{
-	"match": "5 U.S.C. 552(a)(1)(E)",
-	"type": "usc",
+  "match": "5 U.S.C. 552(a)(1)(E)",
+  "type": "usc",
   "index": "0",
-	"usc": {
-		"title": "5",
-		"section": "552",
-		"subsections": ["a", "1", "E"]
-		"id": "5_usc_552_a_1_E",
-		"section_id": "5_usc_552",
-		"display": "5 USC 552(a)(1)(E)"
-	}
+  "usc": {
+    "title": "5",
+    "section": "552",
+    "subsections": ["a", "1", "E"]
+    "id": "5_usc_552_a_1_E",
+    "section_id": "5_usc_552",
+    "display": "5 USC 552(a)(1)(E)"
+  }
 }]
 ```
 
@@ -47,10 +47,10 @@ All of which yield:
 
 ### Excerpts
 
-Passing a "context" option will include an excerpt in the response, with up to that number of characters on either side of each detected citation.
+Passing an `excerpt` option will include an excerpt in the response, with up to that number of characters on either side of each detected citation.
 
 ```javascript
-Citation.find("that term in section 5362(5) of title 31, United States Code.", {context: 10})
+Citation.find("that term in section 5362(5) of title 31, United States Code.", {excerpt: 10})
 ```
 
 Yields:
@@ -58,7 +58,7 @@ Yields:
 ```json
 [{
   "match": "section 5362(5) of title 31",
-	"context": "t term in section 5362(5) of title 31, United S",
+  "excerpt": "t term in section 5362(5) of title 31, United S",
   ...
 }]
 ```
@@ -128,7 +128,7 @@ Will return the results of running Citation.find() on the block of text, under a
 
 ### Options
 
-* `options[context]`: include excerpts with up to this many characters around it.
+* `options[excerpt]`: include excerpts with up to this many characters around it.
 * `callback`: a function name to use as a JSONP callback.
 
 

@@ -23,12 +23,12 @@ exports.testBasicPattern = function(test) {
   test.equal(citation.usc.section_id, "5_usc_552");
   test.equal(citation.usc.id, "5_usc_552");
 
-  var foundContext = Citation.find(text, {context: 5});
-  test.equal(foundContext.length, 1);
+  var foundExcerpt = Citation.find(text, {excerpt: 5});
+  test.equal(foundExcerpt.length, 1);
 
-  var citationContext = foundContext[0];
-  test.equal(citationContext.match, "5 U.S.C. 552");
-  test.equal(citationContext.context, "Act (5 U.S.C. 552) and")
+  var citationExcerpt = foundExcerpt[0];
+  test.equal(citationExcerpt.match, "5 U.S.C. 552");
+  test.equal(citationExcerpt.excerpt, "Act (5 U.S.C. 552) and")
 
   test.done();
 };
@@ -41,7 +41,7 @@ exports.testNearby = function(test) {
     "requirement under 5 U.S.C. §§ 8344 and 8468 in order to facilitate " +
     "assignment of persons to Iraq, Pakistan, and Afghanistan.";
 
-  var found = Citation.find(text, {context: 250});
+  var found = Citation.find(text, {excerpt: 250});
   test.equal(found.length, 3); // will increase to 4 someday! (8468!!)
 
   test.equal(found[0].match, "22 U.S.C. § 4064(g)");
@@ -51,7 +51,7 @@ exports.testNearby = function(test) {
   test.done();
 }
 
-exports.testContext = function(test) {
+exports.testExcerpt = function(test) {
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr2045ih/html/BILLS-112hr2045ih.htm
   var tests = [
     ["21 U.S.C. 321(ff)(1)", 
@@ -75,17 +75,17 @@ exports.testContext = function(test) {
                 "supplement."]
   ];
 
-  var contexts = [0, 1, 5, 10, 15, 20, 25, 30, 35, 50, 75, 90, 100, 125, 150];
+  var excerpts = [0, 1, 5, 10, 15, 20, 25, 30, 35, 50, 75, 90, 100, 125, 150];
 
-  test.expect(2 * tests.length * contexts.length);
+  test.expect(2 * tests.length * excerpts.length);
 
-  // try out a ton of different context sizes, on both strings
-  _.each(contexts, function(context) {
+  // try out a ton of different excerpt sizes, on both strings
+  _.each(excerpts, function(excerpt) {
     _.each(tests, function(items) {
       var match = items[0];
       var text = items[1];
       
-      var found = Citation.find(text, {context: context});
+      var found = Citation.find(text, {excerpt: excerpt});
       test.equal(found.length, 1);
       var citation = found[0];
       test.equal(citation.match, match);
@@ -288,12 +288,12 @@ exports.testCasualPattern = function(test) {
   test.equal(citation.usc.section_id, "14_usc_89");
   test.equal(citation.usc.id, "14_usc_89");
 
-  var foundContext = Citation.find(text, {context: 5});
-  test.equal(foundContext.length, 1);
+  var foundExcerpt = Citation.find(text, {excerpt: 5});
+  test.equal(foundExcerpt.length, 1);
 
-  var citationContext = foundContext[0];
-  test.equal(citationContext.match, "section 89 of title 14");
-  test.equal(citationContext.context, "nder section 89 of title 14, Uni");
+  var citationExcerpt = foundExcerpt[0];
+  test.equal(citationExcerpt.match, "section 89 of title 14");
+  test.equal(citationExcerpt.excerpt, "nder section 89 of title 14, Uni");
 
   // comma version
   text = "under section 89, title 14, United States Code.";
