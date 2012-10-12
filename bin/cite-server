@@ -12,15 +12,20 @@ var route = function(req, res) {
 
     text = decodeURIComponent(text);
 
+    // allow citation types to be comma-separated
+    if (options && options.types)
+      options.types = options.types.split(",");
+
     var results = Citation.find(text, options);
 
-    var json = JSON.stringify({
-      results: results
-    });
+    var response = {results: results};
+    if (options) response.options = options;
+
+    var json = JSON.stringify(response);
     
-    if (req.query.callback) {
+    // JSONP
+    if (req.query.callback)
       json = "" + req.query.callback + "(" + json + ")";
-    }
 
     res.set({'Content-Type': 'application/json'})
     res.send(json);
