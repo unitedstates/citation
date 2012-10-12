@@ -35,7 +35,7 @@ All of which yield:
   "usc": {
     "title": "5",
     "section": "552",
-    "subsections": ["a", "1", "E"]
+    "subsections": ["a", "1", "E"],
     "id": "5_usc_552_a_1_E",
     "section_id": "5_usc_552",
     "display": "5 USC 552(a)(1)(E)"
