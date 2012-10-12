@@ -6,30 +6,35 @@ Currently supports the US Code, and slip laws. TODO: CFR, US bills, state codes,
 
 ## Install
 
-First, [install Node.js and NPM](http://nodejs.org/#download), then:
+[Install Node.js and NPM](http://nodejs.org/#download). 
+
+Install Citation as a local dependency with:
 
 ```bash
 npm install citation
 ```
+
+Or install it globally with `npm install -g citation` (may require ``sudo``).
 
 ## Use
 
 Via the command line:
 
 ```bash
-cite "5 U.S.C. 552(a)(1)(E)"
+cite "authorized by 5 U.S.C. 552(a)(1)(E) and"
 ```
 
 Calling from JavaScript directly:
 
 ```javascript
-Citation.find("5 U.S.C. 552(a)(1)(E)")
+Citation.find("authorized by 5 U.S.C. 552(a)(1)(E) and")
 ```
 
 Or through the included HTTP API:
 
 ```bash
-curl "http://localhost:3000/citation/find.json?text=5+U.S.C.+552%28a%29%281%29%28E%29"
+cite-server
+curl "http://localhost:3000/citation/find.json?text=authorized+by+5+U.S.C.+552%28a%29%281%29%28E%29+and"
 ```
 
 All of which yield:
@@ -99,7 +104,7 @@ cite "section 5362(5) of title 31" --pretty
 Start the API on a given port (defaults to 3000):
 
 ```bash
-node api/app.js [port]
+cite-server [port]
 ```
 
 GET or POST to `/citation/find.json` with a `text` parameter:
