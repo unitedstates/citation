@@ -87,17 +87,12 @@ echo "section 5362(5) of title 31" | cite
 cite --input=in-file.txt --output=out-file.json
 ```
 
-To pretty-print the output:
-
-```bash
-cite "section 5362(5) of title 31" --pretty
-```
-
 ### Options
 
 * `--input`: Filename to read text from
 * `--output`: Filename to output text to
-* `--pretty`: prettify (indent) output
+* `--pretty`: Prettify (indent) output
+* `--types`: Limit citation types to a comma-separated list (e.g. "usc,law")
 
 ## HTTP API
 
@@ -139,9 +134,10 @@ Will return the results of running Citation.find() on the block of text, under a
 ### Options
 
 * `text`: **required**, text to extract citations from.
-* `options[excerpt]`: include excerpts with up to this many characters around it.
 * `callback`: a function name to use as a JSONP callback.
 * `pretty`: prettify (indent) output.
+* `options[excerpt]`: include excerpts with up to this many characters around it.
+* `options[types]`: limit citation types to a comma-separated list (e.g. "usc,law")
 
 
 ## About
