@@ -6,15 +6,13 @@ Currently supports the US Code, and slip laws. TODO: CFR, US bills, state codes,
 
 ## Install
 
-[Install Node.js and NPM](http://nodejs.org/#download). 
-
-Install Citation as a local dependency with:
+[Install Node.js and NPM](http://nodejs.org/#download), then install Citation globally with:
 
 ```bash
-npm install citation
+sudo npm install -g citation
 ```
 
-Or install it globally with `npm install -g citation` (may require ``sudo``).
+Or install it locally to a `node_modules` directory with `npm install citation`.
 
 ## Use
 
