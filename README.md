@@ -4,9 +4,15 @@ A fast, stand-alone legal citation extractor.
 
 Currently supports the US Code, and slip laws. TODO: CFR, US bills, state codes, state bills.
 
-## Use
+## Install
 
-First, [install Node.js and NPM](http://nodejs.org/#download), then install project dependencies with `npm install`.
+First, [install Node.js and NPM](http://nodejs.org/#download), then:
+
+```bash
+npm install citation
+```
+
+## Use
 
 Via the command line:
 

@@ -2,7 +2,7 @@
   "name": "citation",
   "author": "Eric Mill <eric@sunlightfoundation.com",
   "description": "Legal citation extractor. Standalone library, and optional Node API.",
-  "version": "0.4.0",
+  "version": "0.4.2",
   "license": "unlicense",
   "keywords": ["congress", "laws", "legal", "citations", "us code", "regulations"],
 
@@ -12,7 +12,8 @@
   },
 
   "bin": {
-    "cite": "./bin/cite"
+    "cite": "./bin/cite",
+    "cite-server": "./bin/cite-server"
   },
 
   "scripts": {
