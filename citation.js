@@ -20,9 +20,25 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
 		find: function(text, options) {
 			if (!options) options = {};
 
-			// default: all types, no excerpt
-			var types = options.type ? [options.type] : _.keys(Citation.types);
+			// default: no excerpt
 			var excerpt = options.excerpt || 0;
+
+			// default: all types, can be filtered to one, or an array of them
+			var types;
+			if (options.types) {
+				if (_.isArray(options.types)) {
+					if (options.types.length > 0)
+						types = options.types;
+				} else
+					types = [options.types]
+			}
+
+			// only allow valid types
+			if (types)
+				types = _.intersection(types, _.keys(Citation.types))
+			else
+				types = _.keys(Citation.types)
+			
 
 			// run through every pattern, accumulate matches
 			var results = _.map(types, function(type) {
