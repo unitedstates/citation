@@ -54,7 +54,7 @@ else if (args._[0]) {
   cite(args._[0]);
 }
 
-// stdin
+// stdin (will hang if nothing is piped in)
 else {
   var text = "";
   process.stdin.resume();
