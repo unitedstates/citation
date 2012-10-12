@@ -10,8 +10,8 @@ var fs = require('fs');
 */
 
 // file input
-if (args._[0]) {
-  var filename = args._[0];
+if (args.input) {
+  var filename = args.input;
   if (fs.existsSync(filename)) {
     fs.readFile(filename, "utf8", function(err, text) {
       if (!err)
@@ -25,6 +25,11 @@ if (args._[0]) {
     console.log("Can't find file: " + filename)
     process.exit(-1);
   }
+}
+
+// command line argument
+else if (args._[0]) {
+  cite(args._[0]);
 }
 
 // stdin
