@@ -4,8 +4,9 @@ A fast, stand-alone legal citation extractor.
 
 Currently supports the US Code, and slip laws. TODO: CFR, US bills, state codes, state bills.
 
-
 ## Use
+
+First, [install Node.js and NPM](http://nodejs.org/#download), then install project dependencies with `npm install`.
 
 Via the command line:
 
@@ -89,7 +90,7 @@ cite "section 5362(5) of title 31" --pretty
 
 ## HTTP API
 
-[Install Node.js and NPM](http://nodejs.org/#download), install project dependencies with `npm install`, then run:
+Start the API on a given port (defaults to 3000):
 
 ```bash
 node api/app.js [port]
