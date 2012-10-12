@@ -30,7 +30,7 @@ exports.testBasicPattern = function(test) {
   test.equal(citationExcerpt.match, "5 U.S.C. 552");
   test.equal(citationExcerpt.excerpt, "Act (5 U.S.C. 552) and")
 
-  // smaller test
+  // test excerpt where no excerpt is necessary
   text = "5 usc 552";
   foundSmall = Citation.find(text, {excerpt: 5});
   test.equal(foundSmall.length, 1);

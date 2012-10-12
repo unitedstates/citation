@@ -1,6 +1,6 @@
 # Citation
 
-A fast, stand-alone legal citation extractor, and other kinds of legal citations, in blocks of text.
+A fast, stand-alone legal citation extractor.
 
 Currently supports the US Code, and slip laws. TODO: CFR, US bills, state codes, state bills.
 
