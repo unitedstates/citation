@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 
-var args = require('optimist').argv;
 var fs = require('fs');
+
+var args = require('optimist')
+  .boolean("pretty")
+  .argv;
 
 
 /**
