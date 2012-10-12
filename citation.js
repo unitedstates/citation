@@ -50,7 +50,7 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
 							var left = proposedLeft > 0 ? proposedLeft : 0;
 
 							var proposedRight = index + match[0].length + excerpt;
-							var right = (proposedRight <= text.length) ? proposedRight : (text.length - 1);
+							var right = (proposedRight <= text.length) ? proposedRight : text.length;
 
 							matchInfo.excerpt = text.substring(left, right);
 						}

@@ -7,7 +7,7 @@ var Citation = require('../citation');
 
 
 exports.testBasicPattern = function(test) {
-  test.expect(10);
+  test.expect();
 
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr3604ih/xml/BILLS-112hr3604ih.xml
   var text = "of the Administrative Procedure Act (5 U.S.C. 552) and some";
@@ -29,6 +29,14 @@ exports.testBasicPattern = function(test) {
   var citationExcerpt = foundExcerpt[0];
   test.equal(citationExcerpt.match, "5 U.S.C. 552");
   test.equal(citationExcerpt.excerpt, "Act (5 U.S.C. 552) and")
+
+  // smaller test
+  text = "5 usc 552";
+  foundSmall = Citation.find(text, {excerpt: 5});
+  test.equal(foundSmall.length, 1);
+  test.equal(foundSmall[0].match, "5 usc 552")
+  test.equal(foundSmall[0].excerpt, "5 usc 552")
+  test.equal(foundSmall[0].index, 0)
 
   test.done();
 };
