@@ -44,8 +44,8 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
       var results = _.map(types, function(type) {
         return _.map(Citation.types[type].patterns, function(pattern) {
         
-          var regex = new RegExp(pattern[0], "ig");
-          var processor = pattern[1];
+          var regex = new RegExp(pattern.regex, "ig");
+          var processor = pattern.processor;
 
           // execute the regex repeatedly on the string to get grouped results for each match
           var match, results = [];
