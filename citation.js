@@ -7,107 +7,107 @@
  */
 
 if (typeof(_) === "undefined" && typeof(require) !== "undefined")
-	_ = require("underscore");
+  _ = require("underscore");
 
 (function() {
-	Citation = {
+  Citation = {
 
-		// will be filled in by individual citation types
-		types: {},
+    // will be filled in by individual citation types
+    types: {},
 
-		// check a block of text for citations of a given type -
-		// return an array of matches, with citation broken out into fields
-		find: function(text, options) {
-			if (!options) options = {};
+    // check a block of text for citations of a given type -
+    // return an array of matches, with citation broken out into fields
+    find: function(text, options) {
+      if (!options) options = {};
 
-			// default: no excerpt
-			var excerpt = options.excerpt || 0;
+      // default: no excerpt
+      var excerpt = options.excerpt || 0;
 
-			// default: all types, can be filtered to one, or an array of them
-			var types;
-			if (options.types) {
-				if (_.isArray(options.types)) {
-					if (options.types.length > 0)
-						types = options.types;
-				} else
-					types = [options.types]
-			}
+      // default: all types, can be filtered to one, or an array of them
+      var types;
+      if (options.types) {
+        if (_.isArray(options.types)) {
+          if (options.types.length > 0)
+            types = options.types;
+        } else
+          types = [options.types]
+      }
 
-			// only allow valid types
-			if (types)
-				types = _.intersection(types, _.keys(Citation.types))
-			else
-				types = _.keys(Citation.types)
-			
+      // only allow valid types
+      if (types)
+        types = _.intersection(types, _.keys(Citation.types))
+      else
+        types = _.keys(Citation.types)
+      
 
-			// run through every pattern, accumulate matches
-			var results = _.map(types, function(type) {
-				return _.map(Citation.types[type].patterns, function(pattern) {
-				
-					var regex = new RegExp(pattern[0], "ig");
-					var processor = pattern[1];
+      // run through every pattern, accumulate matches
+      var results = _.map(types, function(type) {
+        return _.map(Citation.types[type].patterns, function(pattern) {
+        
+          var regex = new RegExp(pattern[0], "ig");
+          var processor = pattern[1];
 
-					// execute the regex repeatedly on the string to get grouped results for each match
-					var match, results = [];
-					while (match = regex.exec(text)) {
+          // execute the regex repeatedly on the string to get grouped results for each match
+          var match, results = [];
+          while (match = regex.exec(text)) {
 
-						// details of the regex match:
-						// common to all citations pulled from the match
-						var matchInfo = {type: type};
+            // details of the regex match:
+            // common to all citations pulled from the match
+            var matchInfo = {type: type};
 
-						matchInfo.match = match[0];
-						matchInfo.index = match.index;
+            matchInfo.match = match[0];
+            matchInfo.index = match.index;
 
-						// use index to grab surrounding excerpt
-						if (excerpt > 0) {
-							var index = matchInfo.index;
+            // use index to grab surrounding excerpt
+            if (excerpt > 0) {
+              var index = matchInfo.index;
 
-							var proposedLeft = index - excerpt;
-							var left = proposedLeft > 0 ? proposedLeft : 0;
+              var proposedLeft = index - excerpt;
+              var left = proposedLeft > 0 ? proposedLeft : 0;
 
-							var proposedRight = index + match[0].length + excerpt;
-							var right = (proposedRight <= text.length) ? proposedRight : text.length;
+              var proposedRight = index + match[0].length + excerpt;
+              var right = (proposedRight <= text.length) ? proposedRight : text.length;
 
-							matchInfo.excerpt = text.substring(left, right);
-						}
+              matchInfo.excerpt = text.substring(left, right);
+            }
 
-						// one match can generate one or many citation results (e.g. ranges)
-						cites = processor(match);
-						if (!_.isArray(cites)) cites = [cites];
+            // one match can generate one or many citation results (e.g. ranges)
+            cites = processor(match);
+            if (!_.isArray(cites)) cites = [cites];
 
-						_.each(cites, function(cite) {
-							var result = {};
+            _.each(cites, function(cite) {
+              var result = {};
 
-							// match-level info
-							_.extend(result, matchInfo) 
+              // match-level info
+              _.extend(result, matchInfo) 
 
-							// cite-level info, plus ID standardization
-							result[type] = cite;
-							_.extend(result[type], Citation.types[type].standardize(result[type]));
+              // cite-level info, plus ID standardization
+              result[type] = cite;
+              _.extend(result[type], Citation.types[type].standardize(result[type]));
 
-							results.push(result);
-						});
-					}
+              results.push(result);
+            });
+          }
 
-					return results;
-				});
-			});
+          return results;
+        });
+      });
 
-			// flatten it all and remove nulls
-			return _.compact(_.flatten(results));
-		}
-	}
+      // flatten it all and remove nulls
+      return _.compact(_.flatten(results));
+    }
+  }
 
 
-	if (typeof(require) !== "undefined") {
-		require("./citations/usc");
-		require("./citations/law");
-	}
-	
+  if (typeof(require) !== "undefined") {
+    require("./citations/usc");
+    require("./citations/law");
+  }
+  
 
-	if (typeof(window) !== "undefined")
-		window.Citation = Citation;
+  if (typeof(window) !== "undefined")
+    window.Citation = Citation;
 
-	if (typeof(module) !== "undefined" && module.exports)
-		module.exports = Citation;
+  if (typeof(module) !== "undefined" && module.exports)
+    module.exports = Citation;
 })();
