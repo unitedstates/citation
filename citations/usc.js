@@ -2,6 +2,14 @@ Citation.types.usc = {
   name: "US Code",
   type: "regex",
 
+  // normalize all cites to an ID, with and without subsections
+  standardize: function(data) {
+    return {
+      id: _.flatten([data.title, "usc", data.section, data.subsections]).join("_"),
+      section_id: [data.title, "usc", data.section].join("_")
+    }
+  },
+
   patterns: [
     // "5 U.S.C. 552"
     // "5 U.S.C. § 552(a)(1)(E)"
@@ -72,13 +80,5 @@ Citation.types.usc = {
         }
       }
     }
-  ],
-
-  // ID: [title]_usc_[section]_[subsection 1]_...
-  standardize: function(data) {
-    return {
-      id: _.flatten([data.title, "usc", data.section, data.subsections]).join("_"),
-      section_id: [data.title, "usc", data.section].join("_")
-    }
-  }
+  ]
 };
