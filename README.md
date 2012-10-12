@@ -37,8 +37,7 @@ All of which yield:
     "section": "552",
     "subsections": ["a", "1", "E"],
     "id": "5_usc_552_a_1_E",
-    "section_id": "5_usc_552",
-    "display": "5 USC 552(a)(1)(E)"
+    "section_id": "5_usc_552"
   }
 }]
 ```
@@ -118,8 +117,7 @@ Will return the results of running Citation.find() on the block of text, under a
         "section": "552",
         "subsections": ["a", "1", "E"],
         "id": "5_usc_552_a_1_E",
-        "section_id": "5_usc_552",
-        "display": "5 USC 552(a)(1)(E)"
+        "section_id": "5_usc_552"
       }
     }
   ]
