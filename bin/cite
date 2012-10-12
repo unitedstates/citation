@@ -9,6 +9,7 @@ var args = optimist
   .usage("Extract legal citations from text.")
   .alias('input', 'i')
   .alias('output', 'o')
+  .alias('pretty', 'p')
   .alias('help', 'h')
   .describe('input', 'Path to file to read for input.')
   .describe('output', 'Path to file to write output.')
