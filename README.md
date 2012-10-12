@@ -89,7 +89,7 @@ cite "section 5362(5) of title 31" --pretty
 
 ## HTTP API
 
-[Install Node.js and NPM](http://nodejs.org/#download) and run `npm install`, then run:
+[Install Node.js and NPM](http://nodejs.org/#download), install project dependencies with `npm install`, then run:
 
 ```bash
 node api/app.js [port]
