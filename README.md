@@ -16,6 +16,8 @@ Or install it locally to a `node_modules` directory with `npm install citation`.
 
 ## Use
 
+Citation can handle blocks of text, large or small, through the command line, HTTP, or directly in JavaScript.
+
 Via the command line:
 
 ```bash
