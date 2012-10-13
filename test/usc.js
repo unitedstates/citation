@@ -424,3 +424,18 @@ exports.testNote = function(test) {
 
   test.done();
 }
+
+// for now, no chapters
+exports.testChapters = function(test) {
+  test.expect();
+
+  var text = "46 U.S.C. Chapters 701, 3306, 3703";
+
+  var found = Citation.find(text);
+  test.equal(found.length, 0);
+
+  if (found.length > 0)
+    console.log(found);
+
+  test.done();
+}
