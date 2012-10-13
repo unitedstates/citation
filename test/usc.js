@@ -177,11 +177,12 @@ exports.testSectionWithHyphen = function(test) {
 // and return it as both an original section, and as an expanded range.
 exports.testRange = function(test) {
   test.expect();
+  var text, found;
 
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr5972pcs/xml/BILLS-112hr5972pcs.xml
-  var text = "convicted of violating the Buy American Act (41 U.S.C. 10a-10c).";
+  text = "convicted of violating the Buy American Act (41 U.S.C. 10a-10c).";
 
-  var found = Citation.find(text);
+  found = Citation.find(text);
   test.equal(found.length, 3);
 
   if (found.length == 3) {
@@ -212,10 +213,10 @@ exports.testRange = function(test) {
 
   // modified version of
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr5972pcs/xml/BILLS-112hr5972pcs.xml
-  var text = "convicted of violating the Buy American Act (41 U.S.C. 10a(1)-10c(2)).";
+  text = "convicted of violating the Buy American Act (41 U.S.C. 10a(1)-10c(2)).";
 
   // ranges where there's a subsection on the left of a dash are non-ambiguous
-  var found = Citation.find(text);
+  found = Citation.find(text);
   test.equal(found.length, 2);
 
   if (found.length == 2) {
@@ -240,47 +241,42 @@ exports.testRange = function(test) {
 };
 
 
-// // explicit ranges (with §§) interpret ranges unambiguously
-// exports.testRangeExplicit = function(test) {
-//   test.expect();
+// explicit ranges (with §§) interpret ranges unambiguously
+exports.testRangeExplicit = function(test) {
+  test.expect();
 
-//   // modified version of:
-//   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr5972pcs/xml/BILLS-112hr5972pcs.xml
-//   var text = "convicted of violating the Buy American Act (41 U.S.C. §§ 10a-10c).";
+  // modified version of:
+  // http://www.gpo.gov/fdsys/pkg/BILLS-112hr5972pcs/xml/BILLS-112hr5972pcs.xml
+  var text = "convicted of violating the Buy American Act (41 U.S.C. §§ 10a-10c).";
 
-//   var found = Citation.find(text);
-//   test.equal(found.length, 2);
+  var found = Citation.find(text);
+  test.equal(found.length, 2);
 
-//   if (found.length == 2) {
-//     var citation = found[0];
-//     test.equal(citation.match, "41 U.S.C. §§ 10a-10c");
-//     test.equal(citation.usc.title, "41");
-//     test.equal(citation.usc.section, "10a");
-//     test.deepEqual(citation.usc.subsections, [])
-//     test.equal(citation.usc.section_id, "41_usc_10a");
-//     test.equal(citation.usc.id, "41_usc_10a");
+  if (found.length == 2) {
+    var citation = found[0];
+    test.equal(citation.match, "41 U.S.C. §§ 10a-10c");
+    test.equal(citation.usc.title, "41");
+    test.equal(citation.usc.section, "10a");
+    test.deepEqual(citation.usc.subsections, [])
+    test.equal(citation.usc.section_id, "41_usc_10a");
+    test.equal(citation.usc.id, "41_usc_10a");
 
-//     citation = found[1];
-//     test.equal(citation.match, "41 U.S.C. §§ 10a-10c");
-//     test.equal(citation.usc.title, "41");
-//     test.equal(citation.usc.section, "10c");
-//     test.deepEqual(citation.usc.subsections, [])
-//     test.equal(citation.usc.section_id, "41_usc_10c");
-//     test.equal(citation.usc.id, "41_usc_10c");
-//   }
+    citation = found[1];
+    test.equal(citation.match, "41 U.S.C. §§ 10a-10c");
+    test.equal(citation.usc.title, "41");
+    test.equal(citation.usc.section, "10c");
+    test.deepEqual(citation.usc.subsections, [])
+    test.equal(citation.usc.section_id, "41_usc_10c");
+    test.equal(citation.usc.id, "41_usc_10c");
+  }
 
-//   test.done();
-// };
-
-// todo: range with subsections on either side
-
-
-// "section 89 of title 14"
-// http://www.gpo.gov/fdsys/pkg/BILLS-111s3663pcs/xml/BILLS-111s3663pcs.xml
+  test.done();
+};
 
 exports.testCasualPattern = function(test) {
-  test.expect(17);
+  test.expect();
 
+  // http://www.gpo.gov/fdsys/pkg/BILLS-111s3663pcs/xml/BILLS-111s3663pcs.xml
   var text = "Nothing in this section shall be considered to limit the authority " +
     "of the Coast Guard to enforce this or any other Federal law " +
     "under section 89 of title 14, United States Code.";
@@ -321,12 +317,10 @@ exports.testCasualPattern = function(test) {
 };
 
 
-// "section 5362(5) of title 31"
-// http://www.gpo.gov/fdsys/pkg/BILLS-112hr3261ih/xml/BILLS-112hr3261ih.xml
-
 exports.testCasualWithSubsections = function(test) {
   test.expect(14);
 
+  // http://www.gpo.gov/fdsys/pkg/BILLS-112hr3261ih/xml/BILLS-112hr3261ih.xml
   var text = "(11) INTERNET- The term Internet has the meaning given " +
     "that term in section 5362(5) of title 31, United States Code."
 
@@ -439,3 +433,16 @@ exports.testChapters = function(test) {
 
   test.done();
 }
+
+// other edge cases
+// exports.testEdges = function(test) {
+//   test.expect();
+
+//   var text, found;
+
+//   // GAO-591433, gao_id: 591433
+//   text = "50 U.S.C. App. §§ 451--473";
+
+//   // regulation 2012-12747
+//   text = "31 U.S.C. 5318A(b)(l)-(5)"
+// };
