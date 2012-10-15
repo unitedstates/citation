@@ -21,7 +21,7 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
       if (!options) options = {};
 
       // default: no excerpt
-      var excerpt = options.excerpt || 0;
+      var excerpt = options.excerpt ? parseInt(options.excerpt) : 0;
 
       // whether to return parent citations
       // default: false
