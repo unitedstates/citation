@@ -22,7 +22,7 @@ Citation.types.law = {
       regex: 
         "(?:section (\\d+[\\w\\d\-]*)((?:\\([^\\)]+\\))*) of )?" +
         "(pub(?:lic)?|priv(?:ate)?)\\.? +l(?:aw)?\\.?(?: +No\\.?)?" +
-        " +(\\d+)[-–](\\d+)", 
+        " +(\\d+)[-–]+(\\d+)", 
       processor: function(match) {
         var sections = [];
         if (match[1]) sections.push(match[1]);
