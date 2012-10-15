@@ -10,6 +10,9 @@ Citation.types.law = {
     }
   },
 
+  // field to calculate parents from
+  parents_by: "sections",
+
   patterns: [
     // "Public Law 111-89"
     // "Pub. L. 112-56"

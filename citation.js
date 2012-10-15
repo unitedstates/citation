@@ -23,6 +23,10 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
       // default: no excerpt
       var excerpt = options.excerpt || 0;
 
+      // whether to return parent citations
+      // default: false
+      var parents = options.parents || false;
+
       // default: all types, can be filtered to one, or an array of them
       var types;
       if (options.types) {
@@ -38,7 +42,7 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
         types = _.intersection(types, _.keys(Citation.types))
       else
         types = _.keys(Citation.types)
-      
+
 
       // run through every pattern, accumulate matches
       var results = _.map(types, function(type) {
@@ -72,8 +76,15 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
             }
 
             // one match can generate one or many citation results (e.g. ranges)
-            cites = processor(match);
+            cites = processor(match, {parents: parents});
             if (!_.isArray(cites)) cites = [cites];
+
+            // if we want parent cites too, make those now
+            if (parents) {
+              cites = _.flatten(_.map(cites, function(cite) {
+                return Citation.citeParents(cite, type);
+              }));
+            }
 
             _.each(cites, function(cite) {
               var result = {};
@@ -95,6 +106,20 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
 
       // flatten it all and remove nulls
       return _.compact(_.flatten(results));
+    },
+
+    // for a given set of cite-specific details, 
+    // return itself and its parent citations
+    citeParents: function(citation, type) {
+      var field = Citation.types[type].parents_by;
+      var results = [];
+
+      for (var i=citation[field].length; i >= 0; i--) {
+        var parent = _.clone(citation);
+        parent[field] = parent[field].slice(0, i);
+        results.push(parent);
+      }
+      return results;
     }
   }
 

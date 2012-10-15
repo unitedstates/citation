@@ -10,6 +10,9 @@ Citation.types.usc = {
     }
   },
 
+  // field to calculate parents from
+  parents_by: "subsections",
+
   patterns: [
     // "5 U.S.C. 552"
     // "5 U.S.C. § 552(a)(1)(E)"
@@ -35,12 +38,16 @@ Citation.types.usc = {
         var sections = match[4].split(/-+/);
 
         var range = false;
+
+        // two section symbols is unambiguous
         if (match[3] == "§§") // 2 section symbols
           range = true;
-        else {
+
+        // paren before dash is unambiguous
+        else { 
           var dash = match[4].indexOf("-");
           var paren = match[4].indexOf("(");
-          if (dash > 0 && paren > 0 && paren < dash) // paren before dash
+          if (dash > 0 && paren > 0 && paren < dash)
             range = true;
         }
 
@@ -60,7 +67,7 @@ Citation.types.usc = {
             title: title,
             section: section,
             subsections: subsections
-          }
+          };
         });
       }
     },
@@ -78,7 +85,7 @@ Citation.types.usc = {
           title: match[3],
           section: match[1],
           subsections: _.compact(match[2].split(/[\(\)]+/))
-        }
+        };
       }
     }
   ]

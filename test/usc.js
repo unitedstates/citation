@@ -500,3 +500,28 @@ exports.testChapters = function(test) {
 
   test.done();
 }
+
+// can opt-in to asking for all parents of a subsection to be returned too
+exports.testParents = function(test) {
+  test.expect();
+  var text, found, citation;
+
+  text = "31 USC 5318A(a)(1)(A)";
+  
+  found = Citation.find(text, {parents: false});
+  test.equal(found.length, 1);
+  test.equal(found[0].usc.id, "31_usc_5318A_a_1_A");
+
+  found = Citation.find(text, {parents: true});
+  test.equal(found.length, 4);
+
+  if (found.length == 4) {
+    test.equal(found[0].usc.id, "31_usc_5318A_a_1_A");
+    test.equal(found[1].usc.id, "31_usc_5318A_a_1");
+    test.equal(found[2].usc.id, "31_usc_5318A_a");
+    test.equal(found[3].usc.id, "31_usc_5318A");
+  } else
+    console.log(found);
+
+  test.done();
+}

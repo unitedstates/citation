@@ -107,3 +107,28 @@ exports.testSubsections = function(test) {
 
   test.done();
 };
+
+// can opt-in to asking for all parents of a subsection to be returned too
+exports.testParents = function(test) {
+  test.expect();
+  var text, found, citation;
+
+  text = "section 4402(e)(1) of Public Law 110-2";
+  
+  found = Citation.find(text, {parents: false});
+  test.equal(found.length, 1);
+  test.equal(found[0].law.id, "public_law_110_2_4402_e_1");
+
+  found = Citation.find(text, {parents: true});
+  test.equal(found.length, 4);
+
+  if (found.length == 4) {
+    test.equal(found[0].law.id, "public_law_110_2_4402_e_1");
+    test.equal(found[1].law.id, "public_law_110_2_4402_e");
+    test.equal(found[2].law.id, "public_law_110_2_4402");
+    test.equal(found[3].law.id, "public_law_110_2");
+  } else
+    console.log(found);
+
+  test.done();
+}
