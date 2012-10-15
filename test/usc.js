@@ -237,6 +237,23 @@ exports.testRange = function(test) {
     test.equal(citation.usc.id, "41_usc_10c_2");
   }
 
+  // GAO-591433, gao_id: 591433
+  text = "50 U.S.C. App. §§ 451--473";
+
+  found = Citation.find(text);
+  test.equal(found.length, 2);
+
+  if (found.length == 2) {
+    test.equal(found[0].usc.title, "50-app");
+    test.equal(found[0].usc.section, "451");
+    test.deepEqual(found[0].usc.subsections, []);
+
+    test.equal(found[1].usc.title, "50-app");
+    test.equal(found[1].usc.section, "473");
+    test.deepEqual(found[1].usc.subsections, []);
+  } else
+    console.log(found);
+
   test.done();
 };
 
@@ -435,14 +452,16 @@ exports.testChapters = function(test) {
 }
 
 // other edge cases
-// exports.testEdges = function(test) {
-//   test.expect();
+exports.testEdges = function(test) {
+  test.expect();
 
-//   var text, found;
+  var text, found, citation;
 
-//   // GAO-591433, gao_id: 591433
-//   text = "50 U.S.C. App. §§ 451--473";
+  
 
-//   // regulation 2012-12747
-//   text = "31 U.S.C. 5318A(b)(l)-(5)"
-// };
+
+  // regulation 2012-12747
+  // text = "31 U.S.C. 5318A(b)(l)-(5)"
+
+  test.done();
+};

@@ -13,25 +13,26 @@ Citation.types.usc = {
   patterns: [
     // "5 U.S.C. 552"
     // "5 U.S.C. § 552(a)(1)(E)"
-    // "50 U.S.C. 404o-1(a)" - single section
     // "7 U.S.C. 612c note"
     // "50 U.S.C. App. 595"
     // "45 U.S.C. 10a-10c"
+    // "50 U.S.C. 404o-1(a)" - single section
     // "45 U.S.C. 10a(1)-10c(2)" - range
+    // "50 U.S.C. App. §§ 451--473" - range
     {
       regex:
         "(\\d+)\\s+" +
         "U\\.?\\s?S\\.?\\s?C\\.?" +
         "(?:\\s+(App)\.?)?" +
         "(?:\\s+(§+))?" +
-        "\\s+((?:\\d+[\\w\\d\\-]*(?:\\([^\\)]+\\))*\\-?)+)" +
+        "\\s+((?:\\d+[\\w\\d\\-]*(?:\\([^\\)]+\\))*\\-*)+)" +
         "(?:\\s+(note))?",
       processor: function(match) {
         // a few titles have distinct appendixes
         var title = match[1];
         if (match[2]) title += "-app";
 
-        var sections = match[4].split("-");
+        var sections = match[4].split(/-+/);
 
         var range = false;
         if (match[3] == "§§") // 2 section symbols
