@@ -25,7 +25,7 @@ Citation.types.usc = {
         "U\\.?\\s?S\\.?\\s?C\\.?" +
         "(?:\\s+(App)\.?)?" +
         "(?:\\s+(§+))?" +
-        "\\s+((?:\\d+[\\w\\d\\-]*(?:\\([^\\)]+\\))*\\-*)+)" +
+        "\\s+((?:\\-*\\d+[\\w\\d\\-]*(?:\\([^\\)]+\\))*)+)" +
         "(?:\\s+(note))?",
       processor: function(match) {
         // a few titles have distinct appendixes

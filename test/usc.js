@@ -209,7 +209,8 @@ exports.testRange = function(test) {
     test.deepEqual(citation.usc.subsections, [])
     test.equal(citation.usc.section_id, "41_usc_10c");
     test.equal(citation.usc.id, "41_usc_10c");
-  }
+  } else
+    console.log(found);
 
   // modified version of
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr5972pcs/xml/BILLS-112hr5972pcs.xml
@@ -235,7 +236,8 @@ exports.testRange = function(test) {
     test.deepEqual(citation.usc.subsections, ["2"])
     test.equal(citation.usc.section_id, "41_usc_10c");
     test.equal(citation.usc.id, "41_usc_10c_2");
-  }
+  } else
+    console.log(found);
 
   // GAO-591433, gao_id: 591433
   text = "50 U.S.C. App. §§ 451--473";
@@ -289,6 +291,54 @@ exports.testRangeExplicit = function(test) {
 
   test.done();
 };
+
+exports.testSubsectionRanges = function(test) {
+  test.expect();
+  var text, found, citation;
+
+  // regulation 2012-12747
+  text = "31 U.S.C. 5318A(b)(l)-(5)";
+
+  found = Citation.find(text);
+  test.equal(found.length, 1);
+
+  if (found.length == 1) {
+    var citation = found[0];
+    test.equal(citation.match, "31 U.S.C. 5318A(b)(l)");
+    test.equal(citation.usc.title, "31");
+    test.equal(citation.usc.section, "5318A");
+    test.deepEqual(citation.usc.subsections, ["b", "l"])
+    test.equal(citation.usc.section_id, "31_usc_5318A");
+    test.equal(citation.usc.id, "31_usc_5318A_b_l");
+  } else
+    console.log(found);
+
+  // the worst part of this isn't the ambiguous range...
+  //
+  // e.g. (b)(l) - (b)(5) vs. (b)(l) - (5)
+  //
+  // ...but is the fact that there is no (b)(l). This is 
+  // almost certainly meant to be (b)(1). 
+  // 
+  // As evidence - elsewhere, in the same regulation:
+  //
+  // "...the first special measure (31 U.S.C. 5318A(b)(1)) 
+  // and the fifth special measure (31 U.S.C. 5318A(b)(5)..."
+  //
+  // This is an example of a bug only fixable with an actual 
+  // US Code to lookup against. Because the US Code never seems
+  // to mix up letters and numbers in the same level of a 
+  // subhierarchy, it should be possible to always correctly resolve 
+  // (l) to (1) if the USC can be referred to.
+
+  // So, right now we're just testing to make sure it only 
+  // catches the front.
+
+  
+
+  test.done();
+};
+
 
 exports.testCasualPattern = function(test) {
   test.expect();
@@ -450,18 +500,3 @@ exports.testChapters = function(test) {
 
   test.done();
 }
-
-// other edge cases
-exports.testEdges = function(test) {
-  test.expect();
-
-  var text, found, citation;
-
-  
-
-
-  // regulation 2012-12747
-  // text = "31 U.S.C. 5318A(b)(l)-(5)"
-
-  test.done();
-};
