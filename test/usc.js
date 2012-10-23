@@ -12,7 +12,7 @@ exports.testBasicPattern = function(test) {
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr3604ih/xml/BILLS-112hr3604ih.xml
   var text = "of the Administrative Procedure Act (5 U.S.C. 552) and some";
     
-  var found = Citation.find(text);
+  var found = Citation.find(text, {types: "usc"});
   test.equal(found.length, 1);
 
   var citation = found[0];
@@ -23,7 +23,7 @@ exports.testBasicPattern = function(test) {
   test.equal(citation.usc.section_id, "5_usc_552");
   test.equal(citation.usc.id, "5_usc_552");
 
-  var foundExcerpt = Citation.find(text, {excerpt: 5});
+  var foundExcerpt = Citation.find(text, {types: "usc", excerpt: 5});
   test.equal(foundExcerpt.length, 1);
 
   var citationExcerpt = foundExcerpt[0];
@@ -32,7 +32,7 @@ exports.testBasicPattern = function(test) {
 
   // test excerpt where no excerpt is necessary
   text = "5 usc 552";
-  foundSmall = Citation.find(text, {excerpt: 5});
+  foundSmall = Citation.find(text, {types: "usc", excerpt: 5});
   test.equal(foundSmall.length, 1);
   test.equal(foundSmall[0].match, "5 usc 552")
   test.equal(foundSmall[0].excerpt, "5 usc 552")
@@ -49,7 +49,7 @@ exports.testNearby = function(test) {
     "requirement under 5 U.S.C. §§ 8344 and 8468 in order to facilitate " +
     "assignment of persons to Iraq, Pakistan, and Afghanistan.";
 
-  var found = Citation.find(text, {excerpt: 250});
+  var found = Citation.find(text, {types: "usc", excerpt: 250});
   test.equal(found.length, 3); // will increase to 4 someday! (8468!!)
 
   test.equal(found[0].match, "22 U.S.C. § 4064(g)");
@@ -93,7 +93,7 @@ exports.testExcerpt = function(test) {
       var match = items[0];
       var text = items[1];
       
-      var found = Citation.find(text, {excerpt: excerpt});
+      var found = Citation.find(text, {types: "usc", excerpt: excerpt});
       test.equal(found.length, 1);
       var citation = found[0];
       test.equal(citation.match, match);
@@ -113,7 +113,7 @@ exports.testBasicWithSubsections = function(test) {
     "the authority of this section shall be repealed in accordance " +
     "... of the Administrative Procedure Act (5 U.S.C. 552(a)(1)(E)) ...";
 
-  var found = Citation.find(text);
+  var found = Citation.find(text, {types: "usc"});
   test.equal(found.length, 1);
 
   var citation = found[0];
@@ -137,7 +137,7 @@ exports.testSectionWithHyphen = function(test) {
   var text = "National Counter Proliferation Center.--Section 119A(a) of the " +
     "National Security Act of 1947 (50 U.S.C. 404o-1(a)) is amended--";
 
-  var found = Citation.find(text);
+  var found = Citation.find(text, {types: "usc"});
   test.equal(found.length, 3);
 
   if (found.length == 3) {
@@ -182,7 +182,7 @@ exports.testRange = function(test) {
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr5972pcs/xml/BILLS-112hr5972pcs.xml
   text = "convicted of violating the Buy American Act (41 U.S.C. 10a-10c).";
 
-  found = Citation.find(text);
+  found = Citation.find(text, {types: "usc"});
   test.equal(found.length, 3);
 
   if (found.length == 3) {
@@ -217,7 +217,7 @@ exports.testRange = function(test) {
   text = "convicted of violating the Buy American Act (41 U.S.C. 10a(1)-10c(2)).";
 
   // ranges where there's a subsection on the left of a dash are non-ambiguous
-  found = Citation.find(text);
+  found = Citation.find(text, {types: "usc"});
   test.equal(found.length, 2);
 
   if (found.length == 2) {
@@ -242,7 +242,7 @@ exports.testRange = function(test) {
   // GAO-591433, gao_id: 591433
   text = "50 U.S.C. App. §§ 451--473";
 
-  found = Citation.find(text);
+  found = Citation.find(text, {types: "usc"});
   test.equal(found.length, 2);
 
   if (found.length == 2) {
@@ -268,7 +268,7 @@ exports.testRangeExplicit = function(test) {
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr5972pcs/xml/BILLS-112hr5972pcs.xml
   var text = "convicted of violating the Buy American Act (41 U.S.C. §§ 10a-10c).";
 
-  var found = Citation.find(text);
+  var found = Citation.find(text, {types: "usc"});
   test.equal(found.length, 2);
 
   if (found.length == 2) {
@@ -299,7 +299,7 @@ exports.testSubsectionRanges = function(test) {
   // regulation 2012-12747
   text = "31 U.S.C. 5318A(b)(l)-(5)";
 
-  found = Citation.find(text);
+  found = Citation.find(text, {types: "usc"});
   test.equal(found.length, 1);
 
   if (found.length == 1) {
@@ -348,7 +348,7 @@ exports.testCasualPattern = function(test) {
     "of the Coast Guard to enforce this or any other Federal law " +
     "under section 89 of title 14, United States Code.";
 
-  var found = Citation.find(text);
+  var found = Citation.find(text, {types: "usc"});
   test.equal(found.length, 1);
 
   var citation = found[0];
@@ -359,7 +359,7 @@ exports.testCasualPattern = function(test) {
   test.equal(citation.usc.section_id, "14_usc_89");
   test.equal(citation.usc.id, "14_usc_89");
 
-  var foundExcerpt = Citation.find(text, {excerpt: 5});
+  var foundExcerpt = Citation.find(text, {types: "usc", excerpt: 5});
   test.equal(foundExcerpt.length, 1);
 
   var citationExcerpt = foundExcerpt[0];
@@ -369,7 +369,7 @@ exports.testCasualPattern = function(test) {
   // comma version
   text = "under section 89, title 14, United States Code.";
 
-  var found = Citation.find(text);
+  var found = Citation.find(text, {types: "usc"});
   test.equal(found.length, 1);
 
   var citation = found[0];
@@ -391,7 +391,7 @@ exports.testCasualWithSubsections = function(test) {
   var text = "(11) INTERNET- The term Internet has the meaning given " +
     "that term in section 5362(5) of title 31, United States Code."
 
-  var found = Citation.find(text);
+  var found = Citation.find(text, {types: "usc"});
   test.equal(found.length, 1);
 
   var citation = found[0];
@@ -407,7 +407,7 @@ exports.testCasualWithSubsections = function(test) {
   var text = "(11) INTERNET- The term Internet has the meaning given " +
     "that term in section 5362-10c(5) of title 31, United States Code."
 
-  var found = Citation.find(text);
+  var found = Citation.find(text, {types: "usc"});
   test.equal(found.length, 1);
 
   var citation = found[0];
@@ -432,7 +432,7 @@ exports.testIgnoresSectionSymbol = function(test) {
 
   var text = "  5 USC § 552 "; // spaces left intentionally
 
-  var found = Citation.find(text);
+  var found = Citation.find(text, {types: "usc"});
   test.equal(found.length, 1);
 
   var citation = found[0];
@@ -452,7 +452,7 @@ exports.testAppendix = function(test) {
   // http://www.gpo.gov/fdsys/pkg/BILLS-112s3608is/xml/BILLS-112s3608is.xml
   var text = "Civil Relief Act (50 U.S.C. App. 595) is amended"
 
-  var found = Citation.find(text);
+  var found = Citation.find(text, {types: "usc"});
   test.equal(found.length, 1);
 
   var citation = found[0];
@@ -472,7 +472,7 @@ exports.testNote = function(test) {
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr6567ih/xml/BILLS-112hr6567ih.xml
   var text = "commodity supplemental food program) (7 U.S.C. 612c note).";
 
-  var found = Citation.find(text);
+  var found = Citation.find(text, {types: "usc"});
   test.equal(found.length, 1);
 
   var citation = found[0];
@@ -492,7 +492,7 @@ exports.testChapters = function(test) {
 
   var text = "46 U.S.C. Chapters 701, 3306, 3703";
 
-  var found = Citation.find(text);
+  var found = Citation.find(text, {types: "usc"});
   test.equal(found.length, 0);
 
   if (found.length > 0)
@@ -508,11 +508,11 @@ exports.testParents = function(test) {
 
   text = "31 USC 5318A(a)(1)(A)";
   
-  found = Citation.find(text, {parents: false});
+  found = Citation.find(text, {types: "usc", parents: false});
   test.equal(found.length, 1);
   test.equal(found[0].usc.id, "31_usc_5318A_a_1_A");
 
-  found = Citation.find(text, {parents: true});
+  found = Citation.find(text, {types: "usc", parents: true});
   test.equal(found.length, 4);
 
   if (found.length == 4) {

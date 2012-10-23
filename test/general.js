@@ -15,7 +15,10 @@ exports.testAllTypes = function(test) {
 
   // base case (all) works for nothing, and for empty arrays]
   [null, {types: null}, {types: []}].forEach(function(options) {
-    text = "both 5 U.S.C. 552 and Public Law 112-34 and 10 CFR 15.6 are";
+    text = "" +
+      "and 5 U.S.C. 552 " +
+      "and Public Law 112-34 " +
+      "and 10 CFR 15.6 ";
     results = Citation.find(text, options);
 
     test.equal(types.length, results.length);

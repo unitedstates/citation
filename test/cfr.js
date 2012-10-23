@@ -64,7 +64,7 @@ tests.forEach(function(single) {
     var text = single[0];
     var expected = single[2];
 
-    var found = Citation.find(text);
+    var found = Citation.find(text, {types: "cfr"});
     test.equal(found.length, 1);
 
     if (found.length == 1) {
