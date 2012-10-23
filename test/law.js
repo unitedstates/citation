@@ -1,5 +1,5 @@
 /*
-  Tests for extracting slip law citations from legislation. 
+  Tests for extracting slip law citations. 
   Each test should link to a real world circumstance where possible.
 */
 

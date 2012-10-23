@@ -80,7 +80,7 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
             if (!_.isArray(cites)) cites = [cites];
 
             // if we want parent cites too, make those now
-            if (parents) {
+            if (parents && Citation.types[type].parents_by) {
               cites = _.flatten(_.map(cites, function(cite) {
                 return Citation.citeParents(cite, type);
               }));
@@ -124,9 +124,11 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
   }
 
 
+  // TODO: load only the citation types asked for
   if (typeof(require) !== "undefined") {
     require("./citations/usc");
     require("./citations/law");
+    require("./citations/cfr");
   }
   
 

@@ -1,6 +1,6 @@
 /*
-  Tests for extracting US Code citations from legislation. 
-  Each test should be based on a real world circumstance, with a link to it if possible.
+  Tests for extracting US Code citations. 
+  Each test should link to a real world circumstance where possible.
 */
 
 var Citation = require('../citation');
