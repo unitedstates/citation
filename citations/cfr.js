@@ -29,7 +29,7 @@ Citation.types.cfr = {
         "(\\d+)\\s+" +
         "C\\.?\\s?F\\.?\\s?R\\.?" +
         "(?:\\s+(?:§+|part))?" +
-        "\\s+((?:\\-*\\d+[\\.\\w\\d\\-]*(?:\\([^\\)]+\\))*)+)",
+        "\\s*((?:\\-*\\d+[\\.\\w\\d\\-]*(?:\\([^\\)]+\\))*)+)",
       processor: function(match) {
         var title = match[1];
         var part, section, subsections;

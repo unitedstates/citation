@@ -33,22 +33,52 @@ var tests = [
         id: "38_cfr_74.2"
       }
     }
+  ],
+
+  // http://gao.gov/products/GAO-11-331T
+  ["48 CFR § 9903.201", "Simple Section (symbol)",
+    {
+      match: "48 CFR § 9903.201",
+      cfr: {
+        title: "48",
+        part: "9903",
+        section: "9903.201",
+        subsections: [],
+        id: "48_cfr_9903.201"
+      }
+    }
+  ],
+
+  // http://gao.gov/products/GAO-10-1000SP
+  ["24 CFR 85.25(h)", "Subsection",
+    {
+      match: "24 CFR 85.25(h)",
+      cfr: {
+        title: "24",
+        part: "85",
+        section: "85.25",
+        subsections: ["h"],
+        id: "24_cfr_85.25_h"
+      }
+    }
+  ],
+
+  // http://gao.gov/products/GAO-09-562
+  ["5 CFR §531.610(f)", "Subsection (symbol)",
+    {
+      match: "5 CFR §531.610(f)",
+      cfr: {
+        title: "5",
+        part: "531",
+        section: "531.610",
+        subsections: ["f"],
+        id: "5_cfr_531.610_f"
+      }
+    }
   ]
-
-  // // http://gao.gov/products/GAO-11-331T
-  // ["48 CFR § 9903.201", "section symbol",
-  //   ],
-
-  // // http://gao.gov/products/GAO-10-1000SP
-  // ["24 CFR 85.25(h)", "subsection",
-  //   ],
 
   // // http://gao.gov/products/GAO-09-253
   // ["47 CFR 54.506 (c)", "subsection space",
-  //   ],
-
-  // // http://gao.gov/products/GAO-09-562
-  // ["5 CFR §531.610(f)", "subsection symbol",
   //   ],
 
   // // http://gao.gov/products/GAO-11-166
