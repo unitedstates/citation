@@ -49,6 +49,20 @@ var tests = [
     }
   ],
 
+  // http://gao.gov/products/GAO-11-166
+  ["45 C.F.R. 3009.4", "Simple Section (Periods)",
+    {
+      match: "45 C.F.R. 3009.4",
+      cfr: {
+        title: "45",
+        part: "3009",
+        section: "3009.4",
+        subsections: [],
+        id: "45_cfr_3009.4"
+      }
+    }
+  ],
+
   // http://gao.gov/products/GAO-10-1000SP
   ["24 CFR 85.25(h)", "Subsection",
     {
@@ -75,15 +89,35 @@ var tests = [
         id: "5_cfr_531.610_f"
       }
     }
+  ],
+
+  // http://gao.gov/products/GAO-09-253
+  ["47 CFR 54.506 (c)", "Subsection (with space)",
+    {
+      match: "47 CFR 54.506 (c)",
+      cfr: {
+        title: "47",
+        part: "54",
+        section: "54.506",
+        subsections: ["c"],
+        id: "47_cfr_54.506_c"
+      }
+    }
+  ],
+
+  // Test: do not match arbitrary parenthesized words with spaces
+  ["47 CFR 54.506 (whatever)", "Subsection (invalid word)",
+    {
+      match: "47 CFR 54.506",
+      cfr: {
+        title: "47",
+        part: "54",
+        section: "54.506",
+        subsections: [],
+        id: "47_cfr_54.506"
+      }
+    }
   ]
-
-  // // http://gao.gov/products/GAO-09-253
-  // ["47 CFR 54.506 (c)", "subsection space",
-  //   ],
-
-  // // http://gao.gov/products/GAO-11-166
-  // ["45 C.F.R. 3009.4", "basic periods",
-  //   ],
 ];
 
 tests.forEach(function(single) {
@@ -95,12 +129,20 @@ tests.forEach(function(single) {
     var expected = single[2];
 
     var found = Citation.find(text, {types: "cfr"});
-    test.equal(found.length, 1);
 
-    if (found.length == 1) {
-      var citation = found[0];
-      test.equal(citation.match, expected.match);
-      test.deepEqual(citation.cfr, expected.cfr);
+    if (expected) {
+      test.equal(found.length, 1);
+
+      if (found.length == 1) {
+        var citation = found[0];
+        test.equal(citation.match, expected.match);
+        test.deepEqual(citation.cfr, expected.cfr);
+      } else
+        console.log(found);
+    } else {
+      test.equal(found.length, 0);
+      if (found.length != 0)
+        console.log(found);
     }
 
     test.done();

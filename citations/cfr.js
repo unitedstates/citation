@@ -11,32 +11,37 @@ Citation.types.cfr = {
   },
 
   patterns: [
+    // done:
     // 14 CFR part 25
-    // Title 41 CFR Sections 102-74.435
     // 38 CFR Part 74.2
     // 48 CFR § 9903.201
-    // 23 CFR 650, Subpart A
-    // Appendix A of 10 CFR Part 440
     // 24 CFR 85.25(h)
-    // 47 CFR 54.506 (c)
     // 5 CFR §531.610(f)
-    // 5CFR, part 575, subpart C
-    // 19 Code of Federal Regulations (CFR) Parts 12
-    // 13 CFR Parts 125 and 134
     // 45 C.F.R. 3009.4
+    // 47 CFR 54.506 (c)
+    //   but not: 47 CFR 54.506 (whatever)
+
+    // todo:
+    // 5CFR, part 575
+    // 13 CFR Parts 125 and 134
+    // 19 Code of Federal Regulations (CFR) Parts 12
+
+    // maybe:
+    // 5CFR, part 575, subpart C
+    // 23 CFR 650, Subpart A
     {
       regex:
         "(\\d+)\\s+" +
         "C\\.?\\s?F\\.?\\s?R\\.?" +
         "(?:\\s+(?:§+|part))?" +
-        "\\s*((?:\\-*\\d+[\\.\\w\\d\\-]*(?:\\([^\\)]+\\))*)+)",
+        "\\s*((?:\\d+\\.?\\d*(?:\\s*\\((?:[a-zA-Z\\d]{1,2}|[ixvIXV]+)\\))*)+)",
       processor: function(match) {
         var title = match[1];
         var part, section, subsections;
         
         // separate subsections for each section being considered
         var split = _.compact(match[2].split(/[\(\)]+/));
-        section = split[0];
+        section = split[0].trim();
         subsections = split.splice(1);
 
         if (section.indexOf(".") > 0) {
@@ -56,6 +61,7 @@ Citation.types.cfr = {
       }
     }
 
+    // todo:
     // parts 121 and 135 of Title 14 of the Code of Federal Regulations
     // {
     //   regex: 
