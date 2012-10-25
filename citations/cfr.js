@@ -20,20 +20,17 @@ Citation.types.cfr = {
     // 45 C.F.R. 3009.4
     // 47 CFR 54.506 (c)
     //   but not: 47 CFR 54.506 (whatever)
-
-    // todo:
     // 5CFR, part 575
-    // 13 CFR Parts 125 and 134
-    // 19 Code of Federal Regulations (CFR) Parts 12
 
     // maybe:
+    // 13 CFR Parts 125 and 134
     // 5CFR, part 575, subpart C
     // 23 CFR 650, Subpart A
     {
       regex:
-        "(\\d+)\\s+" +
+        "(\\d+)\\s?" +
         "C\\.?\\s?F\\.?\\s?R\\.?" +
-        "(?:\\s+(?:§+|part))?" +
+        "(?:[\\s,]+(?:§+|parts?))?" +
         "\\s*((?:\\d+\\.?\\d*(?:\\s*\\((?:[a-zA-Z\\d]{1,2}|[ixvIXV]+)\\))*)+)",
       processor: function(match) {
         var title = match[1];

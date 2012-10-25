@@ -6,7 +6,7 @@
 var Citation = require('../citation');
 var _ = require('underscore');
 
-var tests = [
+var singles = [
   // http://gao.gov/products/GAO-10-441T
   ["14 CFR part 25", "Simple Part (word)",
     {
@@ -59,6 +59,20 @@ var tests = [
         section: "3009.4",
         subsections: [],
         id: "45_cfr_3009.4"
+      }
+    }
+  ],
+
+  // http://gao.gov/products/GAO-09-727
+  ["5CFR, part 575", "Simple CFR (no space)",
+    {
+      match: "5CFR, part 575",
+      cfr: {
+        title: "5",
+        part: "575",
+        section: null,
+        subsections: null,
+        id: "5_cfr_575"
       }
     }
   ],
@@ -120,7 +134,7 @@ var tests = [
   ]
 ];
 
-tests.forEach(function(single) {
+singles.forEach(function(single) {
 
   exports[single[1]] = function(test) {
     test.expect();
