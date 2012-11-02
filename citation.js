@@ -38,12 +38,12 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
 				types = _.intersection(types, _.keys(Citation.types))
 			else
 				types = _.keys(Citation.types)
-			
+
 
 			// run through every pattern, accumulate matches
 			var results = _.map(types, function(type) {
 				return _.map(Citation.types[type].patterns, function(pattern) {
-				
+
 					var regex = new RegExp(pattern[0], "ig");
 					var processor = pattern[1];
 
@@ -79,7 +79,7 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
 							var result = {};
 
 							// match-level info
-							_.extend(result, matchInfo) 
+							_.extend(result, matchInfo)
 
 							// cite-level info, plus ID standardization
 							result[type] = cite;
@@ -102,8 +102,9 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
 	if (typeof(require) !== "undefined") {
 		require("./citations/usc");
 		require("./citations/law");
+		require("./citations/us_va");
 	}
-	
+
 
 	if (typeof(window) !== "undefined")
 		window.Citation = Citation;
