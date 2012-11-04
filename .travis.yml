@@ -7,5 +7,6 @@ notifications:
   email:
     recipients: 
       - eric@sunlightfoundation.com
+      - tneale@sunlightfoundation.com
     on_success: change
     on_failure: change

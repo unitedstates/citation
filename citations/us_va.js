@@ -16,11 +16,10 @@ Citation.types.va_code_ann = {
       }]
     ],
 
-  // ID: [title]_usc_[section]_[subsection 1]_...
+  // ID: va_code_ann_[title]_[section]
   standardize: function(data) {
     return {
-      id: ["va_code_ann", data.title, data.section].join("_"),
-      section_id: ["va_code_ann", data.title, data.section].join("_")
+      id: ["va_code_ann", data.title, data.section].join("_")
     };
   }
 };
