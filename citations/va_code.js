@@ -12,7 +12,6 @@ Citation.types.va_code = {
     // Va. Code Ann. § 66-25.1:1
     // Va. Code § 66-25.1:1
     // VA Code § 66-25.1:1
-
     
     {
       regex: 
