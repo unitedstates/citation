@@ -23,7 +23,10 @@ exports.testPatterns = function(test) {
       '57', '2.02', null],
     [ 'no-year-3',
       'Va. Code Ann. § 63.2-300', 
-      '63.2', '300', null]
+      '63.2', '300', null],
+    [ 'section-with-colon',
+      'Va. Code Ann. § 66-25.1:1',
+      '66', '25.1:1', null]
   ];
 
   for (var i=0; i<cases.length; i++) {

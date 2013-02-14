@@ -9,14 +9,12 @@ Citation.types.va_code_ann = {
     // Va. Code Ann. § 57-1
     // Va. Code Ann. § 57-2.02
     // Va. Code Ann. § 63.2-300
-
-    // untested:
     // Va. Code Ann. § 66-25.1:1
     
     [
       "Va\\.? Code\\.? Ann\\.?" +
       "(?:\\s+§+)?" +
-      "\\s+([\\d\\.]+)\\-([\\d\\.]+)" +
+      "\\s+([\\d\\.]+)\\-([\\d\\.:]+)" +
       "(?:\\s+\\((West )?([12]\\d{3})\\))?",
       function(match) {
         return {
