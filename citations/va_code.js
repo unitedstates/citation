@@ -1,4 +1,4 @@
-Citation.types.va_code_ann = {
+Citation.types.va_code = {
   name: "Code of Virginia Annotated",
   type: "regex",
 
@@ -29,10 +29,10 @@ Citation.types.va_code_ann = {
       }]
     ],
 
-  // ID: va_code_ann_[title]_[section]
+  // ID: va_code_[title]_[section]
   standardize: function(data) {
     return {
-      id: ["va_code_ann", data.title, data.section].join("_")
+      id: ["va_code", data.title, data.section].join("_")
     };
   }
 };

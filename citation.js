@@ -102,7 +102,7 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
 	if (typeof(require) !== "undefined") {
 		require("./citations/usc");
 		require("./citations/law");
-		require("./citations/us_va");
+		require("./citations/va_code");
 	}
 
 

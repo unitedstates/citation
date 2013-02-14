@@ -45,9 +45,9 @@ exports.testPatterns = function(test) {
     if (found.length == 1) {
       var citation = found[0];
       test.equal(citation.match, details[1], details[0]);
-      test.equal(citation.va_code_ann.title, details[2]);
-      test.equal(citation.va_code_ann.section, details[3]);
-      test.equal(citation.va_code_ann.year, details[4]);
+      test.equal(citation.va_code.title, details[2]);
+      test.equal(citation.va_code.section, details[3]);
+      test.equal(citation.va_code.year, details[4]);
     } else
       console.log("No match found in: " + text);
   }
