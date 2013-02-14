@@ -26,7 +26,13 @@ exports.testPatterns = function(test) {
       '63.2', '300', null],
     [ 'section-with-colon',
       'Va. Code Ann. § 66-25.1:1',
-      '66', '25.1:1', null]
+      '66', '25.1:1', null],
+    [ 'No Annotation',
+      "Va. Code § 66-25.1:1",
+      "66", "25.1:1", null],
+    [ 'No Annotation or Period',
+      "VA Code § 66-25.1:1",
+      "66", "25.1:1", null]
   ];
 
   for (var i=0; i<cases.length; i++) {
