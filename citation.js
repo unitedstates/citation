@@ -129,6 +129,7 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
     require("./citations/usc");
     require("./citations/law");
     require("./citations/cfr");
+    require("./citations/va_code");
   }
   
 
