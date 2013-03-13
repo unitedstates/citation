@@ -12,13 +12,14 @@ Citation.types.va_code = {
     // Va. Code Ann. § 66-25.1:1
     // Va. Code § 66-25.1:1
     // VA Code § 66-25.1:1
+    // Va. Code § 8.1A-302
     
     {
       regex: 
         "Va\\.? Code\\.?" +
         "(?:\\s+Ann\\.?)?" +
         "(?:\\s+§+)?" +
-        "\\s+([\\d\\.]+)\\-([\\d\\.:]+)" +
+        "\\s+([\\d\\.]+{A-Z}?)\\-([\\d\\.:]+)" +
         "(?:\\s+\\((West )?([12]\\d{3})\\))?",
       processor: function (match) {
         return {
