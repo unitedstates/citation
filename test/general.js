@@ -12,7 +12,7 @@ var util = require('util');
 //   var text, results;
 
 //   var types = _.keys(Citation.types);
-  
+
 //   // base case (all) works for nothing, and for empty arrays]
 //   [null, {types: null}, {types: []}].forEach(function(options) {
 //     text = "" +
@@ -35,7 +35,10 @@ exports.testTypes = function(test) {
   var text, results;
 
   // limit results by a string or an array, ignoring invalid results
-  [{types: "law"}, {types: ["law"]}].forEach(function(options) {
+  [
+    {types: "law"}, 
+    {types: ["law"]}
+  ].forEach(function(options) {
     text = "both 5 U.S.C. 552 and Public Law 112-34 are";
     results = Citation.find(text, options);
 
@@ -44,7 +47,11 @@ exports.testTypes = function(test) {
   });
 
   // if the array is all invalid results, nothing is found
-  [{types: "nonsense"}, {types: ["nonsense"]}, {types: ["nonsense", "poppycock"]}].forEach(function(options) {
+  [
+    {types: "nonsense"}, 
+    {types: ["nonsense"]}, 
+    {types: ["nonsense", "poppycock"]}
+  ].forEach(function(options) {
     text = "both 5 U.S.C. 552 and Public Law 112-34 are";
     results = Citation.find(text, options);
 
@@ -53,3 +60,11 @@ exports.testTypes = function(test) {
 
   test.done();
 };
+
+exports.testLoading = function(test) {
+  test.expect();
+
+  
+
+  test.done();
+}
