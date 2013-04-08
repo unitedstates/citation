@@ -48,8 +48,8 @@ All of which yield:
     "title": "5",
     "section": "552",
     "subsections": ["a", "1", "E"],
-    "id": "5_usc_552_a_1_E",
-    "section_id": "5_usc_552"
+    "id": "usc/5/552/a/1/E",
+    "section_id": "usc/5/552"
   }
 }]
 ```
@@ -123,8 +123,8 @@ Will return the results of running Citation.find() on the block of text, under a
         "title": "5",
         "section": "552",
         "subsections": ["a", "1", "E"],
-        "id": "5_usc_552_a_1_E",
-        "section_id": "5_usc_552"
+        "id": "usc/5/552/a/1/E",
+        "section_id": "usc/5/552"
       }
     }
   ]
