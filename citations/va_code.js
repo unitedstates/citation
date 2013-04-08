@@ -33,7 +33,7 @@ Citation.types.va_code = {
   // ID: va_code_[title]_[section]
   standardize: function(data) {
     return {
-      id: ["va_code", data.title, data.section].join("_")
+      id: ["va-code", data.title, data.section].join("/")
     };
   }
 };

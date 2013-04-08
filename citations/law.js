@@ -5,8 +5,8 @@ Citation.types.law = {
   // normalize all cites to an ID, with and without sections
   standardize: function(cite) {
     return {
-      id: _.flatten([cite.type, "law", cite.congress, cite.number, cite.sections]).join("_"),
-      law_id: [cite.type, "law", cite.congress, cite.number].join("_")
+      id: _.flatten(["us-law", cite.type, cite.congress, cite.number, cite.sections]).join("/"),
+      law_id: ["us-law", cite.type, cite.congress, cite.number].join("/")
     }
   },
 

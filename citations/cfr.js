@@ -6,7 +6,7 @@ Citation.types.cfr = {
   standardize: function(data) {
     var section = data.section || data.part;
     return {
-      id: _.compact(_.flatten([data.title, "cfr", section, data.subsections])).join("_")
+      id: _.compact(_.flatten(["cfr", data.title, section, data.subsections])).join("/")
     }
   },
 

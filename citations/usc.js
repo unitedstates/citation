@@ -5,8 +5,8 @@ Citation.types.usc = {
   // normalize all cites to an ID, with and without subsections
   standardize: function(data) {
     return {
-      id: _.flatten([data.title, "usc", data.section, data.subsections]).join("_"),
-      section_id: [data.title, "usc", data.section].join("_")
+      id: _.flatten(["usc", data.title, data.section, data.subsections]).join("/"),
+      section_id: ["usc", data.title, data.section].join("/")
     }
   },
 

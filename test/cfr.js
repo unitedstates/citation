@@ -16,7 +16,7 @@ var singles = [
         part: "25",
         section: null,
         subsections: null,
-        id: "14_cfr_25"
+        id: "cfr/14/25"
       }
     }
   ],
@@ -30,7 +30,7 @@ var singles = [
         part: "74",
         section: "74.2",
         subsections: [],
-        id: "38_cfr_74.2"
+        id: "cfr/38/74.2"
       }
     }
   ],
@@ -44,7 +44,7 @@ var singles = [
         part: "9903",
         section: "9903.201",
         subsections: [],
-        id: "48_cfr_9903.201"
+        id: "cfr/48/9903.201"
       }
     }
   ],
@@ -58,7 +58,7 @@ var singles = [
         part: "3009",
         section: "3009.4",
         subsections: [],
-        id: "45_cfr_3009.4"
+        id: "cfr/45/3009.4"
       }
     }
   ],
@@ -72,7 +72,7 @@ var singles = [
         part: "575",
         section: null,
         subsections: null,
-        id: "5_cfr_575"
+        id: "cfr/5/575"
       }
     }
   ],
@@ -86,7 +86,7 @@ var singles = [
         part: "85",
         section: "85.25",
         subsections: ["h"],
-        id: "24_cfr_85.25_h"
+        id: "cfr/24/85.25/h"
       }
     }
   ],
@@ -100,7 +100,7 @@ var singles = [
         part: "531",
         section: "531.610",
         subsections: ["f"],
-        id: "5_cfr_531.610_f"
+        id: "cfr/5/531.610/f"
       }
     }
   ],
@@ -114,7 +114,7 @@ var singles = [
         part: "54",
         section: "54.506",
         subsections: ["c"],
-        id: "47_cfr_54.506_c"
+        id: "cfr/47/54.506/c"
       }
     }
   ],
@@ -128,7 +128,7 @@ var singles = [
         part: "54",
         section: "54.506",
         subsections: [],
-        id: "47_cfr_54.506"
+        id: "cfr/47/54.506"
       }
     }
   ]

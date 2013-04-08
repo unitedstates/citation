@@ -20,8 +20,8 @@ exports.testBasicPattern = function(test) {
   test.equal(citation.usc.title, "5");
   test.equal(citation.usc.section, "552");
   test.deepEqual(citation.usc.subsections, [])
-  test.equal(citation.usc.section_id, "5_usc_552");
-  test.equal(citation.usc.id, "5_usc_552");
+  test.equal(citation.usc.section_id, "usc/5/552");
+  test.equal(citation.usc.id, "usc/5/552");
 
   var foundExcerpt = Citation.find(text, {types: "usc", excerpt: 5});
   test.equal(foundExcerpt.length, 1);
@@ -121,8 +121,8 @@ exports.testBasicWithSubsections = function(test) {
   test.equal(citation.usc.title, "5");
   test.equal(citation.usc.section, "552");
   test.deepEqual(citation.usc.subsections, ["a", "1", "E"])
-  test.equal(citation.usc.section_id, "5_usc_552");
-  test.equal(citation.usc.id, "5_usc_552_a_1_E");
+  test.equal(citation.usc.section_id, "usc/5/552");
+  test.equal(citation.usc.id, "usc/5/552/a/1/E");
 
   test.done();
 }
@@ -146,8 +146,8 @@ exports.testSectionWithHyphen = function(test) {
     test.equal(citation.usc.title, "50");
     test.equal(citation.usc.section, "404o-1");
     test.deepEqual(citation.usc.subsections, ["a"])
-    test.equal(citation.usc.section_id, "50_usc_404o-1");
-    test.equal(citation.usc.id, "50_usc_404o-1_a");
+    test.equal(citation.usc.section_id, "usc/50/404o-1");
+    test.equal(citation.usc.id, "usc/50/404o-1/a");
 
     // even though these are wrong: for now, they are found
     citation = found[1];
@@ -155,16 +155,16 @@ exports.testSectionWithHyphen = function(test) {
     test.equal(citation.usc.title, "50");
     test.equal(citation.usc.section, "404o");
     test.deepEqual(citation.usc.subsections, [])
-    test.equal(citation.usc.section_id, "50_usc_404o");
-    test.equal(citation.usc.id, "50_usc_404o");
+    test.equal(citation.usc.section_id, "usc/50/404o");
+    test.equal(citation.usc.id, "usc/50/404o");
 
     citation = found[2];
     test.equal(citation.match, "50 U.S.C. 404o-1(a)");
     test.equal(citation.usc.title, "50");
     test.equal(citation.usc.section, "1");
     test.deepEqual(citation.usc.subsections, ["a"])
-    test.equal(citation.usc.section_id, "50_usc_1");
-    test.equal(citation.usc.id, "50_usc_1_a");
+    test.equal(citation.usc.section_id, "usc/50/1");
+    test.equal(citation.usc.id, "usc/50/1/a");
   }
 
   test.done();
@@ -191,24 +191,24 @@ exports.testRange = function(test) {
     test.equal(citation.usc.title, "41");
     test.equal(citation.usc.section, "10a-10c");
     test.deepEqual(citation.usc.subsections, [])
-    test.equal(citation.usc.section_id, "41_usc_10a-10c");
-    test.equal(citation.usc.id, "41_usc_10a-10c");
+    test.equal(citation.usc.section_id, "usc/41/10a-10c");
+    test.equal(citation.usc.id, "usc/41/10a-10c");
 
     citation = found[1];
     test.equal(citation.match, "41 U.S.C. 10a-10c");
     test.equal(citation.usc.title, "41");
     test.equal(citation.usc.section, "10a");
     test.deepEqual(citation.usc.subsections, [])
-    test.equal(citation.usc.section_id, "41_usc_10a");
-    test.equal(citation.usc.id, "41_usc_10a");
+    test.equal(citation.usc.section_id, "usc/41/10a");
+    test.equal(citation.usc.id, "usc/41/10a");
 
     citation = found[2];
     test.equal(citation.match, "41 U.S.C. 10a-10c");
     test.equal(citation.usc.title, "41");
     test.equal(citation.usc.section, "10c");
     test.deepEqual(citation.usc.subsections, [])
-    test.equal(citation.usc.section_id, "41_usc_10c");
-    test.equal(citation.usc.id, "41_usc_10c");
+    test.equal(citation.usc.section_id, "usc/41/10c");
+    test.equal(citation.usc.id, "usc/41/10c");
   } else
     console.log(found);
 
@@ -226,16 +226,16 @@ exports.testRange = function(test) {
     test.equal(citation.usc.title, "41");
     test.equal(citation.usc.section, "10a");
     test.deepEqual(citation.usc.subsections, ["1"])
-    test.equal(citation.usc.section_id, "41_usc_10a");
-    test.equal(citation.usc.id, "41_usc_10a_1");
+    test.equal(citation.usc.section_id, "usc/41/10a");
+    test.equal(citation.usc.id, "usc/41/10a/1");
 
     citation = found[1];
     test.equal(citation.match, "41 U.S.C. 10a(1)-10c(2)");
     test.equal(citation.usc.title, "41");
     test.equal(citation.usc.section, "10c");
     test.deepEqual(citation.usc.subsections, ["2"])
-    test.equal(citation.usc.section_id, "41_usc_10c");
-    test.equal(citation.usc.id, "41_usc_10c_2");
+    test.equal(citation.usc.section_id, "usc/41/10c");
+    test.equal(citation.usc.id, "usc/41/10c/2");
   } else
     console.log(found);
 
@@ -277,16 +277,16 @@ exports.testRangeExplicit = function(test) {
     test.equal(citation.usc.title, "41");
     test.equal(citation.usc.section, "10a");
     test.deepEqual(citation.usc.subsections, [])
-    test.equal(citation.usc.section_id, "41_usc_10a");
-    test.equal(citation.usc.id, "41_usc_10a");
+    test.equal(citation.usc.section_id, "usc/41/10a");
+    test.equal(citation.usc.id, "usc/41/10a");
 
     citation = found[1];
     test.equal(citation.match, "41 U.S.C. §§ 10a-10c");
     test.equal(citation.usc.title, "41");
     test.equal(citation.usc.section, "10c");
     test.deepEqual(citation.usc.subsections, [])
-    test.equal(citation.usc.section_id, "41_usc_10c");
-    test.equal(citation.usc.id, "41_usc_10c");
+    test.equal(citation.usc.section_id, "usc/41/10c");
+    test.equal(citation.usc.id, "usc/41/10c");
   }
 
   test.done();
@@ -308,8 +308,8 @@ exports.testSubsectionRanges = function(test) {
     test.equal(citation.usc.title, "31");
     test.equal(citation.usc.section, "5318A");
     test.deepEqual(citation.usc.subsections, ["b", "l"])
-    test.equal(citation.usc.section_id, "31_usc_5318A");
-    test.equal(citation.usc.id, "31_usc_5318A_b_l");
+    test.equal(citation.usc.section_id, "usc/31/5318A");
+    test.equal(citation.usc.id, "usc/31/5318A/b/l");
   } else
     console.log(found);
 
@@ -356,8 +356,8 @@ exports.testCasualPattern = function(test) {
   test.equal(citation.usc.title, "14");
   test.equal(citation.usc.section, "89");
   test.deepEqual(citation.usc.subsections, [])
-  test.equal(citation.usc.section_id, "14_usc_89");
-  test.equal(citation.usc.id, "14_usc_89");
+  test.equal(citation.usc.section_id, "usc/14/89");
+  test.equal(citation.usc.id, "usc/14/89");
 
   var foundExcerpt = Citation.find(text, {types: "usc", excerpt: 5});
   test.equal(foundExcerpt.length, 1);
@@ -377,8 +377,8 @@ exports.testCasualPattern = function(test) {
   test.equal(citation.usc.title, "14");
   test.equal(citation.usc.section, "89");
   test.deepEqual(citation.usc.subsections, [])
-  test.equal(citation.usc.section_id, "14_usc_89");
-  test.equal(citation.usc.id, "14_usc_89");
+  test.equal(citation.usc.section_id, "usc/14/89");
+  test.equal(citation.usc.id, "usc/14/89");
 
   test.done();
 };
@@ -399,8 +399,8 @@ exports.testCasualWithSubsections = function(test) {
   test.equal(citation.usc.title, "31");
   test.equal(citation.usc.section, "5362");
   test.deepEqual(citation.usc.subsections, ["5"])
-  test.equal(citation.usc.section_id, "31_usc_5362");
-  test.equal(citation.usc.id, "31_usc_5362_5");
+  test.equal(citation.usc.section_id, "usc/31/5362");
+  test.equal(citation.usc.id, "usc/31/5362/5");
 
   
   // fake example for now
@@ -415,8 +415,8 @@ exports.testCasualWithSubsections = function(test) {
   test.equal(citation.usc.title, "31");
   test.equal(citation.usc.section, "5362-10c");
   test.deepEqual(citation.usc.subsections, ["5"])
-  test.equal(citation.usc.section_id, "31_usc_5362-10c");
-  test.equal(citation.usc.id, "31_usc_5362-10c_5");
+  test.equal(citation.usc.section_id, "usc/31/5362-10c");
+  test.equal(citation.usc.id, "usc/31/5362-10c/5");
 
   test.done();
 };
@@ -440,8 +440,8 @@ exports.testIgnoresSectionSymbol = function(test) {
   test.equal(citation.usc.title, "5");
   test.equal(citation.usc.section, "552");
   test.deepEqual(citation.usc.subsections, [])
-  test.equal(citation.usc.section_id, "5_usc_552");
-  test.equal(citation.usc.id, "5_usc_552");
+  test.equal(citation.usc.section_id, "usc/5/552");
+  test.equal(citation.usc.id, "usc/5/552");
 
   test.done();
 };
@@ -460,8 +460,8 @@ exports.testAppendix = function(test) {
   test.equal(citation.usc.title, "50-app");
   test.equal(citation.usc.section, "595");
   test.deepEqual(citation.usc.subsections, [])
-  test.equal(citation.usc.section_id, "50-app_usc_595");
-  test.equal(citation.usc.id, "50-app_usc_595");
+  test.equal(citation.usc.section_id, "usc/50-app/595");
+  test.equal(citation.usc.id, "usc/50-app/595");
 
   test.done();
 };
@@ -480,8 +480,8 @@ exports.testNote = function(test) {
   test.equal(citation.usc.title, "7");
   test.equal(citation.usc.section, "612c");
   test.deepEqual(citation.usc.subsections, ["note"])
-  test.equal(citation.usc.section_id, "7_usc_612c");
-  test.equal(citation.usc.id, "7_usc_612c_note");
+  test.equal(citation.usc.section_id, "usc/7/612c");
+  test.equal(citation.usc.id, "usc/7/612c/note");
 
   test.done();
 }
@@ -510,16 +510,16 @@ exports.testParents = function(test) {
   
   found = Citation.find(text, {types: "usc", parents: false});
   test.equal(found.length, 1);
-  test.equal(found[0].usc.id, "31_usc_5318A_a_1_A");
+  test.equal(found[0].usc.id, "usc/31/5318A/a/1/A");
 
   found = Citation.find(text, {types: "usc", parents: true});
   test.equal(found.length, 4);
 
   if (found.length == 4) {
-    test.equal(found[0].usc.id, "31_usc_5318A_a_1_A");
-    test.equal(found[1].usc.id, "31_usc_5318A_a_1");
-    test.equal(found[2].usc.id, "31_usc_5318A_a");
-    test.equal(found[3].usc.id, "31_usc_5318A");
+    test.equal(found[0].usc.id, "usc/31/5318A/a/1/A");
+    test.equal(found[1].usc.id, "usc/31/5318A/a/1");
+    test.equal(found[2].usc.id, "usc/31/5318A/a");
+    test.equal(found[3].usc.id, "usc/31/5318A");
   } else
     console.log(found);
 
