@@ -130,6 +130,7 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
     require("./citations/law");
     require("./citations/cfr");
     require("./citations/va_code");
+    require("./citations/dc_code");
   }
   
 
