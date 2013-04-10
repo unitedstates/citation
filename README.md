@@ -140,6 +140,39 @@ Will return the results of running Citation.find() on the block of text, under a
 * `options[types]`: limit citation types to a comma-separated list (e.g. "usc,law")
 
 
+## Context-aware citation detection
+
+In the JavaScript interface, you can pass optional `context`, an object with arbitrary key/value pairs, that can tell the citator what you already know about the source text, and potentially allow more permissive detection.
+
+For example, most DC legal documents use the prefix "D.C. Official Code" before they cite the DC Code. But cross-references inside the DC Code to other parts of the DC Code do not include this prefix. If you know that your source text is the DC Code, you can detect cross-references by providing a `source` value of "dc_code":
+
+```javascript
+Citation.find("required under § 3-101.01(13)(e), the Commission shall perform the", {
+  context: {source: "dc_code"}
+})
+```
+
+Yields:
+
+```json
+[
+  {
+    "type": "dc_code",
+    "match": "§ 3-101.01(13)(e)",
+    "index": 15,
+
+    "dc_code": {
+      "id": "dc-code/3/101.01/13/e",
+      "section_id": "dc-code/3/101.01",
+      "title": "3",
+      "section": "101.01",
+      "subsections": ["13", "e"]
+    }
+  }
+]
+```
+
+
 ## About
 
 Originally written by [Eric Mill](http://twitter.com/konklone), at the [Sunlight Foundation](http://sunlightfoundation.com).
