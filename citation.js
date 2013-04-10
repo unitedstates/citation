@@ -43,10 +43,20 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
       else
         types = _.keys(Citation.types)
 
+      // caller can provide optional context that can change what patterns individual citators apply
+      var context = options.context || {};
+
 
       // run through every pattern, accumulate matches
       var results = _.map(types, function(type) {
-        return _.map(Citation.types[type].patterns, function(pattern) {
+        
+        var patterns = Citation.types[type].patterns;
+
+        // individual parsers can opt to make their parsing context-specific
+        if (typeof(patterns) == "function")
+          patterns = patterns(context);
+
+        return _.map(patterns, function(pattern) {
         
           var regex = new RegExp(pattern.regex, "ig");
           var processor = pattern.processor;

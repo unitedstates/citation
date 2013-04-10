@@ -10,13 +10,15 @@ Citation.types.dc_code = {
     }
   },
 
-  // patterns: function(context) {
-  //   // only apply this regex if we're confident that relative citations refer to the DC Code
-  //   if (context.source == "dc_code") {
-  //     return [
+  patterns: function(context) {
+    // only apply this regex if we're confident that relative citations refer to the DC Code
+    if (context.source == "dc_code") {
+      return [
+
         // § 32-701
         // § 32-701(4)
-  patterns: [
+        // § 3-101.01
+        // § 1-603.01(13)
         {
           regex:
             "§ (\\d+)" +            // section sign plus numeric title
@@ -38,6 +40,12 @@ Citation.types.dc_code = {
           }
         }
       ]
-    // }
-  // }
+    } 
+
+    // absolute cites
+    else {
+      return []
+    }
+
+  }
 }
