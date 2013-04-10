@@ -5,8 +5,8 @@ Citation.types.dc_code = {
   // normalize all cites to an ID, with and without subsections
   standardize: function(data) {
     return {
-      id: _.flatten(["dc_code", data.title, data.section, data.subsections]).join("/"),
-      section_id: ["dc_code", data.title, data.section].join("/")
+      id: _.flatten(["dc-code", data.title, data.section, data.subsections]).join("/"),
+      section_id: ["dc-code", data.title, data.section].join("/")
     }
   },
 
