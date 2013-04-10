@@ -1,5 +1,5 @@
 /*
-  Tests for extracting Virginia Code citations.
+  Tests for extracting DC Code citations.
 */
 
 var Citation = require('../citation');
