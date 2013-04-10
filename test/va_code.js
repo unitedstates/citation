@@ -39,7 +39,7 @@ exports.testPatterns = function(test) {
     var details = cases[i];
 
     var text = details[1];
-    var found = Citation.find(text);
+    var found = Citation.find(text, {types: ["va_code"]});
     test.equal(found.length, 1);
 
     if (found.length == 1) {
