@@ -78,29 +78,39 @@ exports.testAbsolutePatterns = function(test) {
       'D.C. Official Code § 3-1201.01', // we're not caring about 'et seq' for right now
       '3', '1201.01', []],
 
-    
+    // DC register notice of proposed rule, download full text DOC at http://www.dcregs.dc.gov/Gateway/NoticeHome.aspx?noticeid=4264525
+    [ 'standard-with-double-symbol-and-subsections',
+      'October 21, 2000 (D.C. Law 13-176; D.C. Official Code §§ 38-2602(b)(11) (2012 Supp.)) and',
+      'D.C. Official Code §§ 38-2602(b)(11)',
+      '38', '2602', ['b', '11']],
   ];
 
-  // for (var i=0; i<cases.length; i++) {
-  //   var details = cases[i];
-  //   var text = details[1];
+  for (var i=0; i<cases.length; i++) {
+    var details = cases[i];
+    var text = details[1];
 
-  //   var found = Citation.find(text, {
-  //     types: ["dc_code"], 
-  //     context: {} // leaving out a context means the parser will require an absolute cite
-  //   });
+    var found = Citation.find(text, {
+      types: ["dc_code"], 
+      context: {} // leaving out a context means the parser will require an absolute cite
+    });
 
-  //   test.equal(found.length, 1);
+    test.equal(found.length, 1);
 
-  //   if (found.length == 1) {
-  //     var citation = found[0];
-  //     test.equal(citation.match, details[2], details[0]);
-  //     test.equal(citation.dc_code.title, details[3]);
-  //     test.equal(citation.dc_code.section, details[4]);
-  //     test.deepEqual(citation.dc_code.subsections, details[5]);
-  //   } else
-  //     console.log("No match found in: " + text);
-  // }
+    if (found.length == 1) {
+      var citation = found[0];
+      test.equal(citation.match, details[2], details[0]);
+      test.equal(citation.dc_code.title, details[3]);
+      test.equal(citation.dc_code.section, details[4]);
+      test.deepEqual(citation.dc_code.subsections, details[5]);
+    } else
+      console.log("No match found in: " + text);
+  }
 
   test.done();
 };
+
+// todo, should return *two* sections:
+// DC mayoral order 2013-060, download PDF at 
+// [ 'two-sections-with-and'
+//   'December 24, 1973, 87 Stat. 790, Pub. L. 93-198, D.C. Official Code § 1-204.22(2) and (11) (2012 Supp.), and',
+//   'D.C. Official Code § 1-204.22(2) and (11)',
