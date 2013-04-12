@@ -2,7 +2,11 @@
 
 A fast, stand-alone legal citation extractor.
 
-Currently supports the US Code, and slip laws. TODO: CFR, US bills, state codes, state bills.
+Currently supports: 
+
+* The US Code
+* US slip laws (public and private)
+* The DC Code
 
 ## Install
 
