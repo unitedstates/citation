@@ -10,6 +10,9 @@ Citation.types.dc_code = {
     }
   },
 
+  // field to calculate parents from
+  parents_by: "subsections",
+
   patterns: function(context) {
     // only apply this regex if we're confident that relative citations refer to the DC Code
     if (context.source == "dc_code") {

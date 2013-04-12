@@ -61,7 +61,9 @@ exports.testTypes = function(test) {
   test.done();
 };
 
-exports.testLoading = function(test) {
+
+// testing the replacement function, oh boy
+exports.testReplacement = function(test) {
   test.expect();
 
   
