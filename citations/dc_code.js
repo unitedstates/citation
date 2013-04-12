@@ -29,11 +29,11 @@ Citation.types.dc_code = {
             "([\\w\\d\\.]+)" +      // section identifier, letters/numbers/dots
             "((?:\\([^\\)]+\\))*)", // any number of adjacent parenthesized subsections
 
-          processor: function(match) {
-            var title = match[1];
-            var section = match[2];
+          processor: function(captures) {
+            var title = captures[0];
+            var section = captures[1];
             var subsections = [];
-            if (match[3]) subsections = _.compact(match[3].split(/[\(\)]+/));
+            if (captures[2]) subsections = _.compact(captures[2].split(/[\(\)]+/));
 
             return {
               title: title,
@@ -60,11 +60,11 @@ Citation.types.dc_code = {
             "([\\w\\d\\.]+)" +      // section identifier, letters/numbers/dots
             "((?:\\([^\\)]+\\))*)", // any number of adjacent parenthesized subsections
 
-          processor: function(match) {
-            var title = match[1];
-            var section = match[2];
+          processor: function(captures) {
+            var title = captures[0];
+            var section = captures[1];
             var subsections = [];
-            if (match[3]) subsections = _.compact(match[3].split(/[\(\)]+/));
+            if (captures[2]) subsections = _.compact(captures[2].split(/[\(\)]+/));
 
             return {
               title: title,

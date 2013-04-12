@@ -63,14 +63,22 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
 
           // execute the regex repeatedly on the string to get grouped results for each match
           var match, results = [];
-          while (match = regex.exec(text)) {
+
+          text.replace(regex, function() {
 
             // details of the regex match:
             // common to all citations pulled from the match
             var matchInfo = {type: type};
 
-            matchInfo.match = match[0];
-            matchInfo.index = match.index;
+
+            // see the confusing way that replace callbacks arrange arguments here:
+            // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/String/replace#Specifying_a_function_as_a_parameter
+
+            matchInfo.match = arguments[0]; // matched text is first argument
+            matchInfo.index = arguments[arguments.length - 2]; // offset is second-to-last argument
+
+            // pull out just the regex-captured matches (will come between first argument and second-to-last argument)
+            var captures = Array.prototype.slice.call(arguments, 1, -2);
 
             // use index to grab surrounding excerpt
             if (excerpt > 0) {
@@ -79,14 +87,14 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
               var proposedLeft = index - excerpt;
               var left = proposedLeft > 0 ? proposedLeft : 0;
 
-              var proposedRight = index + match[0].length + excerpt;
+              var proposedRight = index + matchInfo.match.length + excerpt;
               var right = (proposedRight <= text.length) ? proposedRight : text.length;
 
               matchInfo.excerpt = text.substring(left, right);
             }
 
             // one match can generate one or many citation results (e.g. ranges)
-            cites = processor(match, {parents: parents});
+            cites = processor(captures);
             if (!_.isArray(cites)) cites = [cites];
 
             // if we want parent cites too, make those now
@@ -108,7 +116,8 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
 
               results.push(result);
             });
-          }
+
+          });
 
           return results;
         });

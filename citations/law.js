@@ -26,15 +26,15 @@ Citation.types.law = {
         "(?:section (\\d+[\\w\\d\-]*)((?:\\([^\\)]+\\))*) of )?" +
         "(pub(?:lic)?|priv(?:ate)?)\\.? +l(?:aw)?\\.?(?: +No\\.?)?" +
         " +(\\d+)[-–]+(\\d+)", 
-      processor: function(match) {
+      processor: function(captures) {
         var sections = [];
-        if (match[1]) sections.push(match[1]);
-        if (match[2]) sections = sections.concat(_.compact(match[2].split(/[\(\)]+/)));
+        if (captures[0]) sections.push(captures[0]);
+        if (captures[1]) sections = sections.concat(_.compact(captures[1].split(/[\(\)]+/)));
 
         return {
-          type: match[3].match(/^priv/i) ? "private" : "public",
-          congress: match[4],
-          number: match[5],
+          type: captures[2].match(/^priv/i) ? "private" : "public",
+          congress: captures[3],
+          number: captures[4],
           sections: sections
         }
       }
@@ -48,15 +48,15 @@ Citation.types.law = {
       regex: 
         "(?:section (\\d+[\\w\\d\-]*)((?:\\([^\\)]+\\))*) of )?" +
         "P\\.?L\\.? +(\\d+)[-–](\\d+)", 
-      processor: function(match) {
+      processor: function(captures) {
         sections = [];
-        if (match[1]) sections.push(match[1]);
-        if (match[2]) sections = sections.concat(_.compact(match[2].split(/[\(\)]+/)));
+        if (captures[0]) sections.push(captures[0]);
+        if (captures[1]) sections = sections.concat(_.compact(captures[1].split(/[\(\)]+/)));
 
         return {
           type: "public",
-          congress: match[3],
-          number: match[4],
+          congress: captures[2],
+          number: captures[3],
           sections: sections
         }
       }

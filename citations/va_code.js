@@ -20,11 +20,11 @@ Citation.types.va_code = {
         "(?:\\s+§+)?" +
         "\\s+([\\d\\.]+)\\-([\\d\\.:]+)" +
         "(?:\\s+\\((West )?([12]\\d{3})\\))?",
-      processor: function (match) {
+      processor: function (captures) {
         return {
-          title: match[1],
-          section: match[2],
-          year: match[4]
+          title: captures[0],
+          section: captures[1],
+          year: captures[3]
         };
       }
     }

@@ -30,23 +30,23 @@ Citation.types.usc = {
         "(?:\\s+(§+))?" +
         "\\s+((?:\\-*\\d+[\\w\\d\\-]*(?:\\([^\\)]+\\))*)+)" +
         "(?:\\s+(note))?",
-      processor: function(match) {
+      processor: function(captures) {
         // a few titles have distinct appendixes
-        var title = match[1];
-        if (match[2]) title += "-app";
+        var title = captures[0];
+        if (captures[1]) title += "-app";
 
-        var sections = match[4].split(/-+/);
+        var sections = captures[3].split(/-+/);
 
         var range = false;
 
         // two section symbols is unambiguous
-        if (match[3] == "§§") // 2 section symbols
+        if (captures[2] == "§§") // 2 section symbols
           range = true;
 
         // paren before dash is unambiguous
         else { 
-          var dash = match[4].indexOf("-");
-          var paren = match[4].indexOf("(");
+          var dash = captures[3].indexOf("-");
+          var paren = captures[3].indexOf("(");
           if (dash > 0 && paren > 0 && paren < dash)
             range = true;
         }
@@ -54,14 +54,14 @@ Citation.types.usc = {
         // if there's a hyphen and the range is ambiguous, 
         // also return the original section string as one
         if ((sections.length > 1) && !range) 
-          sections.unshift(match[4]);
+          sections.unshift(captures[3]);
 
         return _.map(sections, function(section) {
           // separate subsections for each section being considered
           var split = _.compact(section.split(/[\(\)]+/));
           section = split[0];
           subsections = split.splice(1);
-          if (match[5]) subsections.push(match[5]); // "note"
+          if (captures[4]) subsections.push(captures[4]); // "note"
 
           return {
             title: title,
@@ -80,11 +80,11 @@ Citation.types.usc = {
       regex: 
         "section (\\d+[\\w\\d\-]*)((?:\\([^\\)]+\\))*)" +
         "(?:\\s+of|\\,) title (\\d+)", 
-      processor: function(match) {
+      processor: function(captures) {
         return {
-          title: match[3],
-          section: match[1],
-          subsections: _.compact(match[2].split(/[\(\)]+/))
+          title: captures[2],
+          section: captures[0],
+          subsections: _.compact(captures[1].split(/[\(\)]+/))
         };
       }
     }

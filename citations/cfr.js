@@ -32,12 +32,12 @@ Citation.types.cfr = {
         "C\\.?\\s?F\\.?\\s?R\\.?" +
         "(?:[\\s,]+(?:§+|parts?))?" +
         "\\s*((?:\\d+\\.?\\d*(?:\\s*\\((?:[a-zA-Z\\d]{1,2}|[ixvIXV]+)\\))*)+)",
-      processor: function(match) {
-        var title = match[1];
+      processor: function(captures) {
+        var title = captures[0];
         var part, section, subsections;
         
         // separate subsections for each section being considered
-        var split = _.compact(match[2].split(/[\(\)]+/));
+        var split = _.compact(captures[1].split(/[\(\)]+/));
         section = split[0].trim();
         subsections = split.splice(1);
 
@@ -64,11 +64,11 @@ Citation.types.cfr = {
     //   regex: 
     //     "section (\\d+[\\w\\d\-]*)((?:\\([^\\)]+\\))*)" +
     //     "(?:\\s+of|\\,) title (\\d+)", 
-    //   processor: function(match) {
+    //   processor: function(captures) {
     //     return {
-    //       title: match[3],
-    //       section: match[1],
-    //       subsections: _.compact(match[2].split(/[\(\)]+/))
+    //       title: captures[2],
+    //       section: captures[0],
+    //       subsections: _.compact(captures[1].split(/[\(\)]+/))
     //     };
     //   }
     // }
