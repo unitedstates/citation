@@ -142,7 +142,7 @@ singles.forEach(function(single) {
     var text = single[0];
     var expected = single[2];
 
-    var found = Citation.find(text, {types: "cfr"});
+    var found = Citation.find(text, {types: "cfr"}).citations;
 
     if (expected) {
       test.equal(found.length, 1);

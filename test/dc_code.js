@@ -35,7 +35,7 @@ exports.testRelativePatterns = function(test) {
     var found = Citation.find(text, {
       types: ["dc_code"], 
       context: {source: "dc_code"} // ensures we'll detect relative cites
-    });
+    }).citations;
 
     test.equal(found.length, 1);
 
@@ -52,7 +52,7 @@ exports.testRelativePatterns = function(test) {
     var found = Citation.find(text, {
       types: ["dc_code"], 
       context: {} // leaving out a context means the parser will require an absolute cite
-    });
+    }).citations;
 
     test.equal(found.length, 0);
   }
@@ -92,7 +92,7 @@ exports.testAbsolutePatterns = function(test) {
     var found = Citation.find(text, {
       types: ["dc_code"], 
       context: {} // leaving out a context means the parser will require an absolute cite
-    });
+    }).citations;
 
     test.equal(found.length, 1);
 

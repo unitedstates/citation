@@ -53,7 +53,7 @@ exports.testPatterns = function(test) {
     var details = cases[i];
 
     var text = details[5];
-    var found = Citation.find(text, {types: "law"});
+    var found = Citation.find(text, {types: "law"}).citations;
     test.equal(found.length, 1, "No match found in: " + text);
 
     if (found.length == 1) {
@@ -90,7 +90,7 @@ exports.testSubsections = function(test) {
     var details = cases[i];
 
     var text = details[7];
-    var found = Citation.find(text, {types: "law"});
+    var found = Citation.find(text, {types: "law"}).citations;
     test.equal(found.length, 1, "No match found in: " + text);
 
     if (found.length == 1) {
@@ -115,11 +115,11 @@ exports.testParents = function(test) {
 
   text = "section 4402(e)(1) of Public Law 110-2";
   
-  found = Citation.find(text, {types: "law", parents: false});
+  found = Citation.find(text, {types: "law", parents: false}).citations;
   test.equal(found.length, 1);
   test.equal(found[0].law.id, "us-law/public/110/2/4402/e/1");
 
-  found = Citation.find(text, {types: "law", parents: true});
+  found = Citation.find(text, {types: "law", parents: true}).citations;
   test.equal(found.length, 4);
 
   if (found.length == 4) {

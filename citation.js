@@ -117,6 +117,7 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
               results.push(result);
             });
 
+            // return nothing - not supporting replacement
           });
 
           return results;
@@ -124,7 +125,11 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
       });
 
       // flatten it all and remove nulls
-      return _.compact(_.flatten(results));
+      results = _.compact(_.flatten(results));
+
+      return {
+        citations: results
+      }
     },
 
     // for a given set of cite-specific details, 
