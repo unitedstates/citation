@@ -47,6 +47,25 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
       var context = options.context || {};
 
 
+      // caller can provide a replace callback to alter every found citation.
+      // this function will be called with each (found and processed) cite object,
+      // and should return a string to be put in the cite's place.
+      //
+      // the resulting transformed string will be in the returned object as a 'text' field.
+      // this field will only be present if a replace callback was provided.
+      // 
+      // providing this callback will also cause matched cites not to return the 'index' field,
+      // as the replace process will completely screw them up. only use the 'index' field if you
+      // plan on doing your own replacing.
+
+      var replace = options.replace;
+      if (typeof(replace) !== "function") replace = null;
+      
+
+      // whether we'll return it or not, track replaced text along the way
+      var replaced = text;
+
+
       // run through every pattern, accumulate matches
       var results = _.map(types, function(type) {
         
@@ -64,7 +83,7 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
           // execute the regex repeatedly on the string to get grouped results for each match
           var match, results = [];
 
-          text.replace(regex, function() {
+          replaced = replaced.replace(regex, function() {
 
             // details of the regex match:
             // common to all citations pulled from the match
@@ -127,9 +146,13 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
       // flatten it all and remove nulls
       results = _.compact(_.flatten(results));
 
-      return {
+      var output = {
         citations: results
-      }
+      };
+
+      if (replace) output.text = replaced;
+
+      return output;
     },
 
     // for a given set of cite-specific details, 
