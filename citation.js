@@ -6,8 +6,10 @@
  * Originally authored by Eric Mill, at the Sunlight Foundation
  */
 
-if (typeof(_) === "undefined" && typeof(require) !== "undefined")
+if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
   _ = require("underscore");
+  XRegExp = require('xregexp').XRegExp;
+}
 
 (function() {
   Citation = {
@@ -66,6 +68,7 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
       var replaced = text;
 
 
+
       // run through every pattern, accumulate matches
       var results = _.map(types, function(type) {
         
@@ -77,7 +80,7 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined")
 
         return _.map(patterns, function(pattern) {
         
-          var regex = new RegExp(pattern.regex, "ig");
+          var regex = new XRegExp(pattern.regex, "ig");
           var processor = pattern.processor;
 
           // execute the regex repeatedly on the string to get grouped results for each match
