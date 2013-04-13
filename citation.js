@@ -45,6 +45,10 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
       else
         types = _.keys(Citation.types)
 
+      // if no matches, abort
+      if (types.length == 0) return null;
+
+
       // caller can provide optional context that can change what patterns individual citators apply
       var context = options.context || {};
 
@@ -68,92 +72,116 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
       var replaced = text;
 
 
-
-      // run through every pattern, accumulate matches
-      var results = _.map(types, function(type) {
-        
+      // figure out which patterns we're going apply, assign each an identifier 
+      var citators = {};
+      
+      _.each(types, function(type) {
         var patterns = Citation.types[type].patterns;
 
         // individual parsers can opt to make their parsing context-specific
         if (typeof(patterns) == "function")
           patterns = patterns(context);
 
-        return _.map(patterns, function(pattern) {
-        
-          var regex = new XRegExp(pattern.regex, "ig");
-          var processor = pattern.processor;
-
-          // execute the regex repeatedly on the string to get grouped results for each match
-          var match, results = [];
-
-          replaced = replaced.replace(regex, function() {
-
-            // details of the regex match:
-            // common to all citations pulled from the match
-            var matchInfo = {type: type};
-
-
-            // see the confusing way that replace callbacks arrange arguments here:
-            // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/String/replace#Specifying_a_function_as_a_parameter
-
-            matchInfo.match = arguments[0]; // matched text is first argument
-            matchInfo.index = arguments[arguments.length - 2]; // offset is second-to-last argument
-
-            // pull out just the regex-captured matches (will come between first argument and second-to-last argument)
-            var captures = Array.prototype.slice.call(arguments, 1, -2);
-
-            // use index to grab surrounding excerpt
-            if (excerpt > 0) {
-              var index = matchInfo.index;
-
-              var proposedLeft = index - excerpt;
-              var left = proposedLeft > 0 ? proposedLeft : 0;
-
-              var proposedRight = index + matchInfo.match.length + excerpt;
-              var right = (proposedRight <= text.length) ? proposedRight : text.length;
-
-              matchInfo.excerpt = text.substring(left, right);
-            }
-
-            // one match can generate one or many citation results (e.g. ranges)
-            cites = processor(captures);
-            if (!_.isArray(cites)) cites = [cites];
-
-            // if we want parent cites too, make those now
-            if (parents && Citation.types[type].parents_by) {
-              cites = _.flatten(_.map(cites, function(cite) {
-                return Citation.citeParents(cite, type);
-              }));
-            }
-
-            _.each(cites, function(cite) {
-              var result = {};
-
-              // match-level info
-              _.extend(result, matchInfo) 
-
-              // cite-level info, plus ID standardization
-              result[type] = cite;
-              _.extend(result[type], Citation.types[type].standardize(result[type]));
-
-              results.push(result);
-            });
-
-            // return nothing - not supporting replacement
-          });
-
-          return results;
+        _.each(patterns, function(pattern, i) {
+          var name = type + "_" + i; // just needs to be unique
+          
+          // small pre-process on each regex - prefix named captures to ensure uniqueness.
+          // will be un-prefixed before passing to processor.
+          var uniquified = pattern.regex.replace(new RegExp("\\(\\?<([a-z0-9]+)>", "ig"), "(?<" + name + "_" + "$1>")
+          
+          citators[name] = {
+            regex: uniquified,
+            processor: pattern.processor,  // original processor method per-cite, expects named captures
+            type: type // store so we can figure out per-cite what we're talking about
+          };
         });
       });
 
+      var names = _.keys(citators);
+
+      // now let's merge each pattern's regex into a single regex, using named capture groups
+      // names = ["usc_0", "usc_1"]; //DITCH
+      
+      var regex = _.map(names, function(name) {
+        return "(?<" + name + ">" + citators[name].regex + ")";
+      }).join("|");
+      
+      regex = new XRegExp(regex, "ig");
+      
+
+      // accumulate the results
+      var results = [];
+
+      replaced = XRegExp.replace(replaced, regex, function() {
+        var match = arguments[0];
+
+        // establish which pattern matched - each pattern name must be unique (even among individual named groups)
+        var name = _.find(names, function(citeName) {if (match[citeName]) return true;});
+        var type = citators[name].type;
+        var processor = citators[name].processor;
+        
+        // extract and de-prefix any captured groups from the individual citator's regex
+        var captures = Citation.capturesFrom(name, match);
+
+        // process the matched data into the final object
+        var cites = processor(captures);
+        if (!_.isArray(cites)) cites = [cites]; // one match can generate one or many citation results (e.g. ranges)
+
+        
+        // put together the match-level information
+        var matchInfo = {type: type};
+        matchInfo.match = match.toString(); // match data can be converted to the plain string
+        matchInfo.index = arguments[arguments.length - 2]; // offset is second-to-last argument
+
+
+        // use index to grab surrounding excerpt
+        if (excerpt > 0) {
+          var index = matchInfo.index;
+
+          var proposedLeft = index - excerpt;
+          var left = proposedLeft > 0 ? proposedLeft : 0;
+
+          var proposedRight = index + matchInfo.match.length + excerpt;
+          var right = (proposedRight <= text.length) ? proposedRight : text.length;
+
+          matchInfo.excerpt = text.substring(left, right);
+        }
+
+
+
+        // if we want parent cites too, make those now
+        if (parents && Citation.types[type].parents_by) {
+          cites = _.flatten(_.map(cites, function(cite) {
+            return Citation.citeParents(cite, type);
+          }));
+        }
+
+        _.each(cites, function(cite) {
+          var result = {};
+
+          // match-level info
+          _.extend(result, matchInfo) 
+
+          // cite-level info, plus ID standardization
+          result[type] = cite;
+          _.extend(result[type], Citation.types[type].standardize(result[type]));
+
+          results.push(result);
+        });
+
+        // return nothing - not supporting replacement
+      });
+
+
+
       // flatten it all and remove nulls
-      results = _.compact(_.flatten(results));
+      results = _.compact(results);
 
       var output = {
         citations: results
       };
 
-      if (replace) output.text = replaced;
+      // if (replace) output.text = replaced;
 
       return output;
     },
@@ -170,7 +198,19 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
         results.push(parent);
       }
       return results;
+    },
+
+    // internal function - given a XRegExp match object, and a name prefix,
+    // return a new object with the de-prefixed captured values
+    capturesFrom: function(name, match) {
+      var captures = {};
+      _.each(_.keys(match), function(key) {
+        if (key.indexOf(name + "_") == 0)
+          captures[key.replace(name + "_", "")] = match[key];
+      });
+      return captures;
     }
+
   }
 
 

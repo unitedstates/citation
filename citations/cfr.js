@@ -2,7 +2,6 @@ Citation.types.cfr = {
   name: "US Code of Federal Regulations",
   type: "regex",
 
-  // normalize all cites to an ID, with and without subsections
   standardize: function(data) {
     var section = data.section || data.part;
     return {
@@ -28,16 +27,16 @@ Citation.types.cfr = {
     // 23 CFR 650, Subpart A
     {
       regex:
-        "(\\d+)\\s?" +
+        "(?<title>\\d+)\\s?" +
         "C\\.?\\s?F\\.?\\s?R\\.?" +
         "(?:[\\s,]+(?:§+|parts?))?" +
-        "\\s*((?:\\d+\\.?\\d*(?:\\s*\\((?:[a-zA-Z\\d]{1,2}|[ixvIXV]+)\\))*)+)",
+        "\\s*(?<sections>(?:\\d+\\.?\\d*(?:\\s*\\((?:[a-zA-Z\\d]{1,2}|[ixvIXV]+)\\))*)+)",
       processor: function(captures) {
-        var title = captures[0];
+        var title = captures.title;
         var part, section, subsections;
         
         // separate subsections for each section being considered
-        var split = _.compact(captures[1].split(/[\(\)]+/));
+        var split = _.compact(captures.sections.split(/[\(\)]+/));
         section = split[0].trim();
         subsections = split.splice(1);
 
@@ -62,13 +61,13 @@ Citation.types.cfr = {
     // parts 121 and 135 of Title 14 of the Code of Federal Regulations
     // {
     //   regex: 
-    //     "section (\\d+[\\w\\d\-]*)((?:\\([^\\)]+\\))*)" +
-    //     "(?:\\s+of|\\,) title (\\d+)", 
+    //     "section (?<section>\\d+[\\w\\d\-]*)(?<subsections>(?:\\([^\\)]+\\))*)" +
+    //     "(?:\\s+of|\\,) title (?<title>\\d+)", 
     //   processor: function(captures) {
     //     return {
-    //       title: captures[2],
-    //       section: captures[0],
-    //       subsections: _.compact(captures[1].split(/[\(\)]+/))
+    //       title: captures.title,
+    //       section: captures.section,
+    //       subsections: _.compact(captures.subsections.split(/[\(\)]+/))
     //     };
     //   }
     // }

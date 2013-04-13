@@ -14,7 +14,7 @@ Citation.types.usc = {
   parents_by: "subsections",
 
   patterns: [
-    // "5 U.S.C. 552"
+    // "5 USC 552"
     // "5 U.S.C. § 552(a)(1)(E)"
     // "7 U.S.C. 612c note"
     // "50 U.S.C. App. 595"
@@ -24,29 +24,29 @@ Citation.types.usc = {
     // "50 U.S.C. App. §§ 451--473" - range
     {
       regex:
-        "(\\d+)\\s+" +
-        "U\\.?\\s?S\\.?\\s?C\\.?" +
-        "(?:\\s+(App)\.?)?" +
-        "(?:\\s+(§+))?" +
-        "\\s+((?:\\-*\\d+[\\w\\d\\-]*(?:\\([^\\)]+\\))*)+)" +
-        "(?:\\s+(note))?",
-      processor: function(captures) {
+        "(?<title>\\d+)\\s+" +
+        "(?<whatever>U\\.?\\s?S\\.?\\s?C\\.?)" +
+        "(?:\\s+(?<appendix>App)\.?)?" +
+        "(?:\\s+(?<symbol>§+))?" +
+        "\\s+(?<sections>(?:\\-*\\d+[\\w\\d\\-]*(?:\\([^\\)]+\\))*)+)" +
+        "(?:\\s+(?<note>note))?",
+      processor: function(match) {
         // a few titles have distinct appendixes
-        var title = captures[0];
-        if (captures[1]) title += "-app";
+        var title = match.title;
+        if (match.appendix) title += "-app";
 
-        var sections = captures[3].split(/-+/);
+        var sections = match.sections.split(/-+/);
 
         var range = false;
 
         // two section symbols is unambiguous
-        if (captures[2] == "§§") // 2 section symbols
+        if (match.symbol == "§§") // 2 section symbols
           range = true;
 
         // paren before dash is unambiguous
         else { 
-          var dash = captures[3].indexOf("-");
-          var paren = captures[3].indexOf("(");
+          var dash = match.sections.indexOf("-");
+          var paren = match.sections.indexOf("(");
           if (dash > 0 && paren > 0 && paren < dash)
             range = true;
         }
@@ -54,14 +54,14 @@ Citation.types.usc = {
         // if there's a hyphen and the range is ambiguous, 
         // also return the original section string as one
         if ((sections.length > 1) && !range) 
-          sections.unshift(captures[3]);
+          sections.unshift(match.sections);
 
         return _.map(sections, function(section) {
           // separate subsections for each section being considered
           var split = _.compact(section.split(/[\(\)]+/));
           section = split[0];
           subsections = split.splice(1);
-          if (captures[4]) subsections.push(captures[4]); // "note"
+          if (match.note) subsections.push(match.note); // "note"
 
           return {
             title: title,
@@ -78,13 +78,13 @@ Citation.types.usc = {
     // "section 404o-1(a) of title 50"
     {
       regex: 
-        "section (\\d+[\\w\\d\-]*)((?:\\([^\\)]+\\))*)" +
-        "(?:\\s+of|\\,) title (\\d+)", 
-      processor: function(captures) {
+        "section (?<section>\\d+[\\w\\d\-]*)(?<subsections>(?:\\([^\\)]+\\))*)" +
+        "(?:\\s+of|\\,) title (?<title>\\d+)", 
+      processor: function(match) {
         return {
-          title: captures[2],
-          section: captures[0],
-          subsections: _.compact(captures[1].split(/[\(\)]+/))
+          title: match.title,
+          section: match.section,
+          subsections: _.compact(match.subsections.split(/[\(\)]+/))
         };
       }
     }

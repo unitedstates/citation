@@ -24,16 +24,16 @@ Citation.types.dc_code = {
         // § 1-603.01(13)
         {
           regex:
-            "§ (\\d+)" +            // section sign plus numeric title
-            "\\-" +                 // hyphen
-            "([\\w\\d\\.]+)" +      // section identifier, letters/numbers/dots
-            "((?:\\([^\\)]+\\))*)", // any number of adjacent parenthesized subsections
+            "§\\s+(?<title>\\d+)" +    
+            "\\-" +                 
+            "(?<section>[\\w\\d\\.]+)" +      // section identifier, letters/numbers/dots
+            "(?<subsections>(?:\\([^\\)]+\\))*)", // any number of adjacent parenthesized subsections
 
           processor: function(captures) {
-            var title = captures[0];
-            var section = captures[1];
+            var title = captures.title;
+            var section = captures.section;
             var subsections = [];
-            if (captures[2]) subsections = _.compact(captures[2].split(/[\(\)]+/));
+            if (captures.subsections) subsections = _.compact(captures.subsections.split(/[\(\)]+/));
 
             return {
               title: title,
@@ -55,16 +55,16 @@ Citation.types.dc_code = {
         {
           regex: 
             "D\\.?C\\.? Official Code\\s+" + // absolute identifier
-            "(?:§*\\s+)?(\\d+)" +            // optional section sign, plus numeric title
-            "\\-" +                 // hyphen
-            "([\\w\\d\\.]+)" +      // section identifier, letters/numbers/dots
-            "((?:\\([^\\)]+\\))*)", // any number of adjacent parenthesized subsections
+            "(?:§*\\s+)?(?<title>\\d+)" +            // optional section sign, plus title
+            "\\-" +                 
+            "(?<section>[\\w\\d\\.]+)" +      // section identifier, letters/numbers/dots
+            "(?<subsections>(?:\\([^\\)]+\\))*)", // any number of adjacent parenthesized subsections
 
           processor: function(captures) {
-            var title = captures[0];
-            var section = captures[1];
+            var title = captures.title;
+            var section = captures.section;
             var subsections = [];
-            if (captures[2]) subsections = _.compact(captures[2].split(/[\(\)]+/));
+            if (captures.subsections) subsections = _.compact(captures.subsections.split(/[\(\)]+/));
 
             return {
               title: title,

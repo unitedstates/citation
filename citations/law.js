@@ -2,7 +2,6 @@ Citation.types.law = {
   name: "US Slip Law",
   type: "regex",
 
-  // normalize all cites to an ID, with and without sections
   standardize: function(cite) {
     return {
       id: _.flatten(["us-law", cite.type, cite.congress, cite.number, cite.sections]).join("/"),
@@ -23,18 +22,18 @@ Citation.types.law = {
     // "section 4402(e)(1) of Public Law 110-2"
     {
       regex: 
-        "(?:section (\\d+[\\w\\d\-]*)((?:\\([^\\)]+\\))*) of )?" +
-        "(pub(?:lic)?|priv(?:ate)?)\\.? +l(?:aw)?\\.?(?: +No\\.?)?" +
-        " +(\\d+)[-–]+(\\d+)", 
+        "(?:section (?<section>\\d+[\\w\\d\-]*)(?<subsections>(?:\\([^\\)]+\\))*) of )?" +
+        "(?<type>pub(?:lic)?|priv(?:ate)?)\\.? +l(?:aw)?\\.?(?: +No\\.?)?" +
+        " +(?<congress>\\d+)[-–]+(?<number>\\d+)", 
       processor: function(captures) {
         var sections = [];
-        if (captures[0]) sections.push(captures[0]);
-        if (captures[1]) sections = sections.concat(_.compact(captures[1].split(/[\(\)]+/)));
+        if (captures.section) sections.push(captures.section);
+        if (captures.subsections) sections = sections.concat(_.compact(captures.subsections.split(/[\(\)]+/)));
 
         return {
-          type: captures[2].match(/^priv/i) ? "private" : "public",
-          congress: captures[3],
-          number: captures[4],
+          type: captures.type.match(/^priv/i) ? "private" : "public",
+          congress: captures.congress,
+          number: captures.number,
           sections: sections
         }
       }
@@ -46,17 +45,17 @@ Citation.types.law = {
     // "section 4402(e)(1) of PL 19-4"
     {
       regex: 
-        "(?:section (\\d+[\\w\\d\-]*)((?:\\([^\\)]+\\))*) of )?" +
-        "P\\.?L\\.? +(\\d+)[-–](\\d+)", 
+        "(?:section (?<section>\\d+[\\w\\d\-]*)(?<subsections>(?:\\([^\\)]+\\))*) of )?" +
+        "P\\.?L\\.? +(?<congress>\\d+)[-–](?<number>\\d+)", 
       processor: function(captures) {
         sections = [];
-        if (captures[0]) sections.push(captures[0]);
-        if (captures[1]) sections = sections.concat(_.compact(captures[1].split(/[\(\)]+/)));
+        if (captures.section) sections.push(captures.section);
+        if (captures.subsections) sections = sections.concat(_.compact(captures.subsections.split(/[\(\)]+/)));
 
         return {
           type: "public",
-          congress: captures[2],
-          number: captures[3],
+          congress: captures.congress,
+          number: captures.number,
           sections: sections
         }
       }
