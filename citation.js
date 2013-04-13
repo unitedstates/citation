@@ -68,10 +68,6 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
       if (typeof(replace) !== "function") replace = null;
       
 
-      // whether we'll return it or not, track replaced text along the way
-      var replaced = text;
-
-
       // figure out which patterns we're going apply, assign each an identifier 
       var citators = {};
       
@@ -112,7 +108,7 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
       // accumulate the results
       var results = [];
 
-      replaced = XRegExp.replace(replaced, regex, function() {
+      var replaced = XRegExp.replace(text, regex, function() {
         var match = arguments[0];
 
         // establish which pattern matched - each pattern name must be unique (even among individual named groups)
@@ -131,13 +127,15 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
         // put together the match-level information
         var matchInfo = {type: type};
         matchInfo.match = match.toString(); // match data can be converted to the plain string
-        matchInfo.index = arguments[arguments.length - 2]; // offset is second-to-last argument
+        
+        var index = arguments[arguments.length - 2]; // offset is second-to-last argument
+
+        if (!replace) 
+          matchInfo.index = index;
 
 
         // use index to grab surrounding excerpt
         if (excerpt > 0) {
-          var index = matchInfo.index;
-
           var proposedLeft = index - excerpt;
           var left = proposedLeft > 0 ? proposedLeft : 0;
 
@@ -156,7 +154,7 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
           }));
         }
 
-        _.each(cites, function(cite) {
+        cites = _.map(cites, function(cite) {
           var result = {};
 
           // match-level info
@@ -167,9 +165,14 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
           _.extend(result[type], Citation.types[type].standardize(result[type]));
 
           results.push(result);
+
+          return result;
         });
 
-        // return nothing - not supporting replacement
+        if (replace)
+          return replace(cites[0]); // I don't know what to do about ranges yet - but for now, screw it
+        else
+          return matchInfo.match;
       });
 
 
@@ -181,7 +184,8 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
         citations: results
       };
 
-      // if (replace) output.text = replaced;
+      if (replace) 
+        output.text = replaced;
 
       return output;
     },

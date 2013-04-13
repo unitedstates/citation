@@ -61,33 +61,33 @@ exports.testTypes = function(test) {
 
 
 // testing the replacement function, oh boy
-// exports.testReplacement = function(test) {
-//   test.expect();
+exports.testReplacement = function(test) {
+  test.expect();
 
-//   var text = "of the Administrative Procedure Act (5 U.S.C. 552) and some";
+  var text = "of the Administrative Procedure Act (5 U.S.C. 552) and some";
 
-//   var results = Citation.find(text, {
-//     types: ["usc"],
-//     replace: function(cite) {
-//       return "<a href=\"http://www.law.cornell.edu/uscode/text/" + cite.usc.title + "/" + cite.usc.section + "\">" + cite.match + "</a>";
-//     }
-//   }).citations;
+  var results = Citation.find(text, {
+    types: ["usc"],
+    replace: function(cite) {
+      return "<a href=\"http://www.law.cornell.edu/uscode/text/" + cite.usc.title + "/" + cite.usc.section + "\">" + cite.match + "</a>";
+    }
+  });
 
-//   var citations = results.citations;
-//   test.equal(citations.length, 1);
-//   var citation = citations[0];
+  var citations = results.citations;
+  test.equal(citations.length, 1);
+  var citation = citations[0];
 
-//   test.equal(citation.match, "5 U.S.C. 552");
-//   test.equal(citation.usc.title, "5");
-//   test.equal(citation.usc.section, "552");
-//   test.deepEqual(citation.usc.subsections, [])
-//   test.equal(citation.usc.section_id, "usc/5/552");
-//   test.equal(citation.usc.id, "usc/5/552");
+  test.equal(citation.match, "5 U.S.C. 552");
+  test.equal(citation.usc.title, "5");
+  test.equal(citation.usc.section, "552");
+  test.deepEqual(citation.usc.subsections, [])
+  test.equal(citation.usc.section_id, "usc/5/552");
+  test.equal(citation.usc.id, "usc/5/552");
 
-//   test.equal(results.text, "of the Administrative Procedure Act (<a href=\"http://www.law.cornell.edu/uscode/text/5/552\">5 U.S.C. 552</a>) and some");
+  test.equal(results.text, "of the Administrative Procedure Act (<a href=\"http://www.law.cornell.edu/uscode/text/5/552\">5 U.S.C. 552</a>) and some");
 
-//   // when replace is passed, there should be no index field
-//   test.equal(citation.index, null);
+  // when replace is passed, there should be no index field
+  test.equal(citation.index, null);
 
-//   test.done();
-// };
+  test.done();
+};
