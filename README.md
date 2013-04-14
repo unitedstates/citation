@@ -38,7 +38,7 @@ Or through the included HTTP API:
 
 ```bash
 cite-server
-curl "http://localhost:3000/citation/find.json?text=pursuant+to+5+U.S.C.+552%28a%29%281%29%28E%29+and"
+curl "http://localhost:3000/citation/find?text=pursuant+to+5+U.S.C.+552%28a%29%281%29%28E%29+and"
 ```
 
 All of which yield:
@@ -106,12 +106,12 @@ Start the API on a given port (defaults to 3000):
 cite-server [port]
 ```
 
-GET or POST to `/citation/find.json` with a `text` parameter:
+GET or POST to `/citation/find` with a `text` parameter:
 
 ```bash    
-curl http://localhost:3000/citation/find.json?text=5+U.S.C.+552%28a%29%281%29%28E%29
+curl http://localhost:3000/citation/find?text=5+U.S.C.+552%28a%29%281%29%28E%29
 
-curl -XPOST "http://localhost:3000/citation/find.json" -d "text=5 U.S.C. 552(a)(1)(E)"
+curl -XPOST "http://localhost:3000/citation/find" -d "text=5 U.S.C. 552(a)(1)(E)"
 ```
 
 Will return the results of running Citation.find() on the block of text, under a `results` key:
