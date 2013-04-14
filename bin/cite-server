@@ -62,11 +62,8 @@ app.configure('production', function(){
 });
 
 
-// GET or POST to the main route
-
-app.get( '/citation/find.json', route);
-app.post('/citation/find.json', route);
-
+app.get('/citation/find', route);
+app.post('/citation/find', route);
 
 
 // Start server
