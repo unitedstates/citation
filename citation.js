@@ -216,6 +216,7 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
     require("./citations/cfr");
     require("./citations/va_code");
     require("./citations/dc_code");
+    require("./citations/stat");
   }
   
 
