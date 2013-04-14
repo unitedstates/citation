@@ -21,17 +21,29 @@ exports.testRelativePatterns = function(test) {
       '§ 1-603.01(13)',
       '1', '603.01', ['13']],
     
-    // in 3-101 of the DC Code:
+    // in 3-101 of the DC Code
     [ 'section-with-dot',
       'required under § 3-101.01, the Commission',
       '§ 3-101.01',
       '3', '101.01', []],
 
-    // in 1-611.1 of the DC Code:
+    // in 1-611.1 of the DC Code
     [ 'section-ending-with-dot',
       'accordance with the policies of § 1-611.01.',
       '§ 1-611.01',
-      '1', '611.01', []]
+      '1', '611.01', []],
+
+    // in 1-1163.20 of the DC Code
+    [ 'section-forgiving-with-space',
+      'contribution limits for the candidate as provided under § 1- 1163.33.',
+      '§ 1- 1163.33',
+      '1', '1163.33', []],
+
+    // hypothetical (modified from 1-1163.20 of the DC Code)
+    [ 'section-forgiving-with-space',
+      'contribution limits for the candidate as provided under § 1 -1163.33.',
+      '§ 1 -1163.33',
+      '1', '1163.33', []]
   ];
 
   for (var i=0; i<cases.length; i++) {
@@ -95,6 +107,18 @@ exports.testAbsolutePatterns = function(test) {
       'March 25, 1986 (D.C. Law 6-99; D.C. Official Code 3-1202.04. And, in accordance', 
       'D.C. Official Code 3-1202.04',
       '3', '1202.04', []],
+
+    // hypothetical
+    [ 'standard-with-space',
+      'March 25, 1986 (D.C. Law 6-99; D.C. Official Code 3 -1202.04. And, in accordance', 
+      'D.C. Official Code 3 -1202.04',
+      '3', '1202.04', []],
+
+    // hypothetical
+    [ 'standard-with-space-2',
+      'March 25, 1986 (D.C. Law 6-99; D.C. Official Code 3- 1202.04. And, in accordance', 
+      'D.C. Official Code 3- 1202.04',
+      '3', '1202.04', []]
   ];
 
   for (var i=0; i<cases.length; i++) {

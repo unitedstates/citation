@@ -22,10 +22,12 @@ Citation.types.dc_code = {
         // § 32-701(4)
         // § 3-101.01
         // § 1-603.01(13)
+        // § 1- 1163.33
+        // § 1 -1163.33
         {
           regex:
             "§\\s+(?<title>\\d+)" +    
-            "\\-" +                 
+            "\\s?\\-\\s?" +                 
             "(?<section>[\\w\\d]+(?:\\.?[\\w\\d]+)?)" +      // section identifier, letters/numbers/dots
             "(?<subsections>(?:\\([^\\)]+\\))*)", // any number of adjacent parenthesized subsections
 
@@ -52,11 +54,13 @@ Citation.types.dc_code = {
         // D.C. Official Code 3-1202.04
         // D.C. Official Code § 3-1201.01
         // D.C. Official Code §§ 38-2602(b)(11)
+        // D.C. Official Code § 3- 1201.01
+        // D.C. Official Code § 3 -1201.01
         {
           regex: 
             "D\\.?C\\.? Official Code\\s+" + // absolute identifier
             "(?:§*\\s+)?(?<title>\\d+)" +            // optional section sign, plus title
-            "\\-" +                 
+            "\\s?\\-\\s?" +                 
             "(?<section>[\\w\\d]+(?:\\.?[\\w\\d]+)?)" +      // section identifier, letters/numbers/dots
             "(?<subsections>(?:\\([^\\)]+\\))*)", // any number of adjacent parenthesized subsections
 
