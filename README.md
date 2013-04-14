@@ -152,7 +152,9 @@ For example, most DC legal documents use the prefix "D.C. Official Code" before 
 
 ```javascript
 Citation.find("required under § 3-101.01(13)(e), the Commission shall perform the", {
-  context: {source: "dc_code"}
+  context: {
+    dc_code: {source: "dc_code"}
+  }
 })
 ```
 

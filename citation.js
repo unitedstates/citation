@@ -1,8 +1,7 @@
-/* Citation.js
- *
- * Library for extracting legal citations from text.
+/* Citation.js - a legal citation extractor.
  *
  * Open source, public domain license: https://github.com/unitedstates/citation
+ * 
  * Originally authored by Eric Mill, at the Sunlight Foundation
  */
 
@@ -76,7 +75,7 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
 
         // individual parsers can opt to make their parsing context-specific
         if (typeof(patterns) == "function")
-          patterns = patterns(context);
+          patterns = patterns(context[type] || {});
 
         _.each(patterns, function(pattern, i) {
           var name = type + "_" + i; // just needs to be unique
@@ -96,8 +95,6 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
       var names = _.keys(citators);
 
       // now let's merge each pattern's regex into a single regex, using named capture groups
-      // names = ["usc_0", "usc_1"]; //DITCH
-      
       var regex = _.map(names, function(name) {
         return "(?<" + name + ">" + citators[name].regex + ")";
       }).join("|");
@@ -146,7 +143,6 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
         }
 
 
-
         // if we want parent cites too, make those now
         if (parents && Citation.types[type].parents_by) {
           cites = _.flatten(_.map(cites, function(cite) {
@@ -175,13 +171,8 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
           return matchInfo.match;
       });
 
-
-
-      // flatten it all and remove nulls
-      results = _.compact(results);
-
       var output = {
-        citations: results
+        citations: _.compact(results)
       };
 
       if (replace) 
