@@ -24,6 +24,12 @@ exports.testPatterns = function(test) {
     ["Public   Law  96–164", "us-law/public/96/164", "public", "96", "164", 
       "Nuclear Energy Authorization Act of 1980 (Public   Law  96–164; "],
 
+    // from DC Code credits for 1-201.01
+    ["Pub.L. 105-33", "us-law/public/105/33", "public", "105", "33",
+      "111 Stat. 251, Pub.L. 105-33, title XI"],
+    ["Pub.L.No. 105-33", "us-law/public/105/33", "public", "105", "33",
+      "111 Stat. 251, Pub.L.No. 105-33, title XI"], // made-up
+
     // summary for http://beta.congress.gov/bill/112th/house-bill/1
     ["P.L. 111-80", "us-law/public/111/80", "public", "111", "80", 
       "Related Agencies Appropriations Act, 2010 (P.L. 111-80);"], 
@@ -47,7 +53,7 @@ exports.testPatterns = function(test) {
       "Nuclear Energy Authorization Act of 1980 (Private Law 96–164; "],
   ];
 
-  test.expect(cases.length * 7);
+  test.expect();
 
   for (var i=0; i<cases.length; i++) {
     var details = cases[i];
@@ -84,7 +90,7 @@ exports.testSubsections = function(test) {
       "(3) Section 4402(e)(1) of Public Law 107–171 (relating"]
   ];
 
-  test.expect(cases.length * 8);
+  test.expect();
 
   for (var i=0; i<cases.length; i++) {
     var details = cases[i];

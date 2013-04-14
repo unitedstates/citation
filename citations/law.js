@@ -16,6 +16,7 @@ Citation.types.law = {
     // "Public Law 111-89"
     // "Pub. L. 112-56"
     // "Pub. L. No. 110-2"
+    // "Pub.L. 105-33"
     // "Private Law 111-72"
     // "Priv. L. No. 98-23"
     // "section 552 of Public Law 111-89"
@@ -23,7 +24,7 @@ Citation.types.law = {
     {
       regex: 
         "(?:section (?<section>\\d+[\\w\\d\-]*)(?<subsections>(?:\\([^\\)]+\\))*) of )?" +
-        "(?<type>pub(?:lic)?|priv(?:ate)?)\\.? +l(?:aw)?\\.?(?: +No\\.?)?" +
+        "(?<type>pub(?:lic)?|priv(?:ate)?)\\.?\\s*l(?:aw)?\\.?(?:\\s*No\\.?)?" +
         " +(?<congress>\\d+)[-–]+(?<number>\\d+)", 
       processor: function(captures) {
         var sections = [];
