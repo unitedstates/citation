@@ -25,7 +25,13 @@ exports.testRelativePatterns = function(test) {
     [ 'section-with-dot',
       'required under § 3-101.01, the Commission',
       '§ 3-101.01',
-      '3', '101.01', []]
+      '3', '101.01', []],
+
+    // in 1-611.1 of the DC Code:
+    [ 'section-ending-with-dot',
+      'accordance with the policies of § 1-611.01.',
+      '§ 1-611.01',
+      '1', '611.01', []]
   ];
 
   for (var i=0; i<cases.length; i++) {
@@ -83,6 +89,12 @@ exports.testAbsolutePatterns = function(test) {
       'October 21, 2000 (D.C. Law 13-176; D.C. Official Code §§ 38-2602(b)(11) (2012 Supp.)) and',
       'D.C. Official Code §§ 38-2602(b)(11)',
       '38', '2602', ['b', '11']],
+
+    // hypothetical
+    [ 'standard-ending-with-dot',
+      'March 25, 1986 (D.C. Law 6-99; D.C. Official Code 3-1202.04. And, in accordance', 
+      'D.C. Official Code 3-1202.04',
+      '3', '1202.04', []],
   ];
 
   for (var i=0; i<cases.length; i++) {

@@ -26,7 +26,7 @@ Citation.types.dc_code = {
           regex:
             "§\\s+(?<title>\\d+)" +    
             "\\-" +                 
-            "(?<section>[\\w\\d\\.]+)" +      // section identifier, letters/numbers/dots
+            "(?<section>[\\w\\d]+(?:\\.?[\\w\\d]+)?)" +      // section identifier, letters/numbers/dots
             "(?<subsections>(?:\\([^\\)]+\\))*)", // any number of adjacent parenthesized subsections
 
           processor: function(captures) {
@@ -57,12 +57,13 @@ Citation.types.dc_code = {
             "D\\.?C\\.? Official Code\\s+" + // absolute identifier
             "(?:§*\\s+)?(?<title>\\d+)" +            // optional section sign, plus title
             "\\-" +                 
-            "(?<section>[\\w\\d\\.]+)" +      // section identifier, letters/numbers/dots
+            "(?<section>[\\w\\d]+(?:\\.?[\\w\\d]+)?)" +      // section identifier, letters/numbers/dots
             "(?<subsections>(?:\\([^\\)]+\\))*)", // any number of adjacent parenthesized subsections
 
           processor: function(captures) {
             var title = captures.title;
             var section = captures.section;
+
             var subsections = [];
             if (captures.subsections) subsections = _.compact(captures.subsections.split(/[\(\)]+/));
 
