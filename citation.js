@@ -1,7 +1,7 @@
 /* Citation.js - a legal citation extractor.
  *
  * Open source, public domain license: https://github.com/unitedstates/citation
- * 
+ *
  * Originally authored by Eric Mill, at the Sunlight Foundation
  */
 
@@ -22,7 +22,7 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
       if (!options) options = {};
 
       // default: no excerpt
-      var excerpt = options.excerpt ? parseInt(options.excerpt) : 0;
+      var excerpt = options.excerpt ? parseInt(options.excerpt, 10) : 0;
 
       // whether to return parent citations
       // default: false
@@ -35,17 +35,17 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
           if (options.types.length > 0)
             types = options.types;
         } else
-          types = [options.types]
+          types = [options.types];
       }
 
       // only allow valid types
       if (types)
-        types = _.intersection(types, _.keys(Citation.types))
+        types = _.intersection(types, _.keys(Citation.types));
       else
-        types = _.keys(Citation.types)
+        types = _.keys(Citation.types);
 
       // if no matches, abort
-      if (types.length == 0) return null;
+      if (types.length === 0) return null;
 
 
       // caller can provide optional context that can change what patterns individual citators apply
@@ -58,18 +58,18 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
       //
       // the resulting transformed string will be in the returned object as a 'text' field.
       // this field will only be present if a replace callback was provided.
-      // 
+      //
       // providing this callback will also cause matched cites not to return the 'index' field,
       // as the replace process will completely screw them up. only use the 'index' field if you
       // plan on doing your own replacing.
 
       var replace = options.replace;
       if (typeof(replace) !== "function") replace = null;
-      
+
 
       // figure out which patterns we're going apply, assign each an identifier 
       var citators = {};
-      
+
       _.each(types, function(type) {
         var patterns = Citation.types[type].patterns;
 
@@ -79,11 +79,12 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
 
         _.each(patterns, function(pattern, i) {
           var name = type + "_" + i; // just needs to be unique
-          
+
           // small pre-process on each regex - prefix named captures to ensure uniqueness.
           // will be un-prefixed before passing to processor.
-          var uniquified = pattern.regex.replace(new RegExp("\\(\\?<([a-z0-9]+)>", "ig"), "(?<" + name + "_" + "$1>")
-          
+          var uniquified = pattern.regex
+            .replace(new RegExp("\\(\\?<([a-z0-9]+)>", "ig"), "(?<" + name + "_" + "$1>");
+
           citators[name] = {
             regex: uniquified,
             processor: pattern.processor,  // original processor method per-cite, expects named captures
@@ -98,9 +99,9 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
       var regex = _.map(names, function(name) {
         return "(?<" + name + ">" + citators[name].regex + ")";
       }).join("|");
-      
+
       regex = new XRegExp(regex, "ig");
-      
+
 
       // accumulate the results
       var results = [];
@@ -112,7 +113,7 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
         var name = _.find(names, function(citeName) {if (match[citeName]) return true;});
         var type = citators[name].type;
         var processor = citators[name].processor;
-        
+
         // extract and de-prefix any captured groups from the individual citator's regex
         var captures = Citation.capturesFrom(name, match);
 
@@ -120,14 +121,14 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
         var cites = processor(captures);
         if (!_.isArray(cites)) cites = [cites]; // one match can generate one or many citation results (e.g. ranges)
 
-        
+
         // put together the match-level information
         var matchInfo = {type: type};
         matchInfo.match = match.toString(); // match data can be converted to the plain string
-        
+
         var index = arguments[arguments.length - 2]; // offset is second-to-last argument
 
-        if (!replace) 
+        if (!replace)
           matchInfo.index = index;
 
 
@@ -154,7 +155,7 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
           var result = {};
 
           // match-level info
-          _.extend(result, matchInfo) 
+          _.extend(result, matchInfo);
 
           // cite-level info, plus ID standardization
           result[type] = cite;
@@ -175,13 +176,13 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
         citations: _.compact(results)
       };
 
-      if (replace) 
+      if (replace)
         output.text = replaced;
 
       return output;
     },
 
-    // for a given set of cite-specific details, 
+    // for a given set of cite-specific details,
     // return itself and its parent citations
     citeParents: function(citation, type) {
       var field = Citation.types[type].parents_by;
@@ -200,13 +201,13 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
     capturesFrom: function(name, match) {
       var captures = {};
       _.each(_.keys(match), function(key) {
-        if (key.indexOf(name + "_") == 0)
+        if (key.indexOf(name + "_") === 0)
           captures[key.replace(name + "_", "")] = match[key];
       });
       return captures;
     }
 
-  }
+  };
 
 
   // TODO: load only the citation types asked for
@@ -218,7 +219,7 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
     require("./citations/dc_code");
     require("./citations/stat");
   }
-  
+
 
   if (typeof(window) !== "undefined")
     window.Citation = Citation;
