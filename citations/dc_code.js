@@ -24,9 +24,10 @@ Citation.types.dc_code = {
         // § 1-603.01(13)
         // § 1- 1163.33
         // § 1 -1163.33
+        // section 16-2326.01
         {
           regex:
-            "§\\s+(?<title>\\d+)" +    
+            "(?:section|§)\\s+(?<title>\\d+)" +    
             "\\s?\\-\\s?" +                 
             "(?<section>[\\w\\d]+(?:\\.?[\\w\\d]+)?)" +      // section identifier, letters/numbers/dots
             "(?<subsections>(?:\\([^\\)]+\\))*)", // any number of adjacent parenthesized subsections

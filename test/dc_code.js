@@ -43,7 +43,13 @@ exports.testRelativePatterns = function(test) {
     [ 'section-forgiving-with-space',
       'contribution limits for the candidate as provided under § 1 -1163.33.',
       '§ 1 -1163.33',
-      '1', '1163.33', []]
+      '1', '1163.33', []],
+
+    // in 16-316 of the DC Code
+    [ 'section-with-word-section',
+      'case shall be subject to the limitation set forth in [section 16-2326.01(b)(2)].',
+      'section 16-2326.01(b)(2)',
+      '16', '2326.01', ['b', '2']]
   ];
 
   for (var i=0; i<cases.length; i++) {
