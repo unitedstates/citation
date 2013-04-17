@@ -64,7 +64,6 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
       // plan on doing your own replacing.
 
       var replace = options.replace;
-      if (typeof(replace) !== "function") replace = null;
 
 
       // figure out which patterns we're going apply, assign each an identifier 
@@ -166,8 +165,11 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
           return result;
         });
 
-        if (replace)
-          return replace(cites[0]); // I don't know what to do about ranges yet - but for now, screw it
+        // I don't know what to do about ranges yet - but for now, screw it
+        if (typeof(replace) === "function")
+          return replace(cites[0]); 
+        else if ((typeof(replace) === "object") && (typeof(replace[type]) === "function"))
+          return replace[type](cites[0]);
         else
           return matchInfo.match;
       });

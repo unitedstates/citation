@@ -89,5 +89,29 @@ exports.testReplacement = function(test) {
   // when replace is passed, there should be no index field
   test.equal(citation.index, null);
 
+
+  // test out alternate form of replacement - a function with keys per-type of cite
+  var text = "of the Administrative Procedure Act (5 U.S.C. 552) and " +
+    "some other stuff from Public Law 111-80 and more";
+
+  var results = Citation.find(text, {
+    types: ["usc", "law"],
+    replace: {
+      usc: function(cite) {
+        return "<a href=\"http://www.law.cornell.edu/uscode/text/" + cite.usc.title + "/" + cite.usc.section + "\">" + cite.match + "</a>";
+      },
+      law: function(cite) {
+        return "<a href=\"http://www.govtrack.us/search?q=" + cite.match.replace(/ /g, '%20') + "\">" + cite.match + "</a>";
+      }
+    }
+  });
+
+  var citations = results.citations;
+  test.equal(citations.length, 2);
+
+  test.equal(results.text, "of the Administrative Procedure Act " +
+    "(<a href=\"http://www.law.cornell.edu/uscode/text/5/552\">5 U.S.C. 552</a>) and " +
+    "some other stuff from <a href=\"http://www.govtrack.us/search?q=Public%20Law%20111-80\">Public Law 111-80</a> and more");
+
   test.done();
 };
