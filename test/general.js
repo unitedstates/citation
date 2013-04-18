@@ -60,7 +60,6 @@ exports.testTypes = function(test) {
 };
 
 
-// testing the replacement function, oh boy
 exports.testReplacement = function(test) {
   test.expect();
 
@@ -89,6 +88,11 @@ exports.testReplacement = function(test) {
   // when replace is passed, there should be no index field
   test.equal(citation.index, null);
 
+  test.done();
+};
+
+exports.testReplacementByKey = function(test) {
+  test.expect();
 
   // test out alternate form of replacement - a function with keys per-type of cite
   var text = "of the Administrative Procedure Act (5 U.S.C. 552) and " +
@@ -112,6 +116,35 @@ exports.testReplacement = function(test) {
   test.equal(results.text, "of the Administrative Procedure Act " +
     "(<a href=\"http://www.law.cornell.edu/uscode/text/5/552\">5 U.S.C. 552</a>) and " +
     "some other stuff from <a href=\"http://www.govtrack.us/search?q=Public%20Law%20111-80\">Public Law 111-80</a> and more");
+
+  test.done();
+};
+
+exports.testReplacementDefault = function(test) {
+  test.expect();
+
+  var text = "of the Administrative Procedure Act (5 U.S.C. 552) and some";
+
+  // explicit or implicit return of null or undefined
+  // should default to no replacement (the original match is preserved)
+  var nones = [
+    function(cite) {return undefined;},
+    function(cite) {return null;},
+    function(cite) {}
+  ];
+
+  nones.forEach(function(func) {
+    var results = Citation.find(text, {
+      types: ["usc"],
+      replace: func
+    });
+
+    var citations = results.citations;
+    test.equal(citations.length, 1);
+    var citation = citations[0];
+
+    test.equal(results.text, "of the Administrative Procedure Act (5 U.S.C. 552) and some");
+  });
 
   test.done();
 };

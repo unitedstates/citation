@@ -166,10 +166,14 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
         });
 
         // I don't know what to do about ranges yet - but for now, screw it
+        var toReplace;
         if (typeof(replace) === "function")
-          return replace(cites[0]); 
+          toReplace = replace(cites[0]); 
         else if ((typeof(replace) === "object") && (typeof(replace[type]) === "function"))
-          return replace[type](cites[0]);
+          toReplace = replace[type](cites[0]);
+        
+        if (toReplace)
+          return toReplace;
         else
           return matchInfo.match;
       });
