@@ -4,9 +4,11 @@ A fast, stand-alone legal citation extractor.
 
 Currently supports: 
 
-* The US Code
-* US slip laws (public and private)
-* The DC Code
+* US Code
+* US Public and Private Laws (slip laws)
+* US Statutes at Large
+* DC Code
+* DC Register
 
 ## Install
 
