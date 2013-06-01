@@ -66,7 +66,7 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
       var replace = options.replace;
 
 
-      // figure out which patterns we're going apply, assign each an identifier 
+      // figure out which patterns we're going apply, assign each an identifier
       var citators = {};
 
       _.each(types, function(type) {
@@ -168,10 +168,10 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
         // I don't know what to do about ranges yet - but for now, screw it
         var toReplace;
         if (typeof(replace) === "function")
-          toReplace = replace(cites[0]); 
+          toReplace = replace(cites[0]);
         else if ((typeof(replace) === "object") && (typeof(replace[type]) === "function"))
           toReplace = replace[type](cites[0]);
-        
+
         if (toReplace)
           return toReplace;
         else
@@ -224,6 +224,7 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
     require("./citations/va_code");
     require("./citations/dc_code");
     require("./citations/dc_register");
+    require("./citations/dc_law");
     require("./citations/stat");
   }
 
