@@ -7,7 +7,7 @@ Citation.types.dc_code = {
     return {
       id: _.flatten(["dc-code", data.title, data.section, data.subsections]).join("/"),
       section_id: ["dc-code", data.title, data.section].join("/")
-    }
+    };
   },
 
   // field to calculate parents from
@@ -27,8 +27,8 @@ Citation.types.dc_code = {
         // section 16-2326.01
         {
           regex:
-            "(?:section|§)\\s+(?<title>\\d+)" +    
-            "\\s?\\-\\s?" +                 
+            "(?:section|§)\\s+(?<title>\\d+)" +
+            "\\s?\\-\\s?" +
             "(?<section>[\\w\\d]+(?:\\.?[\\w\\d]+)?)" +      // section identifier, letters/numbers/dots
             "(?<subsections>(?:\\([^\\)]+\\))*)", // any number of adjacent parenthesized subsections
 
@@ -45,8 +45,8 @@ Citation.types.dc_code = {
             };
           }
         }
-      ]
-    } 
+      ];
+    }
 
     // absolute cites
     else {
@@ -58,10 +58,10 @@ Citation.types.dc_code = {
         // D.C. Official Code § 3- 1201.01
         // D.C. Official Code § 3 -1201.01
         {
-          regex: 
+          regex:
             "D\\.?C\\.? Official Code\\s+" + // absolute identifier
             "(?:§*\\s+)?(?<title>\\d+)" +            // optional section sign, plus title
-            "\\s?\\-\\s?" +                 
+            "\\s?\\-\\s?" +
             "(?<section>[\\w\\d]+(?:\\.?[\\w\\d]+)?)" +      // section identifier, letters/numbers/dots
             "(?<subsections>(?:\\([^\\)]+\\))*)", // any number of adjacent parenthesized subsections
 
@@ -79,8 +79,7 @@ Citation.types.dc_code = {
             };
           }
         }
-      ]
+      ];
     }
-
   }
-}
+};
