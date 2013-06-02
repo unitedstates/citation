@@ -6,7 +6,7 @@ Citation.types.dc_law = {
     return {
       id: _.flatten(["dc-law", cite.period, cite.number]).join("/"),
       law_id: ["dc-law", cite.period, cite.number].join("/")
-    }
+    };
   },
 
   patterns: [
@@ -19,7 +19,7 @@ Citation.types.dc_law = {
         return {
           period: captures.period,
           number: captures.number
-        }
+        };
       }
     }
   ]
