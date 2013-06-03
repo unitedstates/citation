@@ -4,8 +4,7 @@ Citation.types.dc_law = {
 
   standardize: function(cite) {
     return {
-      id: _.flatten(["dc-law", cite.period, cite.number]).join("/"),
-      law_id: ["dc-law", cite.period, cite.number].join("/")
+      id: ["dc-law", cite.period, cite.number].join("/")
     };
   },
 
