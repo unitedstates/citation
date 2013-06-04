@@ -218,14 +218,14 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
 
   // TODO: load only the citation types asked for
   if (typeof(require) !== "undefined") {
-    require("./citations/usc");
-    require("./citations/law");
-    require("./citations/cfr");
-    require("./citations/va_code");
-    require("./citations/dc_code");
-    require("./citations/dc_register");
-    require("./citations/dc_law");
-    require("./citations/stat");
+    Citation.types.usc = require("./citations/usc");
+    Citation.types.law = require("./citations/law");
+    Citation.types.cfr = require("./citations/cfr");
+    Citation.types.va_code = require("./citations/va_code");
+    Citation.types.dc_code = require("./citations/dc_code");
+    Citation.types.dc_register = require("./citations/dc_register");
+    Citation.types.dc_law = require("./citations/dc_law");
+    Citation.types.stat = require("./citations/stat");
   }
 
 

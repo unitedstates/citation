@@ -1,4 +1,7 @@
-Citation.types.cfr = {
+(function(def) {
+    if (typeof module !== 'undefined') module.exports = def;
+    if (Citation && Citation.types) Citation.types.cfr = def;
+})({
   name: "US Code of Federal Regulations",
   type: "regex",
 
@@ -6,7 +9,7 @@ Citation.types.cfr = {
     var section = data.section || data.part;
     return {
       id: _.compact(_.flatten(["cfr", data.title, section, data.subsections])).join("/")
-    }
+    };
   },
 
   patterns: [
@@ -34,7 +37,7 @@ Citation.types.cfr = {
       processor: function(captures) {
         var title = captures.title;
         var part, section, subsections;
-        
+
         // separate subsections for each section being considered
         var split = _.compact(captures.sections.split(/[\(\)]+/));
         section = split[0].trim();
@@ -72,4 +75,4 @@ Citation.types.cfr = {
     //   }
     // }
   ]
-};
+});

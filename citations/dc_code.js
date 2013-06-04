@@ -1,4 +1,7 @@
-Citation.types.dc_code = {
+(function(def) {
+    if (typeof module !== 'undefined') module.exports = def;
+    if (Citation && Citation.types) Citation.types.dc_code = def;
+})({
   name: "DC Code",
   type: "regex",
 
@@ -82,4 +85,4 @@ Citation.types.dc_code = {
       ];
     }
   }
-};
+});

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var fs = require('fs');
-
+var citation = require('../citation');
 
 var optimist = require('optimist');
 var args = optimist
@@ -22,13 +22,13 @@ var args = optimist
   .argv;
 
 if (args.help) {
-  console.log(optimist.help())
-  process.exit(0)
+  console.log(optimist.help());
+  process.exit(0);
 }
 
 
 /**
-  Read text from STDIN or a file, send it into Citation.find(), 
+  Read text from STDIN or a file, send it into Citation.find(),
   and output the resulting JSON into STDOUT or a file.
 */
 
@@ -38,14 +38,14 @@ if (args.input) {
   if (fs.existsSync(filename)) {
     fs.readFile(filename, "utf8", function(err, text) {
       if (!err)
-        cite(text)
+        cite(text);
       else {
         console.log(err);
         process.exit(-1);
       }
     });
   } else {
-    console.log("Can't find file: " + filename)
+    console.log("Can't find file: " + filename);
     process.exit(-1);
   }
 }
@@ -59,11 +59,11 @@ else if (args._[0]) {
 else {
   var text = "";
   process.stdin.resume();
-  
+
   process.stdin.on('data', function(data) {
     text += data;
   });
-  
+
   process.stdin.on('error', function(error) {
     console.log(err);
     process.exit(-1);
@@ -81,12 +81,12 @@ function cite(text) {
   if (args.types) options.types = args.types.split(",");
   if (args.parents) options.parents = true;
 
-  output(require('../citation').find(text, options));
+  output(citation.find(text, options));
 }
 
 // will either be output file or stdout
 function output(results) {
-  
+
   var json;
   if (args.pretty)
     json = JSON.stringify(results, null, 4);

@@ -1,4 +1,7 @@
-Citation.types.law = {
+(function(def) {
+    if (typeof module !== 'undefined') module.exports = def;
+    if (Citation && Citation.types) Citation.types.law = def;
+})({
   name: "US Slip Law",
   type: "regex",
 
@@ -6,7 +9,7 @@ Citation.types.law = {
     return {
       id: _.flatten(["us-law", cite.type, cite.congress, cite.number, cite.sections]).join("/"),
       law_id: ["us-law", cite.type, cite.congress, cite.number].join("/")
-    }
+    };
   },
 
   // field to calculate parents from
@@ -22,10 +25,10 @@ Citation.types.law = {
     // "section 552 of Public Law 111-89"
     // "section 4402(e)(1) of Public Law 110-2"
     {
-      regex: 
+      regex:
         "(?:section (?<section>\\d+[\\w\\d\-]*)(?<subsections>(?:\\([^\\)]+\\))*) of )?" +
         "(?<type>pub(?:lic)?|priv(?:ate)?)\\.?\\s*l(?:aw)?\\.?(?:\\s*No\\.?)?" +
-        " +(?<congress>\\d+)[-–]+(?<number>\\d+)", 
+        " +(?<congress>\\d+)[-–]+(?<number>\\d+)",
       processor: function(captures) {
         var sections = [];
         if (captures.section) sections.push(captures.section);
@@ -36,7 +39,7 @@ Citation.types.law = {
           congress: captures.congress,
           number: captures.number,
           sections: sections
-        }
+        };
       }
     },
 
@@ -45,9 +48,9 @@ Citation.types.law = {
     // "section 552 of PL 19-4"
     // "section 4402(e)(1) of PL 19-4"
     {
-      regex: 
+      regex:
         "(?:section (?<section>\\d+[\\w\\d\-]*)(?<subsections>(?:\\([^\\)]+\\))*) of )?" +
-        "P\\.?L\\.? +(?<congress>\\d+)[-–](?<number>\\d+)", 
+        "P\\.?L\\.? +(?<congress>\\d+)[-–](?<number>\\d+)",
       processor: function(captures) {
         sections = [];
         if (captures.section) sections.push(captures.section);
@@ -58,8 +61,8 @@ Citation.types.law = {
           congress: captures.congress,
           number: captures.number,
           sections: sections
-        }
+        };
       }
     }
   ]
-};
+});
