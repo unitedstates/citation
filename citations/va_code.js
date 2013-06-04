@@ -1,4 +1,4 @@
-(function(def) {
+;(function(def) {
     if (typeof module !== 'undefined') module.exports = def;
     if (Citation && Citation.types) Citation.types.va_code = def;
 })({
