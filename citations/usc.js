@@ -1,4 +1,7 @@
-Citation.types.usc = {
+(function(def) {
+    if (typeof module !== 'undefined') module.exports = def;
+    if (Citation && Citation.types) Citation.types.usc = def;
+})({
   name: "US Code",
   type: "regex",
 
@@ -7,7 +10,7 @@ Citation.types.usc = {
     return {
       id: _.flatten(["usc", data.title, data.section, data.subsections]).join("/"),
       section_id: ["usc", data.title, data.section].join("/")
-    }
+    };
   },
 
   // field to calculate parents from
@@ -44,16 +47,16 @@ Citation.types.usc = {
           range = true;
 
         // paren before dash is unambiguous
-        else { 
+        else {
           var dash = match.sections.indexOf("-");
           var paren = match.sections.indexOf("(");
           if (dash > 0 && paren > 0 && paren < dash)
             range = true;
         }
 
-        // if there's a hyphen and the range is ambiguous, 
+        // if there's a hyphen and the range is ambiguous,
         // also return the original section string as one
-        if ((sections.length > 1) && !range) 
+        if ((sections.length > 1) && !range)
           sections.unshift(match.sections);
 
         return _.map(sections, function(section) {
@@ -77,9 +80,9 @@ Citation.types.usc = {
     // "section 552(a)(1)(E) of title 5"
     // "section 404o-1(a) of title 50"
     {
-      regex: 
+      regex:
         "section (?<section>\\d+[\\w\\d\-]*)(?<subsections>(?:\\([^\\)]+\\))*)" +
-        "(?:\\s+of|\\,) title (?<title>\\d+)", 
+        "(?:\\s+of|\\,) title (?<title>\\d+)",
       processor: function(match) {
         return {
           title: match.title,
@@ -89,4 +92,4 @@ Citation.types.usc = {
       }
     }
   ]
-};
+});

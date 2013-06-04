@@ -1,4 +1,7 @@
-Citation.types.va_code = {
+(function(def) {
+    if (typeof module !== 'undefined') module.exports = def;
+    if (Citation && Citation.types) Citation.types.va_code = def;
+})({
   name: "Code of Virginia Annotated",
   type: "regex",
 
@@ -19,7 +22,7 @@ Citation.types.va_code = {
     // Va. Code § 66-25.1:1
     // VA Code § 66-25.1:1
     {
-      regex: 
+      regex:
         "Va\\.? Code\\.?" +
         "(?:\\s+Ann\\.?)?" +
         "(?:\\s+§+)?" +
@@ -33,6 +36,5 @@ Citation.types.va_code = {
         };
       }
     }
-    
   ]
-};
+});
