@@ -10,7 +10,6 @@ var route = function(req, res) {
   var pretty = req.param("pretty");
 
   if (text) {
-
     text = decodeURIComponent(text);
 
     // allow citation types to be comma-separated
@@ -20,7 +19,10 @@ var route = function(req, res) {
     var results = Citation.find(text, options);
 
     var response = {results: results};
-    if (options) response.options = options;
+    if (options)
+      response.options = options;
+    else
+      response.options = {};
 
     var json;
     if (pretty)
