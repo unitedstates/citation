@@ -1,5 +1,5 @@
 /*
-  Tests for extracting US Code citations. 
+  Tests for extracting US Code citations.
   Each test should link to a real world circumstance where possible.
 */
 
@@ -11,7 +11,7 @@ exports.testBasicPattern = function(test) {
 
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr3604ih/xml/BILLS-112hr3604ih.xml
   var text = "of the Administrative Procedure Act (5 U.S.C. 552) and some";
-    
+
   var found = Citation.find(text, {types: "usc"}).citations;
   test.equal(found.length, 1);
 
@@ -43,7 +43,7 @@ exports.testBasicPattern = function(test) {
 };
 
 exports.testNearby = function(test) {
-  test.expect(4);
+  test.expect();
 
   var text = "[E] Section 824(g) is codified at 22 U.S.C. § 4064(g) See also U.S.AID " +
     "waiver authority under 22 U.S.C. § 23850 to waive the offset " +
@@ -63,14 +63,14 @@ exports.testNearby = function(test) {
 exports.testExcerpt = function(test) {
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr2045ih/html/BILLS-112hr2045ih.htm
   var tests = [
-    ["21 U.S.C. 321(ff)(1)", 
+    ["21 U.S.C. 321(ff)(1)",
       "(B) the term `dietary ingredient' means an " +
       "ingredient listed in subparagraphs (A) through (F) of " +
       "section 201(ff)(1) (21 U.S.C. 321(ff)(1)) of the " +
       "Federal Food, Drug, and Cosmetic Act that is included " +
       "in, or that is intended to be included in, a dietary " +
       "supplement."],
-    ["21 U.S.C. 321(ff)(1)", 
+    ["21 U.S.C. 321(ff)(1)",
       "dient listed in subparagraphs (A) through (F) of " +
       "section 201(ff)(1) (21 U.S.C. 321(ff)(1)) of the " +
       "Federal Food, Drug, and Cosmetic Act that is included " +
@@ -93,7 +93,7 @@ exports.testExcerpt = function(test) {
     _.each(tests, function(items) {
       var match = items[0];
       var text = items[1];
-      
+
       var found = Citation.find(text, {types: "usc", excerpt: excerpt}).citations;
       test.equal(found.length, 1);
       var citation = found[0];
@@ -106,7 +106,7 @@ exports.testExcerpt = function(test) {
 
 
 exports.testBasicWithSubsections = function(test) {
-  test.expect(7);
+  test.expect();
 
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr3604ih/xml/BILLS-112hr3604ih.xml
   var text = "All regulations in effect immediately before " +
@@ -318,24 +318,24 @@ exports.testSubsectionRanges = function(test) {
   //
   // e.g. (b)(l) - (b)(5) vs. (b)(l) - (5)
   //
-  // ...but is the fact that there is no (b)(l). This is 
-  // almost certainly meant to be (b)(1). 
-  // 
+  // ...but is the fact that there is no (b)(l). This is
+  // almost certainly meant to be (b)(1).
+  //
   // As evidence - elsewhere, in the same regulation:
   //
-  // "...the first special measure (31 U.S.C. 5318A(b)(1)) 
+  // "...the first special measure (31 U.S.C. 5318A(b)(1))
   // and the fifth special measure (31 U.S.C. 5318A(b)(5)..."
   //
-  // This is an example of a bug only fixable with an actual 
+  // This is an example of a bug only fixable with an actual
   // US Code to lookup against. Because the US Code never seems
-  // to mix up letters and numbers in the same level of a 
-  // subhierarchy, it should be possible to always correctly resolve 
+  // to mix up letters and numbers in the same level of a
+  // subhierarchy, it should be possible to always correctly resolve
   // (l) to (1) if the USC can be referred to.
 
-  // So, right now we're just testing to make sure it only 
+  // So, right now we're just testing to make sure it only
   // catches the front.
 
-  
+
 
   test.done();
 };
@@ -386,7 +386,7 @@ exports.testCasualPattern = function(test) {
 
 
 exports.testCasualWithSubsections = function(test) {
-  test.expect(14);
+  test.expect();
 
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr3261ih/xml/BILLS-112hr3261ih.xml
   var text = "(11) INTERNET- The term Internet has the meaning given " +
@@ -403,7 +403,7 @@ exports.testCasualWithSubsections = function(test) {
   test.equal(citation.usc.section_id, "usc/31/5362");
   test.equal(citation.usc.id, "usc/31/5362/5");
 
-  
+
   // fake example for now
   var text = "(11) INTERNET- The term Internet has the meaning given " +
     "that term in section 5362-10c(5) of title 31, United States Code."
@@ -429,7 +429,7 @@ exports.testCasualWithSubsections = function(test) {
 */
 
 exports.testIgnoresSectionSymbol = function(test) {
-  test.expect(7);
+  test.expect();
 
   var text = "  5 USC § 552 "; // spaces left intentionally
 
@@ -448,7 +448,7 @@ exports.testIgnoresSectionSymbol = function(test) {
 };
 
 exports.testAppendix = function(test) {
-  test.expect(7);
+  test.expect();
 
   // http://www.gpo.gov/fdsys/pkg/BILLS-112s3608is/xml/BILLS-112s3608is.xml
   var text = "Civil Relief Act (50 U.S.C. App. 595) is amended"
@@ -468,7 +468,7 @@ exports.testAppendix = function(test) {
 };
 
 exports.testNote = function(test) {
-  test.expect(7);
+  test.expect();
 
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr6567ih/xml/BILLS-112hr6567ih.xml
   var text = "commodity supplemental food program) (7 U.S.C. 612c note).";
@@ -483,6 +483,27 @@ exports.testNote = function(test) {
   test.deepEqual(citation.usc.subsections, ["note"])
   test.equal(citation.usc.section_id, "usc/7/612c");
   test.equal(citation.usc.id, "usc/7/612c/note");
+
+  test.done();
+}
+
+
+exports.testEtSeq = function(test) {
+  test.expect();
+
+  // from http://www.gpo.gov/fdsys/pkg/BILLS-113s1302rs/html/BILLS-113s1302rs.htm
+  var text = "the Employee Retirement Income Security Act of 1974 (29 U.S.C. 1081 et seq.)";
+
+  var found = Citation.find(text, {types: "usc"}).citations;
+  test.equal(found.length, 1);
+
+  var citation = found[0];
+  test.equal(citation.match, "29 U.S.C. 1081 et seq");
+  test.equal(citation.usc.title, "29");
+  test.equal(citation.usc.section, "1081");
+  test.deepEqual(citation.usc.subsections, ["et-seq"])
+  test.equal(citation.usc.section_id, "usc/29/1081");
+  test.equal(citation.usc.id, "usc/29/1081/et-seq");
 
   test.done();
 }
@@ -508,7 +529,7 @@ exports.testParents = function(test) {
   var text, found, citation;
 
   text = "31 USC 5318A(a)(1)(A)";
-  
+
   found = Citation.find(text, {types: "usc", parents: false}).citations;
   test.equal(found.length, 1);
   test.equal(found[0].usc.id, "usc/31/5318A/a/1/A");

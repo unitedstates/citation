@@ -20,6 +20,7 @@
     // "5 USC 552"
     // "5 U.S.C. § 552(a)(1)(E)"
     // "7 U.S.C. 612c note"
+    // "29 U.S.C. 1081 et seq"
     // "50 U.S.C. App. 595"
     // "45 U.S.C. 10a-10c"
     // "50 U.S.C. 404o-1(a)" - single section
@@ -32,7 +33,7 @@
         "(?:\\s+(?<appendix>App)\.?)?" +
         "(?:\\s+(?<symbol>§+))?" +
         "\\s+(?<sections>(?:\\-*\\d+[\\w\\d\\-]*(?:\\([^\\)]+\\))*)+)" +
-        "(?:\\s+(?<note>note))?",
+        "(?:\\s+(?<note>note|et\\s+seq))?",
       processor: function(match) {
         // a few titles have distinct appendixes
         var title = match.title;
@@ -64,7 +65,8 @@
           var split = _.compact(section.split(/[\(\)]+/));
           section = split[0];
           subsections = split.splice(1);
-          if (match.note) subsections.push(match.note); // "note"
+          if (match.note)
+            subsections.push(match.note.replace(" ", "-")); // "note" or "et seq"
 
           return {
             title: title,
