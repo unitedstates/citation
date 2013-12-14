@@ -178,6 +178,28 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
           return matchInfo.match;
       });
 
+      /*
+        In a perfect world, walverine code would fit in the same format as the other citation types.
+        The world is not perfect, but is still pretty good.
+        Here, we hook in a call to `walverine.get_citations()`,
+        while still conforming to the expected behavior from passing in the `types` option.
+      */
+      var extractJudicialCitations = function(text) {
+        var walverine = require("walverine");
+        return _.map(walverine.get_citations(text), function(walverineCitation) {
+          var result = {};
+          result.match = walverineCitation.match;
+          result.judicial = _.omit(walverineCitation, "match");
+        
+          return result;
+        });
+      };
+
+      if (_.contains(types, "judicial")) {
+        var walverineCitations = extractJudicialCitations(text);
+        var results = results.concat(walverineCitations);
+      }
+
       var output = {
         citations: _.compact(results)
       };
@@ -226,6 +248,7 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
     Citation.types.dc_register = require("./citations/dc_register");
     Citation.types.dc_law = require("./citations/dc_law");
     Citation.types.stat = require("./citations/stat");
+    Citation.types.judicial = {type: "external", name: "judicial", patterns: []};
   }
 
 

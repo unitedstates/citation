@@ -80,6 +80,7 @@ Yields:
 }]
 ```
 
+Note: excerpt currently does not work when extracting case names.
 
 ## Command line
 
@@ -145,6 +146,17 @@ Will return the results of running Citation.find() on the block of text, under a
 * `options[excerpt]`: include excerpts with up to this many characters around it.
 * `options[types]`: limit citation types to a comma-separated list (e.g. "usc,law")
 
+Valid `types` are:
+
+- `"cfr"`
+- `"dc_code"`
+- `"dc_law"`
+- `"dc_register"`
+- `"judicial"`
+- `"law"`
+- `"stat"`
+- `"usc"`
+- `"va_code"`
 
 ## Context-aware citation detection
 
