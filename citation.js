@@ -248,7 +248,7 @@ if (typeof(_) === "undefined" && typeof(require) !== "undefined") {
     Citation.types.dc_register = require("./citations/dc_register");
     Citation.types.dc_law = require("./citations/dc_law");
     Citation.types.stat = require("./citations/stat");
-    Citation.types.judicial = {type: "foo", name: "judicial"};
+    Citation.types.judicial = {type: "external", name: "judicial", patterns: []};
   }
 
 

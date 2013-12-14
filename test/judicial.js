@@ -35,9 +35,29 @@ var singles = [
   ]
 ];
 
-
+// runs tests with "judicial" type explicit
 singles.forEach(function(single) {
-  exports[single[1]] = function(test) {
+  exports[single[1] + " (explicit-type)"] = function(test) {
+    test.expect();
+
+    var text = single[0];
+    var actual = Citation.find(text, {types: "judicial"}).citations;
+    var actual = _.map(actual, function(result) {
+      // Not worried about testing these at the moment.
+      result.judicial = _.omit(result.judicial, ["base_citation", "as_regex", "as_html"]);
+      return result;
+    });
+    var expected = single[2];
+
+    test.ok(deepEqual(actual, expected), "derp");
+    test.done();
+  };
+
+});
+
+// runs tests without "judicial" explicit
+singles.forEach(function(single) {
+  exports[single[1] + " (no-judicial-type)"] = function(test) {
     test.expect();
 
     var text = single[0];
