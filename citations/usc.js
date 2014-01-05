@@ -8,7 +8,7 @@
   // normalize all cites to an ID, with and without subsections
   standardize: function(data) {
     return {
-      id: _.flatten(["usc", data.title, data.section, data.subsections]).join("/"),
+      id: underscore.flatten(["usc", data.title, data.section, data.subsections]).join("/"),
       section_id: ["usc", data.title, data.section].join("/")
     };
   },
@@ -60,9 +60,9 @@
         if ((sections.length > 1) && !range)
           sections.unshift(match.sections);
 
-        return _.map(sections, function(section) {
+        return underscore.map(sections, function(section) {
           // separate subsections for each section being considered
-          var split = _.compact(section.split(/[\(\)]+/));
+          var split = underscore.compact(section.split(/[\(\)]+/));
           section = split[0];
           subsections = split.splice(1);
           if (match.note)
@@ -89,7 +89,7 @@
         return {
           title: match.title,
           section: match.section,
-          subsections: _.compact(match.subsections.split(/[\(\)]+/))
+          subsections: underscore.compact(match.subsections.split(/[\(\)]+/))
         };
       }
     }

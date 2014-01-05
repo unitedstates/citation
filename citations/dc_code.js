@@ -8,7 +8,7 @@
   // normalize all cites to an ID, with and without subsections
   standardize: function(data) {
     return {
-      id: _.flatten(["dc-code", data.title, data.section, data.subsections]).join("/"),
+      id: underscore.flatten(["dc-code", data.title, data.section, data.subsections]).join("/"),
       section_id: ["dc-code", data.title, data.section].join("/")
     };
   },
@@ -39,7 +39,7 @@
             var title = captures.title;
             var section = captures.section;
             var subsections = [];
-            if (captures.subsections) subsections = _.compact(captures.subsections.split(/[\(\)]+/));
+            if (captures.subsections) subsections = underscore.compact(captures.subsections.split(/[\(\)]+/));
 
             return {
               title: title,
@@ -73,7 +73,7 @@
             var section = captures.section;
 
             var subsections = [];
-            if (captures.subsections) subsections = _.compact(captures.subsections.split(/[\(\)]+/));
+            if (captures.subsections) subsections = underscore.compact(captures.subsections.split(/[\(\)]+/));
 
             return {
               title: title,

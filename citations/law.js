@@ -7,7 +7,7 @@
 
   standardize: function(cite) {
     return {
-      id: _.flatten(["us-law", cite.type, cite.congress, cite.number, cite.sections]).join("/"),
+      id: underscore.flatten(["us-law", cite.type, cite.congress, cite.number, cite.sections]).join("/"),
       law_id: ["us-law", cite.type, cite.congress, cite.number].join("/")
     };
   },
@@ -32,7 +32,7 @@
       processor: function(captures) {
         var sections = [];
         if (captures.section) sections.push(captures.section);
-        if (captures.subsections) sections = sections.concat(_.compact(captures.subsections.split(/[\(\)]+/)));
+        if (captures.subsections) sections = sections.concat(underscore.compact(captures.subsections.split(/[\(\)]+/)));
 
         return {
           type: captures.type.match(/^priv/i) ? "private" : "public",
@@ -54,7 +54,7 @@
       processor: function(captures) {
         sections = [];
         if (captures.section) sections.push(captures.section);
-        if (captures.subsections) sections = sections.concat(_.compact(captures.subsections.split(/[\(\)]+/)));
+        if (captures.subsections) sections = sections.concat(underscore.compact(captures.subsections.split(/[\(\)]+/)));
 
         return {
           type: "public",

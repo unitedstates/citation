@@ -4,13 +4,12 @@
 */
 
 var Citation = require('../citation');
-var _ = require('underscore');
 
 var singles = [
   // http://gao.gov/products/GAO-10-441T
   ["14 CFR part 25", "Simple Part (word)",
     {
-      match: "14 CFR part 25", 
+      match: "14 CFR part 25",
       cfr: {
         title: "14",
         part: "25",
@@ -21,7 +20,7 @@ var singles = [
     }
   ],
 
-  // http://gao.gov/products/GAO-10-673T  
+  // http://gao.gov/products/GAO-10-673T
   ["38 CFR Part 74.2", "Simple Section (word)",
     {
       match: "38 CFR Part 74.2",

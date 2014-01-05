@@ -3,15 +3,15 @@
 */
 
 var Citation = require('../citation');
-var _ = require('underscore');
+var underscore = require('underscore');
 var deepEqual = require('deep-equal');
 
 var singles = [
   // https://www.courtlistener.com/scotus/5s99/arlington-v-fcc/
-  ["he dissent is correct that United States v. Mead Corp., 533 U. S. 218 (2001), requires that", 
+  ["he dissent is correct that United States v. Mead Corp., 533 U. S. 218 (2001), requires that",
    "Simple case name",
     [{
-      match: "United States v. Mead Corp., 533 U. S. 218 (2001), requires that", 
+      match: "United States v. Mead Corp., 533 U. S. 218 (2001), requires that",
       judicial: {
         volume: 533,
         reporter: 'U.S.',
@@ -29,7 +29,7 @@ var singles = [
         cert_order: null,
         disposition: null,
         seqID: 0,
-        relations: [ 0 ] 
+        relations: [ 0 ]
       }
     }]
   ]
@@ -42,9 +42,9 @@ singles.forEach(function(single) {
 
     var text = single[0];
     var actual = Citation.find(text, {types: "judicial"}).citations;
-    var actual = _.map(actual, function(result) {
+    var actual = underscore.map(actual, function(result) {
       // Not worried about testing these at the moment.
-      result.judicial = _.omit(result.judicial, ["base_citation", "as_regex", "as_html"]);
+      result.judicial = underscore.omit(result.judicial, ["base_citation", "as_regex", "as_html"]);
       return result;
     });
     var expected = single[2];
@@ -62,9 +62,9 @@ singles.forEach(function(single) {
 
     var text = single[0];
     var actual = Citation.find(text).citations;
-    var actual = _.map(actual, function(result) {
+    var actual = underscore.map(actual, function(result) {
       // Not worried about testing these at the moment.
-      result.judicial = _.omit(result.judicial, ["base_citation", "as_regex", "as_html"]);
+      result.judicial = underscore.omit(result.judicial, ["base_citation", "as_regex", "as_html"]);
       return result;
     });
     var expected = single[2];

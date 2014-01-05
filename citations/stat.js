@@ -8,7 +8,7 @@
   // normalize all cites to an ID
   standardize: function(cite) {
     return {
-      id: _.flatten(["stat", cite.volume, cite.page]).join("/")
+      id: underscore.flatten(["stat", cite.volume, cite.page]).join("/")
     };
   },
 

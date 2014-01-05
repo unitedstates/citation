@@ -2,7 +2,7 @@
 
 A fast, stand-alone legal citation extractor.
 
-Currently supports: 
+Currently supports:
 
 * US Code
 * US Public and Private Laws (slip laws)
@@ -80,7 +80,7 @@ Yields:
 }]
 ```
 
-Note: excerpt currently does not work when extracting case names.
+Note: `excerpt` currently does not work when extracting case names.
 
 ## Command line
 
@@ -111,7 +111,7 @@ cite-server [port]
 
 GET or POST to `/citation/find` with a `text` parameter:
 
-```bash    
+```bash
 curl http://localhost:3000/citation/find?text=5+U.S.C.+552%28a%29%281%29%28E%29
 
 curl -XPOST "http://localhost:3000/citation/find" -d "text=5 U.S.C. 552(a)(1)(E)"

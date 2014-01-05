@@ -3,7 +3,6 @@
 */
 
 var Citation = require('../citation');
-var _ = require('underscore');
 var util = require('util');
 
 
@@ -23,7 +22,7 @@ exports.testAllTypes = function(test) {
 
     test.equal(types.length, results.length);
     types.forEach(function(type, i) {
-      test.equal(type, results[i].type);  
+      test.equal(type, results[i].type);
     });
   });
 
@@ -36,7 +35,7 @@ exports.testTypes = function(test) {
 
   // limit results by a string or an array, ignoring invalid results
   [
-    {types: "law"}, 
+    {types: "law"},
     {types: ["law"]}
   ].forEach(function(options) {
     text = "both 5 U.S.C. 552 and Public Law 112-34 are";
@@ -48,8 +47,8 @@ exports.testTypes = function(test) {
 
   // if the array is all invalid results, nothing is found
   [
-    {types: "nonsense"}, 
-    {types: ["nonsense"]}, 
+    {types: "nonsense"},
+    {types: ["nonsense"]},
     {types: ["nonsense", "poppycock"]}
   ].forEach(function(options) {
     text = "both 5 U.S.C. 552 and Public Law 112-34 are";
