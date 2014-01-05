@@ -2,7 +2,6 @@
     if (typeof module !== 'undefined') module.exports = def;
     if (Citation && Citation.types) Citation.types.dc_code = def;
 })({
-  name: "DC Code",
   type: "regex",
 
   // normalize all cites to an ID, with and without subsections

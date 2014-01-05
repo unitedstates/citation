@@ -2,7 +2,6 @@
     if (typeof module !== 'undefined') module.exports = def;
     if (Citation && Citation.types) Citation.types.usc = def;
 })({
-  name: "US Code",
   type: "regex",
 
   // normalize all cites to an ID, with and without subsections

@@ -2,7 +2,6 @@
     if (typeof module !== 'undefined') module.exports = def;
     if (Citation && Citation.types) Citation.types.law = def;
 })({
-  name: "US Slip Law",
   type: "regex",
 
   standardize: function(cite) {

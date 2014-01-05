@@ -2,7 +2,6 @@
     if (typeof module !== 'undefined') module.exports = def;
     if (Citation && Citation.types) Citation.types.cfr = def;
 })({
-  name: "US Code of Federal Regulations",
   type: "regex",
 
   standardize: function(data) {

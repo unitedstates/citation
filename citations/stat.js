@@ -2,7 +2,6 @@
     if (typeof module !== 'undefined') module.exports = def;
     if (Citation && Citation.types) Citation.types.stat = def;
 })({
-  name: "US Statutes At Large",
   type: "regex",
 
   // normalize all cites to an ID
