@@ -1,5 +1,15 @@
 /*
   Tests this library's integration with Walverine, which parses case law citations
+
+  To do a simple test in the REPL, run:
+
+    require("./citation");
+    text = "he dissent is correct that United States v. Mead Corp., 533 U. S. 218 (2001), requires that"
+    Citation.find(text, {types: "judicial"});
+
+  To re-require Citation without restarting the REPL, run:
+
+    Object.keys(require.cache).forEach(function(k) {delete require.cache[k]})
 */
 
 var Citation = require('../citation');
