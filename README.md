@@ -9,6 +9,7 @@ Currently supports:
 * US Statutes at Large
 * DC Code
 * DC Register
+* Judicial citations
 
 ## Install
 
