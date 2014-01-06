@@ -196,4 +196,4 @@ Yields:
 
 ## About
 
-Originally written by [Eric Mill](http://twitter.com/konklone), at the [Sunlight Foundation](http://sunlightfoundation.com).
+Originally written by [Eric Mill](https://twitter.com/konklone), at the [Sunlight Foundation](http://sunlightfoundation.com).
