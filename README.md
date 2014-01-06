@@ -81,7 +81,7 @@ Yields:
 }]
 ```
 
-Note: `excerpt` currently does not work when extracting case names.
+Note: `excerpt` currently does not work when extracting `judicial` citations.
 
 ## Command line
 
