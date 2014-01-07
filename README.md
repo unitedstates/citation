@@ -9,7 +9,7 @@ Currently supports:
 * US Statutes at Large
 * DC Code
 * DC Register
-* Judicial citations
+* Judicial citations (using [walverine](https://github.com/adelevie/walverine))
 
 ## Install
 
