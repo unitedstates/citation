@@ -2,13 +2,12 @@
     if (typeof module !== 'undefined') module.exports = def;
     if (Citation && Citation.types) Citation.types.dc_register = def;
 })({
-  name: "DC Register",
   type: "regex",
 
   // normalize all cites to an ID
   standardize: function(match) {
     return {
-      id: _.flatten(["dc-register", match.volume, match.page]).join("/")
+      id: underscore.flatten(["dc-register", match.volume, match.page]).join("/")
     };
   },
 

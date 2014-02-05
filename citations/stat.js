@@ -2,13 +2,12 @@
     if (typeof module !== 'undefined') module.exports = def;
     if (Citation && Citation.types) Citation.types.stat = def;
 })({
-  name: "US Statutes At Large",
   type: "regex",
 
   // normalize all cites to an ID
   standardize: function(cite) {
     return {
-      id: _.flatten(["stat", cite.volume, cite.page]).join("/")
+      id: underscore.flatten(["stat", cite.volume, cite.page]).join("/")
     };
   },
 

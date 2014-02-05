@@ -2,13 +2,14 @@
 
 A fast, stand-alone legal citation extractor.
 
-Currently supports: 
+Currently supports:
 
 * US Code
 * US Public and Private Laws (slip laws)
 * US Statutes at Large
 * DC Code
 * DC Register
+* Judicial citations (using [walverine](https://github.com/adelevie/walverine))
 
 ## Install
 
@@ -80,6 +81,7 @@ Yields:
 }]
 ```
 
+Note: `excerpt` currently does not work when extracting `judicial` citations.
 
 ## Command line
 
@@ -110,7 +112,7 @@ cite-server [port]
 
 GET or POST to `/citation/find` with a `text` parameter:
 
-```bash    
+```bash
 curl http://localhost:3000/citation/find?text=5+U.S.C.+552%28a%29%281%29%28E%29
 
 curl -XPOST "http://localhost:3000/citation/find" -d "text=5 U.S.C. 552(a)(1)(E)"
@@ -145,6 +147,17 @@ Will return the results of running Citation.find() on the block of text, under a
 * `options[excerpt]`: include excerpts with up to this many characters around it.
 * `options[types]`: limit citation types to a comma-separated list (e.g. "usc,law")
 
+Valid `types` are:
+
+- `"cfr"`
+- `"dc_code"`
+- `"dc_law"`
+- `"dc_register"`
+- `"judicial"`
+- `"law"`
+- `"stat"`
+- `"usc"`
+- `"va_code"`
 
 ## Context-aware citation detection
 
@@ -183,4 +196,4 @@ Yields:
 
 ## About
 
-Originally written by [Eric Mill](http://twitter.com/konklone), at the [Sunlight Foundation](http://sunlightfoundation.com).
+Originally written by [Eric Mill](https://twitter.com/konklone), at the [Sunlight Foundation](http://sunlightfoundation.com).

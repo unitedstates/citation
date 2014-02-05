@@ -2,13 +2,12 @@
     if (typeof module !== 'undefined') module.exports = def;
     if (Citation && Citation.types) Citation.types.dc_code = def;
 })({
-  name: "DC Code",
   type: "regex",
 
   // normalize all cites to an ID, with and without subsections
   standardize: function(data) {
     return {
-      id: _.flatten(["dc-code", data.title, data.section, data.subsections]).join("/"),
+      id: underscore.flatten(["dc-code", data.title, data.section, data.subsections]).join("/"),
       section_id: ["dc-code", data.title, data.section].join("/")
     };
   },
@@ -30,7 +29,7 @@
         // section 16-2326.01
         {
           regex:
-            "(?:section(s)?|§+)\\s+(?<title>\\d+)" +
+            "(?:section(s)?|§+)\\s+(?<title>\\d+A?)" +
             "\\s?\\-\\s?" +
             "(?<section>[\\w\\d]+(?:\\.?[\\w\\d]+)?)" +      // section identifier, letters/numbers/dots
             "(?<subsections>(?:\\([^\\)]+\\))*)", // any number of adjacent parenthesized subsections
@@ -39,7 +38,7 @@
             var title = captures.title;
             var section = captures.section;
             var subsections = [];
-            if (captures.subsections) subsections = _.compact(captures.subsections.split(/[\(\)]+/));
+            if (captures.subsections) subsections = underscore.compact(captures.subsections.split(/[\(\)]+/));
 
             return {
               title: title,
@@ -63,7 +62,7 @@
         {
           regex:
             "D\\.?C\\.? Official Code\\s+" + // absolute identifier
-            "(?:§+\\s+)?(?<title>\\d+)" +            // optional section sign, plus title
+            "(?:§+\\s+)?(?<title>\\d+A?)" +            // optional section sign, plus title
             "\\s?\\-\\s?" +
             "(?<section>[\\w\\d]+(?:\\.?[\\w\\d]+)?)" +      // section identifier, letters/numbers/dots
             "(?<subsections>(?:\\([^\\)]+\\))*)", // any number of adjacent parenthesized subsections
@@ -73,7 +72,7 @@
             var section = captures.section;
 
             var subsections = [];
-            if (captures.subsections) subsections = _.compact(captures.subsections.split(/[\(\)]+/));
+            if (captures.subsections) subsections = underscore.compact(captures.subsections.split(/[\(\)]+/));
 
             return {
               title: title,

@@ -2,13 +2,12 @@
     if (typeof module !== 'undefined') module.exports = def;
     if (Citation && Citation.types) Citation.types.cfr = def;
 })({
-  name: "US Code of Federal Regulations",
   type: "regex",
 
   standardize: function(data) {
     var section = data.section || data.part;
     return {
-      id: _.compact(_.flatten(["cfr", data.title, section, data.subsections])).join("/")
+      id: underscore.compact(underscore.flatten(["cfr", data.title, section, data.subsections])).join("/")
     };
   },
 
@@ -39,7 +38,7 @@
         var part, section, subsections;
 
         // separate subsections for each section being considered
-        var split = _.compact(captures.sections.split(/[\(\)]+/));
+        var split = underscore.compact(captures.sections.split(/[\(\)]+/));
         section = split[0].trim();
         subsections = split.splice(1);
 
@@ -63,14 +62,14 @@
     // todo:
     // parts 121 and 135 of Title 14 of the Code of Federal Regulations
     // {
-    //   regex: 
+    //   regex:
     //     "section (?<section>\\d+[\\w\\d\-]*)(?<subsections>(?:\\([^\\)]+\\))*)" +
-    //     "(?:\\s+of|\\,) title (?<title>\\d+)", 
+    //     "(?:\\s+of|\\,) title (?<title>\\d+)",
     //   processor: function(captures) {
     //     return {
     //       title: captures.title,
     //       section: captures.section,
-    //       subsections: _.compact(captures.subsections.split(/[\(\)]+/))
+    //       subsections: underscore.compact(captures.subsections.split(/[\(\)]+/))
     //     };
     //   }
     // }

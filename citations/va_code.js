@@ -2,7 +2,6 @@
     if (typeof module !== 'undefined') module.exports = def;
     if (Citation && Citation.types) Citation.types.va_code = def;
 })({
-  name: "Code of Virginia Annotated",
   type: "regex",
 
   standardize: function(data) {
