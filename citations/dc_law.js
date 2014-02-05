@@ -10,20 +10,6 @@
     };
   },
 
-<<<<<<< HEAD
-  patterns: [
-    // "D.C. Law 111-89"
-    // "DC Law 111-89"
-    // "DC Law 18-135A"
-    {
-      regex:
-        "D\\.?\\s*C\\.?\\s+Law\\s+(?<period>\\d+)\\s?[-–]+\\s?(?<number>\\d+\\w?)",
-      processor: function(captures) {
-        return {
-          period: captures.period,
-          number: captures.number
-        };
-=======
   patterns: function(context) {
     // If the context for this citation is the DC Code, then Law XX-YYY can be assumed
     // to be a DC law. In other context, require the "DC Law" prefix.
@@ -34,16 +20,16 @@
     return [
       // "D.C. Law 111-89"
       // "DC Law 111-89"
+      // "DC Law 18-135A"
       {
         regex:
-          context_regex + "Law\\s+(?<period>\\d+)\\s?[-–]+\\s?(?<number>\\d+)",
+          context_regex + "Law\\s+(?<period>\\d+)\\s?[-–]+\\s?(?<number>\\d+\\w?)",
         processor: function(captures) {
           return {
             period: captures.period,
             number: captures.number
           };
         }
->>>>>>> upstream/master
       }
     ];
   }
