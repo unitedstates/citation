@@ -20,9 +20,10 @@
     return [
       // "D.C. Law 111-89"
       // "DC Law 111-89"
+      // "DC Law 18-135A"
       {
         regex:
-          context_regex + "Law\\s+(?<period>\\d+)\\s?[-–]+\\s?(?<number>\\d+)",
+          context_regex + "Law\\s+(?<period>\\d+)\\s?[-–]+\\s?(?<number>\\d+\\w?)",
         processor: function(captures) {
           return {
             period: captures.period,
