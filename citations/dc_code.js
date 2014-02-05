@@ -30,9 +30,8 @@
         // section 16-2326.01
         {
           regex:
-            "(?:(?<symbol>section(s)?|§+)" +
-            "\\s+(?<title>\\d+)" +
-            "(?:\\s+(?\\-\\s?" +
+            "(?:section(s)?|§+)\\s+(?<title>\\d+)" +
+            "\\s?\\-\\s?" +
             "(?<section>[\\w\\d]+(?:\\.?[\\w\\d]+)?)" +      // section identifier, letters/numbers/dots
             "(?<subsections>(?:\\([^\\)]+\\))*)", // any number of adjacent parenthesized subsections
 
@@ -64,7 +63,7 @@
         {
           regex:
             "D\\.?C\\.? Official Code\\s+" + // absolute identifier
-            "(?:(?<symbol>§*)s\\s+)?(?<title>\\d+)" +            // optional section sign, plus title
+            "(?:§+\\s+)?(?<title>\\d+)" +            // optional section sign, plus title
             "\\s?\\-\\s?" +
             "(?<section>[\\w\\d]+(?:\\.?[\\w\\d]+)?)" +      // section identifier, letters/numbers/dots
             "(?<subsections>(?:\\([^\\)]+\\))*)", // any number of adjacent parenthesized subsections

@@ -14,9 +14,10 @@
   patterns: [
     // "D.C. Law 111-89"
     // "DC Law 111-89"
+    // "DC Law 18-135A"
     {
       regex:
-        "D\\.?\\s*C\\.?\\s+Law\\s+(?<period>\\d+)\\s?[-–]+\\s?(?<number>\\d+)",
+        "D\\.?\\s*C\\.?\\s+Law\\s+(?<period>\\d+)\\s?[-–]+\\s?(?<number>\\d+\\w?)",
       processor: function(captures) {
         return {
           period: captures.period,
