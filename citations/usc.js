@@ -1,6 +1,6 @@
 (function(def) {
     if (typeof module !== 'undefined') module.exports = def;
-    if (Citation && Citation.types) Citation.types.usc = def;
+    if (typeof Citation !== 'undefined' && Citation.types) Citation.types.usc = def;
 })({
   type: "regex",
 

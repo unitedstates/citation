@@ -3,7 +3,7 @@
  * Open source, public domain license: https://github.com/unitedstates/citation
  *
  * Originally authored by Eric Mill (@konklone), at the Sunlight Foundation,
- *  and with contributions by https://github.com/unitedstates/citation/graphs/contributors
+ * many contributions by https://github.com/unitedstates/citation/graphs/contributors
  */
 
 if (typeof(underscore) === "undefined" && typeof(require) !== "undefined") {
@@ -11,7 +11,7 @@ if (typeof(underscore) === "undefined" && typeof(require) !== "undefined") {
   XRegExp = require('xregexp').XRegExp;
 }
 
-(function() {
+(function(Citation) {
   Citation = {
 
     // will be filled in by individual citation types

@@ -1,6 +1,6 @@
 (function(def) {
     if (typeof module !== 'undefined') module.exports = def;
-    if (Citation && Citation.types) Citation.types.va_code = def;
+    if (typeof Citation !== 'undefined' && Citation.types) Citation.types.va_code = def;
 })({
   type: "regex",
 
