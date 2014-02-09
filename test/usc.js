@@ -89,8 +89,8 @@ exports.testExcerpt = function(test) {
   test.expect(2 * tests.length * excerpts.length);
 
   // try out a ton of different excerpt sizes, on both strings
-  underscore.each(excerpts, function(excerpt) {
-    underscore.each(tests, function(items) {
+  excerpts.forEach(function(excerpt) {
+    tests.forEach(function(items) {
       var match = items[0];
       var text = items[1];
 

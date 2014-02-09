@@ -1,270 +1,266 @@
 /* Citation.js - a legal citation extractor.
  *
- * Open source, public domain license: https://github.com/unitedstates/citation
+ * Open source, dedicated to the public domain: https://github.com/unitedstates/citation
  *
  * Originally authored by Eric Mill (@konklone), at the Sunlight Foundation,
  * many contributions by https://github.com/unitedstates/citation/graphs/contributors
  */
 
-if (typeof(underscore) === "undefined" && typeof(require) !== "undefined") {
+
+/*
+ TODO: move this out of the namespace, see #56
+ * replace _.map with native map
+ * replace _.keys with Object.keys
+ * rework how citators load Citation
+ * replace _.contains with indexOf (?)
+ * replace _.compact with filter (null || undefined)
+ * replace _.intersection with ?
+ * replace _.isArray with ?
+ * move XRegExp into the closure
+*/
+
+if (typeof(require) !== "undefined") {
   underscore = require("underscore");
   XRegExp = require('xregexp').XRegExp;
 }
 
+
 (function(Citation) {
-  Citation = {
+Citation = {
 
-    // will be filled in by individual citation types
-    types: {},
+  // will be filled in by individual citation types
+  types: {},
 
-    // check a block of text for citations of a given type -
-    // return an array of matches, with citation broken out into fields
-    find: function(text, options) {
-      if (!options) options = {};
+  // check a block of text for citations of a given type -
+  // return an array of matches, with citation broken out into fields
+  find: function(text, options) {
+    if (!options) options = {};
 
-      // default: no excerpt
-      var excerpt = options.excerpt ? parseInt(options.excerpt, 10) : 0;
+    // default: no excerpt
+    var excerpt = options.excerpt ? parseInt(options.excerpt, 10) : 0;
 
-      // whether to return parent citations
-      // default: false
-      var parents = options.parents || false;
+    // whether to return parent citations
+    // default: false
+    var parents = options.parents || false;
 
-      // default: all types, can be filtered to one, or an array of them
-      var types;
-      if (options.types) {
-        if (underscore.isArray(options.types)) {
-          if (options.types.length > 0)
-            types = options.types;
-        } else
-          types = [options.types];
-      }
+    // default: all types, can be filtered to one, or an array of them
+    var types;
+    if (options.types) {
+      if (underscore.isArray(options.types)) {
+        if (options.types.length > 0)
+          types = options.types;
+      } else
+        types = [options.types];
+    }
 
-      // only allow valid types
-      if (types)
-        types = underscore.intersection(types, underscore.keys(Citation.types));
-      else
-        types = underscore.keys(Citation.types);
+    // only allow valid types
+    if (types)
+      types = underscore.intersection(types, underscore.keys(Citation.types));
+    else
+      types = underscore.keys(Citation.types);
 
-      // if no matches, abort
-      if (types.length === 0) return null;
-
-
-      // caller can provide optional context that can change what patterns individual citators apply
-      var context = options.context || {};
+    // if no matches, abort
+    if (types.length === 0) return null;
 
 
-      // caller can provide a replace callback to alter every found citation.
-      // this function will be called with each (found and processed) cite object,
-      // and should return a string to be put in the cite's place.
-      //
-      // the resulting transformed string will be in the returned object as a 'text' field.
-      // this field will only be present if a replace callback was provided.
-      //
-      // providing this callback will also cause matched cites not to return the 'index' field,
-      // as the replace process will completely screw them up. only use the 'index' field if you
-      // plan on doing your own replacing.
-
-      var replace = options.replace;
+    // caller can provide optional context that can change what patterns individual citators apply
+    var context = options.context || {};
 
 
-      // figure out which patterns we're going apply, assign each an identifier
-      var citators = {};
+    // The caller can provide a replace callback to alter every found citation.
+    // this function will be called with each (found and processed) cite object,
+    // and should return a string to be put in the cite's place.
+    //
+    // The resulting transformed string will be in the returned object as a 'text' field.
+    // this field will only be present if a replace callback was provided.
+    //
+    // providing this callback will also cause matched cites not to return the 'index' field,
+    // as the replace process will completely screw them up. only use the 'index' field if you
+    // plan on doing your own replacing.
 
-      // accumulate the results
-      var results = [];
+    var replace = options.replace;
 
-      // first, handle all regex-based citators
-      underscore.each(types, function(type) {
-        if (Citation.types[type].type != "regex") return;
 
-        var patterns = Citation.types[type].patterns;
+    // figure out which patterns we're going apply, assign each an identifier
+    var citators = {};
 
-        // individual parsers can opt to make their parsing context-specific
-        if (typeof(patterns) == "function")
-          patterns = patterns(context[type] || {});
+    // accumulate the results
+    var results = [];
 
-        underscore.each(patterns, function(pattern, i) {
-          var name = type + "_" + i; // just needs to be unique
+    // first, handle all regex-based citators
+    types.forEach(function(type) {
+      if (Citation.types[type].type != "regex") return;
 
-          // small pre-process on each regex - prefix named captures to ensure uniqueness.
-          // will be un-prefixed before passing to processor.
-          var uniquified = pattern.regex
-            .replace(new RegExp("\\(\\?<([a-z0-9]+)>", "ig"), "(?<" + name + "_" + "$1>");
+      var patterns = Citation.types[type].patterns;
 
-          citators[name] = {
-            regex: uniquified,
-            processor: pattern.processor,  // original processor method per-cite, expects named captures
-            type: type // store so we can figure out per-cite what we're talking about
-          };
-        });
+      // individual parsers can opt to make their parsing context-specific
+      if (typeof(patterns) == "function")
+        patterns = patterns(context[type] || {});
+
+      patterns.forEach(function(pattern, i) {
+        var name = type + "_" + i; // just needs to be unique
+
+        // small pre-process on each regex - prefix named captures to ensure uniqueness.
+        // will be un-prefixed before passing to processor.
+        var uniquified = pattern.regex
+          .replace(new RegExp("\\(\\?<([a-z0-9]+)>", "ig"), "(?<" + name + "_" + "$1>");
+
+        citators[name] = {
+          regex: uniquified,
+          processor: pattern.processor,  // original processor method per-cite, expects named captures
+          type: type // store so we can figure out per-cite what we're talking about
+        };
       });
+    });
 
-      // if there are any regex-based citators being applied, use them
-      var names = underscore.keys(citators);
+    // if there are any regex-based citators being applied, use them
+    var names = underscore.keys(citators);
 
-      if (names.length > 0) {
+    if (names.length > 0) {
 
-        // now let's merge each pattern's regex into a single regex, using named capture groups
-        var regex = underscore.map(names, function(name) {
-          return "(?<" + name + ">" + citators[name].regex + ")";
-        }).join("|");
+      // now let's merge each pattern's regex into a single regex, using named capture groups
+      var regex = underscore.map(names, function(name) {
+        return "(?<" + name + ">" + citators[name].regex + ")";
+      }).join("|");
 
-        regex = new XRegExp(regex, "ig");
+      regex = new XRegExp(regex, "ig");
 
-        var replaced = XRegExp.replace(text, regex, function() {
-          var match = arguments[0];
+      var replaced = XRegExp.replace(text, regex, function() {
+        var match = arguments[0];
 
-          // establish which pattern matched - each pattern name must be unique (even among individual named groups)
-          var name = underscore.find(names, function(citeName) {if (match[citeName]) return true;});
+        // establish which pattern matched - each pattern name must be unique (even among individual named groups)
+        var name = underscore.find(names, function(citeName) {if (match[citeName]) return true;});
 
-          var type = citators[name].type;
-          var processor = citators[name].processor;
+        var type = citators[name].type;
+        var processor = citators[name].processor;
 
-          // extract and de-prefix any captured groups from the individual citator's regex
-          var captures = Citation.capturesFrom(name, match);
+        // extract and de-prefix any captured groups from the individual citator's regex
+        var captures = Citation.capturesFrom(name, match);
 
-          // process the matched data into the final object
-          var cites = processor(captures);
-          if (!underscore.isArray(cites)) cites = [cites]; // one match can generate one or many citation results (e.g. ranges)
-
-
-          // put together the match-level information
-          var matchInfo = {type: type};
-          matchInfo.match = match.toString(); // match data can be converted to the plain string
-
-          var index = arguments[arguments.length - 2]; // offset is second-to-last argument
-
-          if (!replace)
-            matchInfo.index = index;
+        // process the matched data into the final object
+        var cites = processor(captures);
+        if (!underscore.isArray(cites)) cites = [cites]; // one match can generate one or many citation results (e.g. ranges)
 
 
-          // use index to grab surrounding excerpt
-          if (excerpt > 0) {
-            var proposedLeft = index - excerpt;
-            var left = proposedLeft > 0 ? proposedLeft : 0;
+        // put together the match-level information
+        var matchInfo = {type: type};
+        matchInfo.match = match.toString(); // match data can be converted to the plain string
 
-            var proposedRight = index + matchInfo.match.length + excerpt;
-            var right = (proposedRight <= text.length) ? proposedRight : text.length;
+        var index = arguments[arguments.length - 2]; // offset is second-to-last argument
 
-            matchInfo.excerpt = text.substring(left, right);
-          }
+        if (!replace)
+          matchInfo.index = index;
 
 
-          // if we want parent cites too, make those now
-          if (parents && Citation.types[type].parents_by) {
-            cites = underscore.flatten(underscore.map(cites, function(cite) {
-              return Citation.citeParents(cite, type);
-            }));
-          }
+        // use index to grab surrounding excerpt
+        if (excerpt > 0) {
+          var proposedLeft = index - excerpt;
+          var left = proposedLeft > 0 ? proposedLeft : 0;
 
-          cites = underscore.map(cites, function(cite) {
-            var result = {};
+          var proposedRight = index + matchInfo.match.length + excerpt;
+          var right = (proposedRight <= text.length) ? proposedRight : text.length;
 
-            // match-level info
-            underscore.extend(result, matchInfo);
+          matchInfo.excerpt = text.substring(left, right);
+        }
 
-            // cite-level info, plus ID standardization
-            result[type] = cite;
-            underscore.extend(result[type], Citation.types[type].standardize(result[type]));
 
-            results.push(result);
+        // if we want parent cites too, make those now
+        if (parents && Citation.types[type].parents_by) {
+          cites = underscore.flatten(underscore.map(cites, function(cite) {
+            return Citation.citeParents(cite, type);
+          }));
+        }
 
-            return result;
-          });
-
-          // I don't know what to do about ranges yet - but for now, screw it
-          var toReplace;
-          if (typeof(replace) === "function")
-            toReplace = replace(cites[0]);
-          else if ((typeof(replace) === "object") && (typeof(replace[type]) === "function"))
-            toReplace = replace[type](cites[0]);
-
-          if (toReplace)
-            return toReplace;
-          else
-            return matchInfo.match;
-        });
-      }
-
-      /*
-        External processors (non-regex based).
-
-        In a perfect world, walverine code would fit in the same format as the other citation types.
-        The world is not perfect, but is still pretty good.
-        Here, we hook in a call to `walverine.get_citations()`,
-        while still conforming to the expected behavior from passing in the `types` option.
-      */
-      var extractJudicialCitations = function(text) {
-        var walverine = require("walverine");
-        return underscore.map(walverine.get_citations(text), function(walverineCitation) {
+        cites = underscore.map(cites, function(cite) {
           var result = {};
-          result.match = walverineCitation.match;
-          result.judicial = underscore.omit(walverineCitation, "match");
+
+          // match-level info
+          underscore.extend(result, matchInfo);
+
+          // cite-level info, plus ID standardization
+          result[type] = cite;
+          underscore.extend(result[type], Citation.types[type].standardize(result[type]));
+
+          results.push(result);
 
           return result;
         });
-      };
 
-      if (underscore.contains(types, "judicial")) {
-        var walverineCitations = extractJudicialCitations(text);
-        var results = results.concat(walverineCitations);
-      }
+        // I don't know what to do about ranges yet - but for now, screw it
+        var toReplace;
+        if (typeof(replace) === "function")
+          toReplace = replace(cites[0]);
+        else if ((typeof(replace) === "object") && (typeof(replace[type]) === "function"))
+          toReplace = replace[type](cites[0]);
 
-      var output = {
-        citations: underscore.compact(results)
-      };
-
-      if (replace)
-        output.text = replaced;
-
-      return output;
-    },
-
-    // for a given set of cite-specific details,
-    // return itself and its parent citations
-    citeParents: function(citation, type) {
-      var field = Citation.types[type].parents_by;
-      var results = [];
-
-      for (var i=citation[field].length; i >= 0; i--) {
-        var parent = underscore.clone(citation);
-        parent[field] = parent[field].slice(0, i);
-        results.push(parent);
-      }
-      return results;
-    },
-
-    // internal function - given a XRegExp match object, and a name prefix,
-    // return a new object with the de-prefixed captured values
-    capturesFrom: function(name, match) {
-      var captures = {};
-      underscore.each(underscore.keys(match), function(key) {
-        if (key.indexOf(name + "_") === 0)
-          captures[key.replace(name + "_", "")] = match[key];
+        if (toReplace)
+          return toReplace;
+        else
+          return matchInfo.match;
       });
-      return captures;
     }
 
-  };
 
+    // TODO: do for any external cite types, not just "judicial"
+    if (underscore.contains(types, "judicial"))
+      results = results.concat(Citation.types.judicial.extract(text));
 
-  // TODO: load only the citation types asked for
-  if (typeof(require) !== "undefined") {
-    Citation.types.usc = require("./citations/usc");
-    Citation.types.law = require("./citations/law");
-    Citation.types.cfr = require("./citations/cfr");
-    Citation.types.va_code = require("./citations/va_code");
-    Citation.types.dc_code = require("./citations/dc_code");
-    Citation.types.dc_register = require("./citations/dc_register");
-    Citation.types.dc_law = require("./citations/dc_law");
-    Citation.types.stat = require("./citations/stat");
-    Citation.types.judicial = {type: "external"};
+    var output = {
+      citations: underscore.compact(results)
+    };
+
+    if (replace)
+      output.text = replaced;
+
+    return output;
+  },
+
+  // for a given set of cite-specific details,
+  // return itself and its parent citations
+  citeParents: function(citation, type) {
+    var field = Citation.types[type].parents_by;
+    var results = [];
+
+    for (var i=citation[field].length; i >= 0; i--) {
+      var parent = underscore.clone(citation);
+      parent[field] = parent[field].slice(0, i);
+      results.push(parent);
+    }
+    return results;
+  },
+
+  // internal function - given a XRegExp match object, and a name prefix,
+  // return a new object with the de-prefixed captured values
+  capturesFrom: function(name, match) {
+    var captures = {};
+    underscore.keys(match).forEach(function(key) {
+      if (key.indexOf(name + "_") === 0)
+        captures[key.replace(name + "_", "")] = match[key];
+    });
+    return captures;
   }
 
+};
 
-  if (typeof(window) !== "undefined")
-    window.Citation = Citation;
 
-  if (typeof(module) !== "undefined" && module.exports)
-    module.exports = Citation;
+// TODO: load only the citation types asked for
+if (typeof(require) !== "undefined") {
+  Citation.types.usc = require("./citations/usc");
+  Citation.types.law = require("./citations/law");
+  Citation.types.cfr = require("./citations/cfr");
+  Citation.types.va_code = require("./citations/va_code");
+  Citation.types.dc_code = require("./citations/dc_code");
+  Citation.types.dc_register = require("./citations/dc_register");
+  Citation.types.dc_law = require("./citations/dc_law");
+  Citation.types.stat = require("./citations/stat");
+  Citation.types.judicial = require("./citations/judicial");
+}
+
+
+if (typeof(window) !== "undefined")
+  window.Citation = Citation;
+
+if (typeof(module) !== "undefined" && module.exports)
+  module.exports = Citation;
+
 })();
