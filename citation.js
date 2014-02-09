@@ -9,7 +9,6 @@
 
 /*
  TODO: move this out of the namespace, see #56
- * replace _.keys with Object.keys
  * rework how citators load Citation
  * replace _.contains with indexOf (?)
  * replace _.omit with ?
@@ -56,9 +55,9 @@ Citation = {
 
     // only allow valid types
     if (types)
-      types = underscore.intersection(types, underscore.keys(Citation.types));
+      types = underscore.intersection(types, Object.keys(Citation.types));
     else
-      types = underscore.keys(Citation.types);
+      types = Object.keys(Citation.types);
 
     // if no matches, abort
     if (types.length === 0) return null;
@@ -115,7 +114,7 @@ Citation = {
     });
 
     // if there are any regex-based citators being applied, use them
-    var names = underscore.keys(citators);
+    var names = Object.keys(citators);
 
     if (names.length > 0) {
 
@@ -234,7 +233,7 @@ Citation = {
   // return a new object with the de-prefixed captured values
   capturesFrom: function(name, match) {
     var captures = {};
-    underscore.keys(match).forEach(function(key) {
+    Object.keys(match).forEach(function(key) {
       if (key.indexOf(name + "_") === 0)
         captures[key.replace(name + "_", "")] = match[key];
     });
