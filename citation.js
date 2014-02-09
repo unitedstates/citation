@@ -28,7 +28,7 @@ if (typeof(require) !== "undefined") {
 (function(Citation) {
 Citation = {
 
-  // will be filled in by individual citation types
+  // will be filled in by individual citation types as available
   types: {},
 
   // check a block of text for citations of a given type -
@@ -44,22 +44,7 @@ Citation = {
     var parents = options.parents || false;
 
     // default: all types, can be filtered to one, or an array of them
-    var types;
-    if (options.types) {
-      if (underscore.isArray(options.types)) {
-        if (options.types.length > 0)
-          types = options.types;
-      } else
-        types = [options.types];
-    }
-
-    // only allow valid types
-    if (types)
-      types = underscore.intersection(types, Object.keys(Citation.types));
-    else
-      types = Object.keys(Citation.types);
-
-    // if no matches, abort
+    var types = Citation.selectedTypes(options);
     if (types.length === 0) return null;
 
 
@@ -238,6 +223,25 @@ Citation = {
         captures[key.replace(name + "_", "")] = match[key];
     });
     return captures;
+  },
+
+  selectedTypes: function(options) {
+    var types;
+    if (options.types) {
+      if (underscore.isArray(options.types)) {
+        if (options.types.length > 0)
+          types = options.types;
+      } else
+        types = [options.types];
+    }
+
+    // only allow valid types
+    if (types)
+      types = underscore.intersection(types, Object.keys(Citation.types));
+    else
+      types = Object.keys(Citation.types);
+
+    return types;
   }
 
 };
