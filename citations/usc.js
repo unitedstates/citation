@@ -59,7 +59,7 @@
         if ((sections.length > 1) && !range)
           sections.unshift(match.sections);
 
-        return underscore.map(sections, function(section) {
+        return sections.map(function(section) {
           // separate subsections for each section being considered
           var split = underscore.compact(section.split(/[\(\)]+/));
           section = split[0];

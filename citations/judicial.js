@@ -8,7 +8,7 @@ if (typeof(require) !== "undefined")
   type: "external",
 
   extract: function(text) {
-    return underscore.map(walverine.get_citations(text), function(cite) {
+    return walverine.get_citations(text).map(function(cite) {
       var result = {};
       result.match = cite.match;
       result.judicial = underscore.omit(cite, "match");

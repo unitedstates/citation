@@ -9,10 +9,11 @@
 
 /*
  TODO: move this out of the namespace, see #56
- * replace _.map with native map
  * replace _.keys with Object.keys
  * rework how citators load Citation
  * replace _.contains with indexOf (?)
+ * replace _.omit with ?
+ * replace _.flatten with ?
  * replace _.compact with filter (null || undefined)
  * replace _.intersection with ?
  * replace _.isArray with ?
@@ -119,7 +120,7 @@ Citation = {
     if (names.length > 0) {
 
       // now let's merge each pattern's regex into a single regex, using named capture groups
-      var regex = underscore.map(names, function(name) {
+      var regex = names.map(function(name) {
         return "(?<" + name + ">" + citators[name].regex + ")";
       }).join("|");
 
@@ -166,12 +167,12 @@ Citation = {
 
         // if we want parent cites too, make those now
         if (parents && Citation.types[type].parents_by) {
-          cites = underscore.flatten(underscore.map(cites, function(cite) {
+          cites = underscore.flatten(cites.map(function(cite) {
             return Citation.citeParents(cite, type);
           }));
         }
 
-        cites = underscore.map(cites, function(cite) {
+        cites = cites.map(function(cite) {
           var result = {};
 
           // match-level info
