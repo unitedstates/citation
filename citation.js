@@ -62,15 +62,16 @@ Citation = {
     // providing this callback will also cause matched cites not to return the 'index' field,
     // as the replace process will completely screw them up. only use the 'index' field if you
     // plan on doing your own replacing.
-
     var replace = options.replace;
-
-
-    // figure out which patterns we're going apply, assign each an identifier
-    var citators = {};
 
     // accumulate the results
     var results = [];
+
+
+    ///////////// prepare citation patterns /////////////
+
+    // figure out which patterns we're going apply, assign each an identifier
+    var citators = {};
 
     // first, handle all regex-based citators
     types.forEach(function(type) {
@@ -172,14 +173,14 @@ Citation = {
         });
 
         // I don't know what to do about ranges yet - but for now, screw it
-        var toReplace;
+        var replacedCite;
         if (typeof(replace) === "function")
-          toReplace = replace(cites[0]);
+          replacedCite = replace(cites[0]);
         else if ((typeof(replace) === "object") && (typeof(replace[type]) === "function"))
-          toReplace = replace[type](cites[0]);
+          replacedCite = replace[type](cites[0]);
 
-        if (toReplace)
-          return toReplace;
+        if (replacedCite)
+          return replacedCite;
         else
           return matchInfo.match;
       });
