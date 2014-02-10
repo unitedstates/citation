@@ -12,6 +12,8 @@
  * rework how citators load Citation
  * replace _.contains with indexOf (?)
  * replace _.omit with ?
+ * replace _.extend with Object.extend ?
+ * replace _.find with ?
  * replace _.flatten with ?
  * replace _.compact with filter (null || undefined)
  * replace _.intersection with ?
@@ -31,9 +33,33 @@ Citation = {
   // will be filled in by individual citation types as available
   types: {},
 
+  // filters that can pre-process text and post-process citations
+  filters: {},
+
+  // TODO: document this inline
   // check a block of text for citations of a given type -
   // return an array of matches, with citation broken out into fields
   find: function(text, options) {
+    if (!options) options = {};
+
+    // client can apply a filter that pre-processes text before extraction,
+    // and post-processes citations after extraction
+    if (options.filter && Citation.filters[options.filter]) {
+      var filter = Citation.filters[options.filter];
+      return Citation.filtered(filter, text, options);
+    } else
+      return Citation.extract(text, options);
+  },
+
+  filtered: function(filter, text, options) {
+    var results = [];
+    filter.from(text, function(piece, metadata) {
+
+    });
+  },
+
+  // actual extraction, meant for internal use
+  extract: function(text, options) {
     if (!options) options = {};
 
     // default: no excerpt
@@ -134,6 +160,7 @@ Citation = {
 
         var index = arguments[arguments.length - 2]; // offset is second-to-last argument
 
+        // store the matched character offset, except if we're replacing
         if (!replace)
           matchInfo.index = index;
 
@@ -259,6 +286,8 @@ if (typeof(require) !== "undefined") {
   Citation.types.dc_law = require("./citations/dc_law");
   Citation.types.stat = require("./citations/stat");
   Citation.types.judicial = require("./citations/judicial");
+
+  Citation.filters.lines = require("./filters/lines");
 }
 
 
