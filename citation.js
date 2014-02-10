@@ -44,21 +44,44 @@ Citation = {
 
     // client can apply a filter that pre-processes text before extraction,
     // and post-processes citations after extraction
+    var results;
     if (options.filter && Citation.filters[options.filter]) {
       var filter = Citation.filters[options.filter];
-      return Citation.filtered(filter, text, options);
-    } else
-      return Citation.extract(text, options);
+      results = Citation.filtered(filter, text, options);
+    }
+
+    // otherwise, do a single pass over the whole text.
+    else
+      results = Citation.extract(text, options);
+      // TODO: move replacement step here
+
+    if (results == null)
+      return null;
+    else
+      return {citations: underscore.compact(results)};
   },
 
+  // return an array of matched and filter-mapped cites
   filtered: function(filter, text, options) {
     var results = [];
-    filter.from(text, function(piece, metadata) {
 
+    // filter can break up the text into pieces with accompanying metadata
+    filter.from(text, function(piece, metadata) {
+      var filtered = Citation.extract(piece, options).map(function(result) {
+        Object.keys(metadata).forEach(function(key) {
+          result[key] = metadata[key];
+        });
+
+        return result;
+      });
+
+      results = results.concat(filtered);
     });
+
+    return results;
   },
 
-  // actual extraction, meant for internal use
+  // return an array of matched cites
   extract: function(text, options) {
     if (!options) options = {};
 
@@ -213,19 +236,12 @@ Citation = {
       });
     }
 
-
     // TODO: do for any external cite types, not just "judicial"
     if (underscore.contains(types, "judicial"))
       results = results.concat(Citation.types.judicial.extract(text));
 
-    var output = {
-      citations: underscore.compact(results)
-    };
 
-    if (replace)
-      output.text = replaced;
-
-    return output;
+    return results;
   },
 
   // for a given set of cite-specific details,

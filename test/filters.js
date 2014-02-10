@@ -32,21 +32,23 @@ lines.forEach(function(line) {
 
     var results, cite;
 
-    // first, without lines
-    results = Citation.find(line.text).citations;
-    test.equal(results.length, 1);
-    cite = results[0];
-    test.equal(cite.line, line.outcome.without.line);
-    test.equal(cite.index, line.outcome.without.index);
-    test.equal(cite.match, line.outcome.without.match);
+    if (line.outcome.without) {
+      results = Citation.find(line.text).citations;
+      test.equal(results.length, 1);
+      cite = results[0];
+      test.equal(cite.line, line.outcome.without.line);
+      test.equal(cite.index, line.outcome.without.index);
+      test.equal(cite.match, line.outcome.without.match);
+    }
 
-    // now, with lines
-    results = Citation.find(line.text, {filters: "lines"}).citations;
-    test.equal(results.length, 1);
-    cite = results[0];
-    test.equal(cite.line, line.outcome.with.line);
-    test.equal(cite.index, line.outcome.with.index);
-    test.equal(cite.match, line.outcome.with.match);
+    if (line.outcome.with) {
+      results = Citation.find(line.text, {filter: "lines"}).citations;
+      test.equal(results.length, 1);
+      cite = results[0];
+      test.equal(cite.line, line.outcome.with.line);
+      test.equal(cite.index, line.outcome.with.index);
+      test.equal(cite.match, line.outcome.with.match);
+    }
 
     test.done();
   };

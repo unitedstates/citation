@@ -10,8 +10,17 @@
   from: function(text, extract) {
     var lines = text.split(/[\n\r]+/);
     lines.forEach(function(line, i) {
-      extract(line, {line: i});
+      extract(line, {line: (i+1)});
     });
-  }
+  },
+
+  // take a cite that got extracted from a piece sent in above,
+  // do any post-processing on it.
+  //
+  // metadata will be {line: i} from above, just plop it on
+  // then: function(cite, metadata) {
+  //   cite.line = metadata.line;
+  //   return cite;
+  // }
 
 });

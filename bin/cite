@@ -17,6 +17,7 @@ var args = optimist
   .describe('pretty', 'Prettify JSON output.')
   .describe('parents', 'Include additional citations for parent sections.')
   .describe('types', 'Limit citation types to a comma-separated list (e.g. "usc,law")')
+  .describe('filter', 'Apply a named filter, e.g. \'lines\', to results.')
   .describe('excerpt', 'Number of characters of excerpt surrounding matches to include.')
   .describe('help', 'Show this message.')
   .argv;
@@ -80,6 +81,7 @@ function cite(text) {
   if (args.excerpt) options.excerpt = args.excerpt;
   if (args.types) options.types = args.types.split(",");
   if (args.parents) options.parents = true;
+  if (args.filter) options.filter = args.filter;
 
   output(citation.find(text, options));
 }
@@ -89,7 +91,7 @@ function output(results) {
 
   var json;
   if (args.pretty)
-    json = JSON.stringify(results, null, 4);
+    json = JSON.stringify(results, null, 2);
   else
     json = JSON.stringify(results);
 
