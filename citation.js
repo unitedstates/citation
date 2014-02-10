@@ -45,9 +45,8 @@ Citation = {
     // client can apply a filter that pre-processes text before extraction,
     // and post-processes citations after extraction
     var results;
-    if (options.filter && Citation.filters[options.filter]) {
+    if (options.filter && Citation.filters[options.filter])
       results = Citation.filtered(options.filter, text, options);
-    }
 
     // otherwise, do a single pass over the whole text.
     else
