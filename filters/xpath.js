@@ -16,6 +16,12 @@
   //   https://github.com/tmpvar/jsdom
   //
   ///////// Calculating XPath per-node ////////
+  //
+  // The XPath should look like:
+  //   /root[0]/child[2]/grandchild[3]/leaf[2]
+  //
+  // So that it specifies the exact text node.
+  //
   // Some relevant resources:
   // http://stackoverflow.com/a/3454579/16075
   // http://stackoverflow.com/a/8942908/16075
