@@ -29,11 +29,9 @@
         // section 16-2326.01
         {
           regex:
-            "(?:section(s)?|§+)\\s+" +
-            "(?<title>\\d+A?)" +
-            "(\\s?\\-\\s?" +
-            "(?<section>[\\w\\d]+(?:\\.?[\\w\\d]+)?)|" + // section identifier, letters/numbers/dots
-            ":\\d\\d\\-\\d\\d\\d)" +
+            "(?:section(s)?|§+)\\s+(?<title>\\d+A?)" +
+            "\\s?\\-\\s?" +
+            "(?<section>[\\w\\d]+(?:\\.?[\\w\\d]+)?)" +      // section identifier, letters/numbers/dots
             "(?<subsections>(?:\\([^\\)]+\\))*)", // any number of adjacent parenthesized subsections
 
           processor: function(captures) {
