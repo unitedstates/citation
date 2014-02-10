@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <style>
+        </style>
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/main.css">
+
+        <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    </head>
+    <body>
+
+    <div class="container">
+      <h1>
+<a name="citation" class="anchor" href="#citation"><span class="octicon octicon-link"></span></a>Citation</h1>
+
+<p>A fast, stand-alone legal citation extractor.</p>
+
+<p>Currently supports:</p>
+
+<ul>
+<li>US Code</li>
+<li>US Public and Private Laws (slip laws)</li>
+<li>US Statutes at Large</li>
+<li>DC Code</li>
+<li>DC Register</li>
+<li>Judicial citations (using <a href="https://github.com/adelevie/walverine">walverine</a>)</li>
+</ul><h2>
+<a name="install" class="anchor" href="#install"><span class="octicon octicon-link"></span></a>Install</h2>
+
+<p><a href="http://nodejs.org/#download">Install Node.js and NPM</a>, then install Citation globally (may require <code>sudo</code>):</p>
+
+<div class="highlight highlight-bash"><pre>npm install -g citation
+</pre></div>
+
+<p>Or install it locally to a <code>node_modules</code> directory with <code>npm install citation</code>.</p>
+
+<h2>
+<a name="use" class="anchor" href="#use"><span class="octicon octicon-link"></span></a>Use</h2>
+
+<p>Citation can handle blocks of text, large or small, through the command line, HTTP, or directly in JavaScript.</p>
+
+<p>Via the command line:</p>
+
+<div class="highlight highlight-bash"><pre>cite <span class="s2">"pursuant to 5 U.S.C. 552(a)(1)(E) and"</span>
+</pre></div>
+
+<p>Calling from JavaScript directly:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Citation</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s2">"pursuant to 5 U.S.C. 552(a)(1)(E) and"</span><span class="p">)</span>
+</pre></div>
+
+<p>Or through the included HTTP API:</p>
+
+<div class="highlight highlight-bash"><pre>cite-server
+curl <span class="s2">"http://localhost:3000/citation/find?text=pursuant+to+5+U.S.C.+552%28a%29%281%29%28E%29+and"</span>
+</pre></div>
+
+<p>All of which yield:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">[{</span>
+  <span class="nt">"match"</span><span class="p">:</span> <span class="s2">"5 U.S.C. 552(a)(1)(E)"</span><span class="p">,</span>
+  <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"usc"</span><span class="p">,</span>
+  <span class="nt">"index"</span><span class="p">:</span> <span class="s2">"0"</span><span class="p">,</span>
+  <span class="nt">"usc"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">"title"</span><span class="p">:</span> <span class="s2">"5"</span><span class="p">,</span>
+    <span class="nt">"section"</span><span class="p">:</span> <span class="s2">"552"</span><span class="p">,</span>
+    <span class="nt">"subsections"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"a"</span><span class="p">,</span> <span class="s2">"1"</span><span class="p">,</span> <span class="s2">"E"</span><span class="p">],</span>
+    <span class="nt">"id"</span><span class="p">:</span> <span class="s2">"usc/5/552/a/1/E"</span><span class="p">,</span>
+    <span class="nt">"section_id"</span><span class="p">:</span> <span class="s2">"usc/5/552"</span>
+  <span class="p">}</span>
+<span class="p">}]</span>
+</pre></div>
+
+<p>(The HTTP API actually returns a JavaScript object with a key of <code>results</code> whose value is the above array.)</p>
+
+<h3>
+<a name="excerpts" class="anchor" href="#excerpts"><span class="octicon octicon-link"></span></a>Excerpts</h3>
+
+<p>Passing an <code>excerpt</code> option will include an excerpt in the response, with up to that number of characters on either side of each detected citation.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Citation</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s2">"that term in section 5362(5) of title 31, United States Code."</span><span class="p">,</span> <span class="p">{</span><span class="nx">excerpt</span><span class="o">:</span> <span class="mi">10</span><span class="p">})</span>
+</pre></div>
+
+<p>Yields:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">[{</span>
+  <span class="nt">"match"</span><span class="p">:</span> <span class="s2">"section 5362(5) of title 31"</span><span class="p">,</span>
+  <span class="nt">"excerpt"</span><span class="p">:</span> <span class="s2">"t term in section 5362(5) of title 31, United S"</span><span class="p">,</span>
+  <span class="err">...</span>
+<span class="p">}]</span>
+</pre></div>
+
+<p>Note: <code>excerpt</code> currently does not work when extracting <code>judicial</code> citations.</p>
+
+<h2>
+<a name="command-line" class="anchor" href="#command-line"><span class="octicon octicon-link"></span></a>Command line</h2>
+
+<p>The shell command can accept a string to parse as an argument, through STDIN, or from a file. It can output results to STDOUT, or to a file.</p>
+
+<div class="highlight highlight-bash"><pre>cite <span class="s2">"section 5362(5) of title 31"</span>
+
+<span class="nb">echo</span> <span class="s2">"section 5362(5) of title 31"</span> <span class="p">|</span> cite
+
+cite --input<span class="o">=</span>in-file.txt --output<span class="o">=</span>out-file.json
+</pre></div>
+
+<h3>
+<a name="options" class="anchor" href="#options"><span class="octicon octicon-link"></span></a>Options</h3>
+
+<ul>
+<li>
+<code>--input</code>: Filename to read text from</li>
+<li>
+<code>--output</code>: Filename to output text to</li>
+<li>
+<code>--pretty</code>: Prettify (indent) output</li>
+<li>
+<code>--types</code>: Limit citation types to a comma-separated list (e.g. "usc,law")</li>
+</ul><h2>
+<a name="http-api" class="anchor" href="#http-api"><span class="octicon octicon-link"></span></a>HTTP API</h2>
+
+<p>Start the API on a given port (defaults to 3000):</p>
+
+<div class="highlight highlight-bash"><pre>cite-server <span class="o">[</span>port<span class="o">]</span>
+</pre></div>
+
+<p>GET or POST to <code>/citation/find</code> with a <code>text</code> parameter:</p>
+
+<div class="highlight highlight-bash"><pre>curl http://localhost:3000/citation/find?text<span class="o">=</span>5+U.S.C.+552%28a%29%281%29%28E%29
+
+curl -XPOST <span class="s2">"http://localhost:3000/citation/find"</span> -d <span class="s2">"text=5 U.S.C. 552(a)(1)(E)"</span>
+</pre></div>
+
+<p>Will return the results of running Citation.find() on the block of text, under a <code>results</code> key:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"results"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">"match"</span><span class="p">:</span> <span class="s2">"5 U.S.C. 552(a)(1)(E)"</span><span class="p">,</span>
+      <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"usc"</span><span class="p">,</span>
+      <span class="nt">"index"</span><span class="p">:</span> <span class="s2">"0"</span><span class="p">,</span>
+      <span class="nt">"usc"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">"title"</span><span class="p">:</span> <span class="s2">"5"</span><span class="p">,</span>
+        <span class="nt">"section"</span><span class="p">:</span> <span class="s2">"552"</span><span class="p">,</span>
+        <span class="nt">"subsections"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"a"</span><span class="p">,</span> <span class="s2">"1"</span><span class="p">,</span> <span class="s2">"E"</span><span class="p">],</span>
+        <span class="nt">"id"</span><span class="p">:</span> <span class="s2">"usc/5/552/a/1/E"</span><span class="p">,</span>
+        <span class="nt">"section_id"</span><span class="p">:</span> <span class="s2">"usc/5/552"</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3>
+<a name="options-1" class="anchor" href="#options-1"><span class="octicon octicon-link"></span></a>Options</h3>
+
+<ul>
+<li>
+<code>text</code>: <strong>required</strong>, text to extract citations from.</li>
+<li>
+<code>callback</code>: a function name to use as a JSONP callback.</li>
+<li>
+<code>pretty</code>: prettify (indent) output.</li>
+<li>
+<code>options[excerpt]</code>: include excerpts with up to this many characters around it.</li>
+<li>
+<code>options[types]</code>: limit citation types to a comma-separated list (e.g. "usc,law")</li>
+</ul><p>Valid <code>types</code> are:</p>
+
+<ul>
+<li><code>"cfr"</code></li>
+<li><code>"dc_code"</code></li>
+<li><code>"dc_law"</code></li>
+<li><code>"dc_register"</code></li>
+<li><code>"judicial"</code></li>
+<li><code>"law"</code></li>
+<li><code>"stat"</code></li>
+<li><code>"usc"</code></li>
+<li><code>"va_code"</code></li>
+</ul><h2>
+<a name="context-aware-citation-detection" class="anchor" href="#context-aware-citation-detection"><span class="octicon octicon-link"></span></a>Context-aware citation detection</h2>
+
+<p>In the JavaScript interface, you can pass optional <code>context</code>, an object with arbitrary key/value pairs, that can tell the citator what you already know about the source text, and potentially allow more permissive detection.</p>
+
+<p>For example, most DC legal documents use the prefix "D.C. Official Code" before they cite the DC Code. But cross-references inside the DC Code to other parts of the DC Code do not include this prefix. If you know that your source text is the DC Code, you can detect cross-references by providing a <code>source</code> value of "dc_code":</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Citation</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s2">"required under § 3-101.01(13)(e), the Commission shall perform the"</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">context</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">dc_code</span><span class="o">:</span> <span class="p">{</span><span class="nx">source</span><span class="o">:</span> <span class="s2">"dc_code"</span><span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">})</span>
+</pre></div>
+
+<p>Yields:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"dc_code"</span><span class="p">,</span>
+    <span class="nt">"match"</span><span class="p">:</span> <span class="s2">"§ 3-101.01(13)(e)"</span><span class="p">,</span>
+    <span class="nt">"index"</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+
+    <span class="nt">"dc_code"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">"id"</span><span class="p">:</span> <span class="s2">"dc-code/3/101.01/13/e"</span><span class="p">,</span>
+      <span class="nt">"section_id"</span><span class="p">:</span> <span class="s2">"dc-code/3/101.01"</span><span class="p">,</span>
+      <span class="nt">"title"</span><span class="p">:</span> <span class="s2">"3"</span><span class="p">,</span>
+      <span class="nt">"section"</span><span class="p">:</span> <span class="s2">"101.01"</span><span class="p">,</span>
+      <span class="nt">"subsections"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"13"</span><span class="p">,</span> <span class="s2">"e"</span><span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+
+<h2>
+<a name="about" class="anchor" href="#about"><span class="octicon octicon-link"></span></a>About</h2>
+
+<p>Originally written by <a href="https://twitter.com/konklone">Eric Mill</a>, at the <a href="http://sunlightfoundation.com">Sunlight Foundation</a>.</p>
+    </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
+
+        <script src="js/vendor/bootstrap.min.js"></script>
+
+        <script src="js/main.js"></script>
+    </body>
+</html>
