@@ -1,6 +1,6 @@
 (function(def) {
     if (typeof module !== 'undefined') module.exports = def;
-    if (Citation && Citation.types) Citation.types.usc = def;
+    if (typeof Citation !== 'undefined' && Citation.types) Citation.types.usc = def;
 })({
   type: "regex",
 
@@ -59,7 +59,7 @@
         if ((sections.length > 1) && !range)
           sections.unshift(match.sections);
 
-        return underscore.map(sections, function(section) {
+        return sections.map(function(section) {
           // separate subsections for each section being considered
           var split = underscore.compact(section.split(/[\(\)]+/));
           section = split[0];

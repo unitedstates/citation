@@ -52,7 +52,7 @@ singles.forEach(function(single) {
 
     var text = single[0];
     var actual = Citation.find(text, {types: "judicial"}).citations;
-    var actual = underscore.map(actual, function(result) {
+    var actual = actual.map(function(result) {
       // Not worried about testing these at the moment.
       result.judicial = underscore.omit(result.judicial, ["base_citation", "as_regex", "as_html"]);
       return result;
@@ -72,7 +72,7 @@ singles.forEach(function(single) {
 
     var text = single[0];
     var actual = Citation.find(text).citations;
-    var actual = underscore.map(actual, function(result) {
+    var actual = actual.map(function(result) {
       // Not worried about testing these at the moment.
       result.judicial = underscore.omit(result.judicial, ["base_citation", "as_regex", "as_html"]);
       return result;
