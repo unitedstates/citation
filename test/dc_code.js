@@ -49,7 +49,16 @@ exports.testRelativePatterns = function(test) {
     [ 'section-with-word-section',
       'case shall be subject to the limitation set forth in [section 16-2326.01(b)(2)].',
       'section 16-2326.01(b)(2)',
-      '16', '2326.01', ['b', '2']]
+      '16', '2326.01', ['b', '2']],
+
+    // in § 28:9-324 of the DC Code 
+    [ 'UCC test case',
+      '(2) In all other cases, § 28:9-322(a) applies to the qualifying security interests.',
+      '§ 28:9-322(a)',
+      '28', '9-322', ['a']]
+    
+    // § 28:2A-530
+    
   ];
 
   for (var i=0; i<cases.length; i++) {
