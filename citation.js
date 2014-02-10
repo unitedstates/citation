@@ -46,8 +46,7 @@ Citation = {
     // and post-processes citations after extraction
     var results;
     if (options.filter && Citation.filters[options.filter]) {
-      var filter = Citation.filters[options.filter];
-      results = Citation.filtered(filter, text, options);
+      results = Citation.filtered(options.filter, text, options);
     }
 
     // otherwise, do a single pass over the whole text.
@@ -62,11 +61,13 @@ Citation = {
   },
 
   // return an array of matched and filter-mapped cites
-  filtered: function(filter, text, options) {
+  filtered: function(name, text, options) {
     var results = [];
 
+    var filter = Citation.filters[name];
+
     // filter can break up the text into pieces with accompanying metadata
-    filter.from(text, function(piece, metadata) {
+    filter.from(text, options[name], function(piece, metadata) {
       var filtered = Citation.extract(piece, options).map(function(result) {
         Object.keys(metadata).forEach(function(key) {
           result[key] = metadata[key];

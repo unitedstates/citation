@@ -81,7 +81,11 @@ function cite(text) {
   if (args.excerpt) options.excerpt = args.excerpt;
   if (args.types) options.types = args.types.split(",");
   if (args.parents) options.parents = true;
-  if (args.filter) options.filter = args.filter;
+  if (args.filter) {
+    options.filter = args.filter;
+    if (args[options.filter])
+      options[options.filter] = args[options.filter];
+  }
 
   output(citation.find(text, options));
 }

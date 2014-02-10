@@ -9,25 +9,63 @@ var util = require('util');
 
 var lines = [{
   name: "Basic",
-  text: "Line 1.\n" +
-    "Line 2, 5 USC 552 citation.\n" +
-    "Line 3.",
+  text: "Line 1.\n\n" +
+    "Line 2.\n" +
+    "Line 3, 5 USC 552 citation.\n",
   outcome: {
     without: {
       line: undefined,
-      index: 16,
+      index: 25,
       match: "5 USC 552"
     },
     with: {
-      line: 2,
+      line: 3,
       index: 8,
       match: "5 USC 552"
     }
   }
+}, {
+  name: "Override delimiter regex",
+  text: "Line 1.\t\t" +
+    "Line 2.\t" +
+    "Line 3, 5 USC 552 citation.\t",
+  delimiter: /\t+/,
+  outcome: {
+    without: {
+      line: undefined,
+      index: 25,
+      match: "5 USC 552"
+    },
+    with: {
+      line: 3,
+      index: 8,
+      match: "5 USC 552"
+    }
+  }
+
+}, {
+  name: "Override delimiter string",
+  text: "Line 1.\t\t" +
+    "Line 2.\t" +
+    "Line 3, 5 USC 552 citation.\t",
+  delimiter: "\\t+",
+  outcome: {
+    without: {
+      line: undefined,
+      index: 25,
+      match: "5 USC 552"
+    },
+    with: {
+      line: 3,
+      index: 8,
+      match: "5 USC 552"
+    }
+  }
+
 }];
 
 lines.forEach(function(line) {
-  exports[line.name] = function(test) {
+  exports["Lines: " + line.name] = function(test) {
     test.expect();
 
     var results, cite;
@@ -42,7 +80,9 @@ lines.forEach(function(line) {
     }
 
     if (line.outcome.with) {
-      results = Citation.find(line.text, {filter: "lines"}).citations;
+      var options = {filter: "lines"};
+      if (line.delimiter) options.lines = {delimiter: line.delimiter};
+      results = Citation.find(line.text, options).citations;
       test.equal(results.length, 1);
       cite = results[0];
       test.equal(cite.line, line.outcome.with.line);
