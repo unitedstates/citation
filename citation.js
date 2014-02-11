@@ -51,12 +51,8 @@ Citation = {
     // otherwise, do a single pass over the whole text.
     else
       results = Citation.extract(text, options);
-      // TODO: move replacement step here
 
-    if (results == null)
-      return null;
-    else
-      return {citations: underscore.compact(results)};
+    return results;
   },
 
   // return an array of matched and filter-mapped cites
@@ -67,7 +63,9 @@ Citation = {
 
     // filter can break up the text into pieces with accompanying metadata
     filter.from(text, options[name], function(piece, metadata) {
-      var filtered = Citation.extract(piece, options).map(function(result) {
+      var response = Citation.extract(piece, options);
+      var filtered = response.citations.map(function(result) {
+
         Object.keys(metadata).forEach(function(key) {
           result[key] = metadata[key];
         });
@@ -78,7 +76,7 @@ Citation = {
       results = results.concat(filtered);
     });
 
-    return results;
+    return {citations: results};
   },
 
   // return an array of matched cites
@@ -240,9 +238,12 @@ Citation = {
     if (underscore.contains(types, "judicial"))
       results = results.concat(Citation.types.judicial.extract(text));
 
+    var response = {citations: underscore.compact(results)};
+    if (options.replace) response.text = replaced;
 
-    return results;
+    return response;
   },
+
 
   // for a given set of cite-specific details,
   // return itself and its parent citations
