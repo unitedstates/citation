@@ -159,6 +159,10 @@ Valid `types` are:
 - `"usc"`
 - `"va_code"`
 
+## Server deployment
+
+See [etc/](etc) for an example upstart script to keep `cite-server` running in production.
+
 ## Context-aware citation detection
 
 In the JavaScript interface, you can pass optional `context`, an object with arbitrary key/value pairs, that can tell the citator what you already know about the source text, and potentially allow more permissive detection.
