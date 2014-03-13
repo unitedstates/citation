@@ -17,13 +17,15 @@
   },
 
   "scripts": {
-    "test": "nodeunit test"
+    "test": "nodeunit test",
+    "start": "node bin/cite-server"
   },
 
   "dependencies": {
       "underscore": "*",
       "xregexp": "*",
       "express": "3.x",
+      "reloader": "*",
       "optimist": "*",
       "walverine": "*"
   },
