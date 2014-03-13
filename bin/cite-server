@@ -4,6 +4,8 @@
 
 var Citation = require('../citation');
 
+var heartbeat = function(req, res) {res.send("I'm alive!");}
+
 var route = function(req, res) {
   var text = req.param("text");
   var options = req.param("options");
@@ -62,6 +64,7 @@ app.configure('production', function(){
 });
 
 
+app.get('/', heartbeat);
 app.get('/citation/find', route);
 app.post('/citation/find', route);
 
@@ -70,17 +73,7 @@ app.post('/citation/find', route);
 var port = parseInt(process.argv[2], 10);
 if (isNaN(port)) port = 3000;
 
-app.configure('development', function() {
-  require('reloader')({
-    watchModules: true,
-    onReload: startServer
-  });
+
+app.listen(port, function() {
+  console.log("Express server listening on port %s in %s mode", port, app.settings.env);
 });
-
-app.configure('production', startServer);
-
-function startServer() {
-  app.listen(port, function() {
-    console.log("Express server listening on port %s in %s mode", port, app.settings.env);
-  });
-}

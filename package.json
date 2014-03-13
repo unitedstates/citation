@@ -24,7 +24,6 @@
       "underscore": "*",
       "xregexp": "*",
       "express": "3.x",
-      "reloader": "*",
       "optimist": "*",
       "walverine": "*"
   },
