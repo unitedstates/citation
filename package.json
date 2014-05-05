@@ -4,40 +4,45 @@
   "description": "Legal citation extractor. Standalone library, and optional HTTP API.",
   "version": "0.6.4",
   "license": "unlicense",
-  "keywords": ["congress", "laws", "legal", "citations", "us code", "regulations"],
-
+  "keywords": [
+    "congress",
+    "laws",
+    "legal",
+    "citations",
+    "us code",
+    "regulations"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/unitedstates/citation"
   },
-
   "bin": {
     "cite": "./bin/cite",
     "cite-server": "./bin/cite-server"
   },
-
   "scripts": {
     "test": "nodeunit test",
     "start": "node bin/cite-server"
   },
-
   "dependencies": {
-      "underscore": "*",
-      "xregexp": "*",
-      "express": "3.x",
-      "reloader": "*",
-      "optimist": "*",
-      "walverine": "*"
+    "underscore": "*",
+    "xregexp": "*",
+    "express": "3.x",
+    "reloader": "*",
+    "optimist": "*",
+    "walverine": "*"
   },
-
   "devDependencies": {
-    "nodeunit": "*",
-    "deep-equal": "*"
+    "deep-equal": "*",
+    "gulp": "^3.6.2",
+    "gulp-browserify": "^0.5.0",
+    "gulp-gzip": "0.0.8",
+    "gulp-rename": "^1.2.0",
+    "gulp-uglify": "^0.2.1",
+    "nodeunit": "*"
   },
-
   "engines": {
     "node": ">=0.6"
   },
-
   "main": "./citation.js"
 }
