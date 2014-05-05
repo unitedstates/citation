@@ -10,7 +10,10 @@ All contributions to this project will be released under the CC0 dedication. By 
 
 `citation` uses `gulp` and `browserify` and a few other tools to create browser-ready builds.
 
-If you modify any `citation` code and want to send a pull request, please update the browser builds (located in the `browser` folder) by running `gulp`. If you are unable to do this, you should still contribute! Just make a note of this in the text of the pull request.
+If you modify any `citation` code and want to send a pull request, please update the browser builds (located in the `browser` folder) by running `gulp`. (Install `gulp` first by running `npm install gulp -g`.)
+
+
+If you are unable to do this, you should still contribute! Just make a note of this in the text of the pull request.
 
 Currently three different files are created for browser use:
 
