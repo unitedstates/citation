@@ -2,8 +2,8 @@
   "name": "citation",
   "author": "Eric Mill <eric@sunlightfoundation.com",
   "description": "Legal citation extractor. Standalone library, and optional HTTP API.",
-  "version": "0.6.4",
-  "license": "unlicense",
+  "version": "0.7.0",
+  "license": "cc0",
   "keywords": [
     "congress",
     "laws",
