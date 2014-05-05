@@ -7,7 +7,7 @@ var gzip = require('gulp-gzip');
 // creates a non-minified, browser-ready version of citation.js
 gulp.task('browser', function () {
   return gulp.src('citation.js')
-    .pipe(browserify({insertGlobals: true, debug: true}))
+    .pipe(browserify({debug: true}))
     .pipe(rename('citation.js'))
     .pipe(gulp.dest('browser'));
 });
@@ -15,7 +15,7 @@ gulp.task('browser', function () {
 // creates a minified, browser-ready version of citation.js
 gulp.task('browser-minified', function () {
   return gulp.src('citation.js')
-    .pipe(browserify({insertGlobals: true, debug: false}))
+    .pipe(browserify({debug: false}))
     .pipe(uglify())
     .pipe(rename('citation.min.js'))
     .pipe(gulp.dest('browser'));
@@ -24,7 +24,7 @@ gulp.task('browser-minified', function () {
 // creates a minified and gzipped, browser-ready version of citation.js
 gulp.task('browser-gzip', function () {
   return gulp.src('citation.js')
-    .pipe(browserify({insertGlobals: true, debug: false}))
+    .pipe(browserify({debug: false}))
     .pipe(uglify())
     .pipe(gzip())
     .pipe(rename('citation.min.js.gz'))
