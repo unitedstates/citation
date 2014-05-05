@@ -1,12 +1,12 @@
 language: node_js
 node_js:
   - 0.10
-  - 0.8
 
 notifications:
   email:
     recipients:
       - eric@sunlightfoundation.com
       - tneale@sunlightfoundation.com
+      - adelevie@gmail.com
     on_success: change
     on_failure: change
