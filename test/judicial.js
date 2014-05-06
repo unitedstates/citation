@@ -71,7 +71,7 @@ singles.forEach(function(single) {
     test.expect();
 
     var text = single[0];
-    var actual = Citation.find(text).citations;
+    var actual = Citation.find(text, {types: "judicial"}).citations;
     var actual = actual.map(function(result) {
       // Not worried about testing these at the moment.
       result.judicial = underscore.omit(result.judicial, ["base_citation", "as_regex", "as_html"]);

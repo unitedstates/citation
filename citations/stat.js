@@ -16,11 +16,11 @@
     // "77 STAT. 77"
     {
       regex:
-        "(?<volume>\\d+[\\w]*)\\s+" +
+        "(\\d+[\\w]*)\\s+" +
         "Stat\\.?" +
-        "\\s+(?<page>\\d+)",
+        "\\s+(\\d+)",
+      fields: ['volume', 'page'],
       processor: function(match) {
-
         return {
           volume: match.volume,
           page: match.page,

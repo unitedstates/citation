@@ -23,7 +23,8 @@
       // "DC Law 18-135A"
       {
         regex:
-          context_regex + "Law\\s+(?<period>\\d+)\\s?[-–]+\\s?(?<number>\\d+\\w?)",
+          context_regex + "Law\\s+(\\d+)\\s?[-–]+\\s?(\\d+\\w?)",
+        fields: ["period", "number"],
         processor: function(captures) {
           return {
             period: captures.period,

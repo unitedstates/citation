@@ -5,13 +5,13 @@
 var Citation = require('../citation');
 
 
-exports.testRelativePatterns = function(test) {
+exports["Relative patterns"] = function(test) {
   test.expect();
 
   var cases = [
     // in 3-202 of the DC Code:
     [ 'standard',
-      'as that term is defined in § 32-701(4), to the deceased', 
+      'as that term is defined in § 32-701(4), to the deceased',
       '§ 32-701(4)',
       '32', '701', ['4']],
 
@@ -20,7 +20,7 @@ exports.testRelativePatterns = function(test) {
       'as provided in § 1-603.01(13).\n\n(b) In addition to the',
       '§ 1-603.01(13)',
       '1', '603.01', ['13']],
-    
+
     // in 3-101 of the DC Code
     [ 'section-with-dot',
       'required under § 3-101.01, the Commission',
@@ -57,7 +57,7 @@ exports.testRelativePatterns = function(test) {
     var text = details[1];
 
     var found = Citation.find(text, {
-      types: ["dc_code"], 
+      types: ["dc_code"],
       context: {dc_code: {source: "dc_code"}} // ensures we'll detect relative cites
     }).citations;
 
@@ -74,7 +74,7 @@ exports.testRelativePatterns = function(test) {
 
     // now ensure that these relative patterns are *not* picked up if the context is not provided
     var found = Citation.find(text, {
-      types: ["dc_code"], 
+      types: ["dc_code"],
       context: {} // leaving out a context means the parser will require an absolute cite
     }).citations;
 
@@ -86,13 +86,13 @@ exports.testRelativePatterns = function(test) {
 
 
 
-exports.testAbsolutePatterns = function(test) {
+exports["Absolute patterns"] = function(test) {
   test.expect();
 
   var cases = [
     // DC bill PR 20-0035 - http://openstates.org/dc/bills/20/PR20-0035/documents/DCD00005209/
     [ 'standard',
-      'March 25, 1986 (D.C. Law 6-99; D.C. Official Code 3-1202.04 (2012 Supp.)), and in accordance', 
+      'March 25, 1986 (D.C. Law 6-99; D.C. Official Code 3-1202.04 (2012 Supp.)), and in accordance',
       'D.C. Official Code 3-1202.04',
       '3', '1202.04', []],
 
@@ -110,19 +110,19 @@ exports.testAbsolutePatterns = function(test) {
 
     // hypothetical
     [ 'standard-ending-with-dot',
-      'March 25, 1986 (D.C. Law 6-99; D.C. Official Code 3-1202.04. And, in accordance', 
+      'March 25, 1986 (D.C. Law 6-99; D.C. Official Code 3-1202.04. And, in accordance',
       'D.C. Official Code 3-1202.04',
       '3', '1202.04', []],
 
     // hypothetical
     [ 'standard-with-space',
-      'March 25, 1986 (D.C. Law 6-99; D.C. Official Code 3 -1202.04. And, in accordance', 
+      'March 25, 1986 (D.C. Law 6-99; D.C. Official Code 3 -1202.04. And, in accordance',
       'D.C. Official Code 3 -1202.04',
       '3', '1202.04', []],
 
     // hypothetical
     [ 'standard-with-space-2',
-      'March 25, 1986 (D.C. Law 6-99; D.C. Official Code 3- 1202.04. And, in accordance', 
+      'March 25, 1986 (D.C. Law 6-99; D.C. Official Code 3- 1202.04. And, in accordance',
       'D.C. Official Code 3- 1202.04',
       '3', '1202.04', []]
   ];
@@ -132,7 +132,7 @@ exports.testAbsolutePatterns = function(test) {
     var text = details[1];
 
     var found = Citation.find(text, {
-      types: ["dc_code"], 
+      types: ["dc_code"],
       context: {} // leaving out a context means the parser will require an absolute cite
     }).citations;
 
@@ -152,7 +152,7 @@ exports.testAbsolutePatterns = function(test) {
 };
 
 // todo, should return *two* sections:
-// DC mayoral order 2013-060, download PDF at 
+// DC mayoral order 2013-060, download PDF at
 // [ 'two-sections-with-and'
 //   'December 24, 1973, 87 Stat. 790, Pub. L. 93-198, D.C. Official Code § 1-204.22(2) and (11) (2012 Supp.), and',
 //   'D.C. Official Code § 1-204.22(2) and (11)',

@@ -5,22 +5,22 @@
 
 var Citation = require('../citation');
 
-exports.testPatterns = function(test) {
+exports["All patterns"] = function(test) {
   test.expect();
 
-var cases = [
-    // text copied from the DC Code Credits
-    ["110 Stat. 548", "Basic citation", "110 Stat. 548", 
-    "110", "548", "stat/110/548"],
-    ["Mar. 3, 1887, 24 Stat. 501, ch. 355", "DC Code Credits", 
-    "24 Stat. 501", "24", "501", "stat/24/501"],
-]
- 
- for (var i=0; i<cases.length; i++) {
+  var cases = [
+      // text copied from the DC Code Credits
+      ["110 Stat. 548", "Basic citation", "110 Stat. 548",
+      "110", "548", "stat/110/548"],
+      ["Mar. 3, 1887, 24 Stat. 501, ch. 355", "DC Code Credits",
+      "24 Stat. 501", "24", "501", "stat/24/501"],
+  ]
+
+  for (var i=0; i<cases.length; i++) {
     var details = cases[i];
 
     var text = details[0];
-    var found = Citation.find(text).citations;
+    var found = Citation.find(text, {types: "stat"}).citations;
     test.equal(found.length, 1);
 
     if (found.length == 1) {

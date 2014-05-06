@@ -29,10 +29,13 @@
     // 23 CFR 650, Subpart A
     {
       regex:
-        "(?<title>\\d+)\\s?" +
+        "(\\d+)\\s?" +
         "C\\.?\\s?F\\.?\\s?R\\.?" +
         "(?:[\\s,]+(?:§+|parts?))?" +
-        "\\s*(?<sections>(?:\\d+\\.?\\d*(?:\\s*\\((?:[a-zA-Z\\d]{1,2}|[ixvIXV]+)\\))*)+)",
+        "\\s*((?:\\d+\\.?\\d*(?:\\s*\\((?:[a-zA-Z\\d]{1,2}|[ixvIXV]+)\\))*)+)",
+
+      fields: ['title', 'sections'],
+
       processor: function(captures) {
         var title = captures.title;
         var part, section, subsections;
@@ -63,8 +66,9 @@
     // parts 121 and 135 of Title 14 of the Code of Federal Regulations
     // {
     //   regex:
-    //     "section (?<section>\\d+[\\w\\d\-]*)(?<subsections>(?:\\([^\\)]+\\))*)" +
-    //     "(?:\\s+of|\\,) title (?<title>\\d+)",
+    //     "section (\\d+[\\w\\d\-]*)((?:\\([^\\)]+\\))*)" +
+    //     "(?:\\s+of|\\,) title (\\d+)",
+    //   fields: ['section', 'subsections', 'title'],
     //   processor: function(captures) {
     //     return {
     //       title: captures.title,

@@ -15,9 +15,10 @@
     // 54 DCR 8014
     {
       regex:
-        "(?<volume>\\d+)\\s+" +
+        "(\\d+)\\s+" +
         "DCR" +
-        "\\s+(?<page>\\d+)",
+        "\\s+(\\d+)",
+      fields: ['volume', 'page'],
       processor: function(match) {
         return {
           volume: match.volume,

@@ -29,10 +29,12 @@
         // section 16-2326.01
         {
           regex:
-            "(?:section(s)?|§+)\\s+(?<title>\\d+A?)" +
+            "(?:section(?:s)?|§+)\\s+(\\d+A?)" +
             "\\s?\\-\\s?" +
-            "(?<section>[\\w\\d]+(?:\\.?[\\w\\d]+)?)" +      // section identifier, letters/numbers/dots
-            "(?<subsections>(?:\\([^\\)]+\\))*)", // any number of adjacent parenthesized subsections
+            "([\\w\\d]+(?:\\.?[\\w\\d]+)?)" +  // section identifier, letters/numbers/dots
+            "((?:\\([^\\)]+\\))*)", // any number of adjacent parenthesized subsections
+
+          fields: ["title", "section", "subsections"],
 
           processor: function(captures) {
             var title = captures.title;
@@ -62,10 +64,12 @@
         {
           regex:
             "D\\.?C\\.? Official Code\\s+" + // absolute identifier
-            "(?:§+\\s+)?(?<title>\\d+A?)" +            // optional section sign, plus title
+            "(?:§+\\s+)?(\\d+A?)" +            // optional section sign, plus title
             "\\s?\\-\\s?" +
-            "(?<section>[\\w\\d]+(?:\\.?[\\w\\d]+)?)" +      // section identifier, letters/numbers/dots
-            "(?<subsections>(?:\\([^\\)]+\\))*)", // any number of adjacent parenthesized subsections
+            "([\\w\\d]+(?:\\.?[\\w\\d]+)?)" +      // section identifier, letters/numbers/dots
+            "((?:\\([^\\)]+\\))*)", // any number of adjacent parenthesized subsections
+
+          fields: ["title", "section", "subsections"],
 
           processor: function(captures) {
             var title = captures.title;

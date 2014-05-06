@@ -25,9 +25,10 @@
     // "section 4402(e)(1) of Public Law 110-2"
     {
       regex:
-        "(?:section (?<section>\\d+[\\w\\d\-]*)(?<subsections>(?:\\([^\\)]+\\))*) of )?" +
-        "(?<type>pub(?:lic)?|priv(?:ate)?)\\.?\\s*l(?:aw)?\\.?(?:\\s*No\\.?)?" +
-        " +(?<congress>\\d+)[-–]+(?<number>\\d+)",
+        "(?:section (\\d+[\\w\\d\-]*)((?:\\([^\\)]+\\))*) of )?" +
+        "(pub(?:lic)?|priv(?:ate)?)\\.?\\s*l(?:aw)?\\.?(?:\\s*No\\.?)?" +
+        " +(\\d+)[-–]+(\\d+)",
+      fields: ['section', 'subsections', 'type', 'congress', 'number'],
       processor: function(captures) {
         var sections = [];
         if (captures.section) sections.push(captures.section);
@@ -48,8 +49,9 @@
     // "section 4402(e)(1) of PL 19-4"
     {
       regex:
-        "(?:section (?<section>\\d+[\\w\\d\-]*)(?<subsections>(?:\\([^\\)]+\\))*) of )?" +
-        "P\\.?L\\.? +(?<congress>\\d+)[-–](?<number>\\d+)",
+        "(?:section (\\d+[\\w\\d\-]*)((?:\\([^\\)]+\\))*) of )?" +
+        "P\\.?L\\.? +(\\d+)[-–](\\d+)",
+      fields: ['section', 'subsections', 'congress', 'number'],
       processor: function(captures) {
         sections = [];
         if (captures.section) sections.push(captures.section);
