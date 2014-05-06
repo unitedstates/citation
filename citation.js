@@ -8,16 +8,9 @@
 
 
 /*
- TODO: move this out of the namespace, see #56
+ TODO:
+ * move this out of the namespace, see #56
  * rework how citators load Citation
- * replace _.contains with indexOf (?)
- * replace _.omit with ?
- * replace _.extend with Object.extend ?
- * replace _.find with ?
- * replace _.flatten with ?
- * replace _.compact with filter (null || undefined)
- * replace _.intersection with ?
- * replace _.isArray with ?
  * move XRegExp into the closure
 */
 
@@ -79,7 +72,8 @@ Citation = {
     return {citations: results};
   },
 
-  // return an array of matched cites
+
+  // run the citators over the text, return an array of matched cites
   extract: function(text, options) {
     if (!options) options = {};
 
