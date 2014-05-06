@@ -293,7 +293,7 @@ exports["Basic ranges (explicit)"] = function(test) {
   test.done();
 };
 
-exports["Baic subsection ranges"] = function(test) {
+exports["Basic subsection ranges"] = function(test) {
   test.expect();
   var text, found, citation;
 
