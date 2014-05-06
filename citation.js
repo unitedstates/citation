@@ -111,69 +111,71 @@ Citation = {
 
     ///////////// prepare citation patterns /////////////
 
-    // figure out which patterns we're going apply, assign each an identifier
+    // will hold the calculated context-specific patterns we are to run
+    // over the given text, tracked by index we expect to find them at.
+    // nextIndex tracks a running index as we loop through patterns.
+    // (citators could just be called indexedPatterns)
     var citators = {};
+    var nextIndex = 0;
 
-    // first, handle all regex-based citators
+    // Go through every regex-based citator and prepare a set of patterns,
+    // indexed by the order of a matched arguments array.
     types.forEach(function(type) {
       if (Citation.types[type].type != "regex") return;
 
+      // Calculate the patterns this citator will contribute to the parse.
+      // (individual parsers can opt to make their parsing context-specific)
       var patterns = Citation.types[type].patterns;
-
-      // individual parsers can opt to make their parsing context-specific
       if (typeof(patterns) == "function")
         patterns = patterns(context[type] || {});
 
-      patterns.forEach(function(pattern, i) {
-        var name = type + "_" + i; // just needs to be unique
-
-        // small pre-process on each regex - prefix named captures to ensure uniqueness.
-        // will be un-prefixed before passing to processor.
-        var uniquified = pattern.regex
-          .replace(new RegExp("\\(\\?<([a-z0-9]+)>", "ig"), "(?<" + name + "_" + "$1>");
-
-        citators[name] = {
-          regex: uniquified,
-          processor: pattern.processor,  // original processor method per-cite, expects named captures
-          type: type // store so we can figure out per-cite what we're talking about
-        };
+      // add each pattern, keeping a running tally of what we would
+      // expect its primary index to be when found in the master regex.
+      patterns.forEach(function(pattern) {
+        pattern.type = type; // will be needed later
+        citators[nextIndex] = pattern;
+        nextIndex += pattern.fields.length + 1;
       });
     });
 
-    // if there are any regex-based citators being applied, use them
-    var names = Object.keys(citators);
+    // If there are any regex-based patterns being applied, combine them
+    // and run a find/replace over the string.
+    var regexes = underscore.values(citators).map(function(pattern) {return pattern.regex});
+    if (regexes.length > 0) {
 
-    if (names.length > 0) {
+      // merge all regexes into one, so that each pattern will begin at a predictable place
+      var regex = new RegExp("(" + regexes.join(")|(") + ")", "ig");
 
-      // now let's merge each pattern's regex into a single regex, using named capture groups
-      var regex = names.map(function(name) {
-        return "(?<" + name + ">" + citators[name].regex + ")";
-      }).join("|");
-
-      regex = new XRegExp(regex, "ig");
-
-      var replaced = XRegExp.replace(text, regex, function() {
+      var replaced = text.replace(regex, function() {
         var match = arguments[0];
 
-        // establish which pattern matched - each pattern name must be unique (even among individual named groups)
-        var name = underscore.find(names, function(citeName) {if (match[citeName]) return true;});
+        // offset is second-to-last argument
+        var index = arguments[arguments.length - 2];
 
-        var type = citators[name].type;
-        var processor = citators[name].processor;
+        // pull out just the regex-captured matches
+        var captures = Array.prototype.slice.call(arguments, 1, -2);
 
-        // extract and de-prefix any captured groups from the individual citator's regex
-        var captures = Citation.capturesFrom(name, match);
+        // find the first matched index in the captures
+        var matchIndex;
+        for (matchIndex=0; matchIndex<captures.length; matchIndex++)
+          if (captures[matchIndex]) break;
+
+        // look up the citator by the index we expected it at
+        var citator = citators[matchIndex];
+        if (!citator) return null; // what?
+        var type = citator.type;
 
         // process the matched data into the final object
-        var cites = processor(captures);
-        if (!underscore.isArray(cites)) cites = [cites]; // one match can generate one or many citation results (e.g. ranges)
+        var ourCaptures = Array.prototype.slice.call(captures, matchIndex + 1);
+        var namedMatch = Citation.matchFor(ourCaptures, citator);
+        var cites = citator.processor(namedMatch);
 
+        // one match can generate one or many citation results (e.g. ranges)
+        if (!underscore.isArray(cites)) cites = [cites];
 
         // put together the match-level information
-        var matchInfo = {type: type};
+        var matchInfo = {type: citator.type};
         matchInfo.match = match.toString(); // match data can be converted to the plain string
-
-        var index = arguments[arguments.length - 2]; // offset is second-to-last argument
 
         // store the matched character offset, except if we're replacing
         if (!replace)
@@ -253,15 +255,13 @@ Citation = {
     return results;
   },
 
-  // internal function - given a XRegExp match object, and a name prefix,
-  // return a new object with the de-prefixed captured values
-  capturesFrom: function(name, match) {
-    var captures = {};
-    Object.keys(match).forEach(function(key) {
-      if (key.indexOf(name + "_") === 0)
-        captures[key.replace(name + "_", "")] = match[key];
-    });
-    return captures;
+  // given an array of captures *beginning* with values the pattern
+  // knows how to process, turn it into an object with those keys.
+  matchFor: function(captures, pattern) {
+    var match = {};
+    for (var i=0; i<captures.length; i++)
+      match[pattern.fields[i]] = captures[i];
+    return match;
   },
 
   selectedTypes: function(options) {

@@ -6,7 +6,7 @@ var Citation = require('../citation');
 var util = require('util');
 
 
-exports.testAllTypes = function(test) {
+exports["test all types"] = function(test) {
   test.expect();
   var text, results;
 
@@ -29,7 +29,7 @@ exports.testAllTypes = function(test) {
   test.done();
 };
 
-exports.testTypes = function(test) {
+exports["test types"] = function(test) {
   test.expect();
   var text, results;
 
@@ -59,13 +59,13 @@ exports.testTypes = function(test) {
 };
 
 
-exports.testReplacement = function(test) {
+exports["test replacement"] = function(test) {
   test.expect();
 
   var text = "of the Administrative Procedure Act (5 U.S.C. 552) and some";
 
   var results = Citation.find(text, {
-    types: ["usc"],
+    types: ["usc", "stat"],
     replace: function(cite) {
       return "<a href=\"http://www.law.cornell.edu/uscode/text/" + cite.usc.title + "/" + cite.usc.section + "\">" + cite.match + "</a>";
     }
@@ -90,7 +90,7 @@ exports.testReplacement = function(test) {
   test.done();
 };
 
-exports.testReplacementByKey = function(test) {
+exports["test replacement by key"] = function(test) {
   test.expect();
 
   // test out alternate form of replacement - a function with keys per-type of cite
@@ -119,7 +119,7 @@ exports.testReplacementByKey = function(test) {
   test.done();
 };
 
-exports.testReplacementDefault = function(test) {
+exports["test replacement default"] = function(test) {
   test.expect();
 
   var text = "of the Administrative Procedure Act (5 U.S.C. 552) and some";
