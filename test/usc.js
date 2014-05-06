@@ -6,7 +6,7 @@
 var Citation = require('../citation');
 
 
-exports.testBasicPattern = function(test) {
+exports["Basic pattern"] = function(test) {
   test.expect();
 
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr3604ih/xml/BILLS-112hr3604ih.xml
@@ -42,7 +42,7 @@ exports.testBasicPattern = function(test) {
   test.done();
 };
 
-exports.testNearby = function(test) {
+exports["Multiple nearby cites"] = function(test) {
   test.expect();
 
   var text = "[E] Section 824(g) is codified at 22 U.S.C. § 4064(g) See also U.S.AID " +
@@ -60,7 +60,7 @@ exports.testNearby = function(test) {
   test.done();
 }
 
-exports.testExcerpt = function(test) {
+exports["Basic excerpting"] = function(test) {
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr2045ih/html/BILLS-112hr2045ih.htm
   var tests = [
     ["21 U.S.C. 321(ff)(1)",
@@ -105,7 +105,7 @@ exports.testExcerpt = function(test) {
 };
 
 
-exports.testBasicWithSubsections = function(test) {
+exports["Basic subsection parsing"] = function(test) {
   test.expect();
 
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr3604ih/xml/BILLS-112hr3604ih.xml
@@ -131,7 +131,7 @@ exports.testBasicWithSubsections = function(test) {
 // this is the worst kind of hyphen, a valid section entry with a number on either end
 // for what produces this, see:
 // http://www.law.cornell.edu/uscode/text/50/chapter-15/subchapter-I
-exports.testSectionWithHyphen = function(test) {
+exports["Sections with hyphens"] = function(test) {
   test.expect();
 
   // http://www.gpo.gov/fdsys/pkg/BILLS-111s3611es/xml/BILLS-111s3611es.xml
@@ -176,7 +176,7 @@ exports.testSectionWithHyphen = function(test) {
 // Range expansion just finds the first and last.
 // When the range does not have double section symbols, treat it as ambiguous,
 // and return it as both an original section, and as an expanded range.
-exports.testRange = function(test) {
+exports["Basic ranges"] = function(test) {
   test.expect();
   var text, found;
 
@@ -262,7 +262,7 @@ exports.testRange = function(test) {
 
 
 // explicit ranges (with §§) interpret ranges unambiguously
-exports.testRangeExplicit = function(test) {
+exports["Basic ranges (explicit)"] = function(test) {
   test.expect();
 
   // modified version of:
@@ -293,7 +293,7 @@ exports.testRangeExplicit = function(test) {
   test.done();
 };
 
-exports.testSubsectionRanges = function(test) {
+exports["Basic subsection ranges"] = function(test) {
   test.expect();
   var text, found, citation;
 
@@ -341,7 +341,7 @@ exports.testSubsectionRanges = function(test) {
 };
 
 
-exports.testCasualPattern = function(test) {
+exports["Casual pattern"] = function(test) {
   test.expect();
 
   // http://www.gpo.gov/fdsys/pkg/BILLS-111s3663pcs/xml/BILLS-111s3663pcs.xml
@@ -385,7 +385,7 @@ exports.testCasualPattern = function(test) {
 };
 
 
-exports.testCasualWithSubsections = function(test) {
+exports["Casual pattern (with subsections)"] = function(test) {
   test.expect();
 
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr3261ih/xml/BILLS-112hr3261ih.xml
@@ -428,7 +428,7 @@ exports.testCasualWithSubsections = function(test) {
   but search strings users might enter into a search engine.
 */
 
-exports.testIgnoresSectionSymbol = function(test) {
+exports["Section symbol is ignored"] = function(test) {
   test.expect();
 
   var text = "  5 USC § 552 "; // spaces left intentionally
@@ -447,7 +447,7 @@ exports.testIgnoresSectionSymbol = function(test) {
   test.done();
 };
 
-exports.testAppendix = function(test) {
+exports["'Appendix' titles"] = function(test) {
   test.expect();
 
   // http://www.gpo.gov/fdsys/pkg/BILLS-112s3608is/xml/BILLS-112s3608is.xml
@@ -467,7 +467,7 @@ exports.testAppendix = function(test) {
   test.done();
 };
 
-exports.testNote = function(test) {
+exports["'note' marks"] = function(test) {
   test.expect();
 
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr6567ih/xml/BILLS-112hr6567ih.xml
@@ -488,7 +488,7 @@ exports.testNote = function(test) {
 }
 
 
-exports.testEtSeq = function(test) {
+exports["'et seq' marks"] = function(test) {
   test.expect();
 
   // from http://www.gpo.gov/fdsys/pkg/BILLS-113s1302rs/html/BILLS-113s1302rs.htm
@@ -509,7 +509,7 @@ exports.testEtSeq = function(test) {
 }
 
 // for now, no chapters
-exports.testChapters = function(test) {
+exports["Chapters (unsupported)"] = function(test) {
   test.expect();
 
   var text = "46 U.S.C. Chapters 701, 3306, 3703";
@@ -524,7 +524,7 @@ exports.testChapters = function(test) {
 }
 
 // can opt-in to asking for all parents of a subsection to be returned too
-exports.testParents = function(test) {
+exports["Parents are supported"] = function(test) {
   test.expect();
   var text, found, citation;
 

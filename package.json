@@ -2,7 +2,7 @@
   "name": "citation",
   "author": "Eric Mill <eric@konklone.com",
   "description": "Legal citation extractor. Standalone library, and optional HTTP API.",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "license": "cc0",
   "keywords": [
     "congress",
@@ -26,7 +26,6 @@
   },
   "dependencies": {
     "underscore": "*",
-    "xregexp": "*",
     "express": "3.x",
     "reloader": "*",
     "optimist": "*",

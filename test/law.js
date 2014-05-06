@@ -1,27 +1,27 @@
 /*
-  Tests for extracting slip law citations. 
+  Tests for extracting slip law citations.
   Each test should link to a real world circumstance where possible.
 */
 
 var Citation = require('../citation');
 
 
-exports.testPatterns = function(test) {
+exports["Basic patterns"] = function(test) {
   var cases = [
     // variations on text of http://www.gpo.gov/fdsys/pkg/BILLS-112hr2367ih/xml/BILLS-112hr2367ih.xml
-    ["Pub. L. 96–164", "us-law/public/96/164", "public", "96", "164", 
+    ["Pub. L. 96–164", "us-law/public/96/164", "public", "96", "164",
       "Nuclear Energy Authorization Act of 1980 (Pub. L. 96–164; "],
-    ["Pub. L. 96-164", "us-law/public/96/164", "public", "96", "164", 
+    ["Pub. L. 96-164", "us-law/public/96/164", "public", "96", "164",
       "Nuclear Energy Authorization Act of 1980 (Pub. L. 96-164; "],
-    ["Pub. L. No. 96-164", "us-law/public/96/164", "public", "96", "164", 
+    ["Pub. L. No. 96-164", "us-law/public/96/164", "public", "96", "164",
       "Nuclear Energy Authorization Act of 1980 (Pub. L. No. 96-164; "],
-    ["Pub L 96–164", "us-law/public/96/164", "public", "96", "164", 
+    ["Pub L 96–164", "us-law/public/96/164", "public", "96", "164",
       "Nuclear Energy Authorization Act of 1980 (Pub L 96–164; "],
-    ["Pub L No 96-164", "us-law/public/96/164", "public", "96", "164", 
+    ["Pub L No 96-164", "us-law/public/96/164", "public", "96", "164",
       "Nuclear Energy Authorization Act of 1980 (Pub L No 96-164; "],
-    ["Public Law 96–164", "us-law/public/96/164", "public", "96", "164", 
+    ["Public Law 96–164", "us-law/public/96/164", "public", "96", "164",
       "Nuclear Energy Authorization Act of 1980 (Public Law 96–164; "],
-    ["Public   Law  96–164", "us-law/public/96/164", "public", "96", "164", 
+    ["Public   Law  96–164", "us-law/public/96/164", "public", "96", "164",
       "Nuclear Energy Authorization Act of 1980 (Public   Law  96–164; "],
 
     // from DC Code credits for 1-201.01
@@ -31,25 +31,25 @@ exports.testPatterns = function(test) {
       "111 Stat. 251, Pub.L.No. 105-33, title XI"], // made-up
 
     // summary for http://beta.congress.gov/bill/112th/house-bill/1
-    ["P.L. 111-80", "us-law/public/111/80", "public", "111", "80", 
-      "Related Agencies Appropriations Act, 2010 (P.L. 111-80);"], 
-    ["PL 111-83", "us-law/public/111/83", "public", "111", "83", 
+    ["P.L. 111-80", "us-law/public/111/80", "public", "111", "80",
+      "Related Agencies Appropriations Act, 2010 (P.L. 111-80);"],
+    ["PL 111-83", "us-law/public/111/83", "public", "111", "83",
       "Homeland Security Appropriations Act, 2010 (PL 111-83);"],
-    ["PL   111-83", "us-law/public/111/83", "public", "111", "83", 
+    ["PL   111-83", "us-law/public/111/83", "public", "111", "83",
       "Homeland Security Appropriations Act, 2010 (PL   111-83);"],
 
     // don't have a source for these yet, just theoretical
-    ["Priv. L. 96–164", "us-law/private/96/164", "private", "96", "164", 
+    ["Priv. L. 96–164", "us-law/private/96/164", "private", "96", "164",
       "Nuclear Energy Authorization Act of 1980 (Priv. L. 96–164; "],
-    ["Priv. L. 96-164", "us-law/private/96/164", "private", "96", "164", 
+    ["Priv. L. 96-164", "us-law/private/96/164", "private", "96", "164",
       "Nuclear Energy Authorization Act of 1980 (Priv. L. 96-164; "],
-    ["Priv. L. No. 96-164", "us-law/private/96/164", "private", "96", "164", 
+    ["Priv. L. No. 96-164", "us-law/private/96/164", "private", "96", "164",
       "Nuclear Energy Authorization Act of 1980 (Priv. L. No. 96-164; "],
-    ["Priv L 96–164", "us-law/private/96/164", "private", "96", "164", 
+    ["Priv L 96–164", "us-law/private/96/164", "private", "96", "164",
       "Nuclear Energy Authorization Act of 1980 (Priv L 96–164; "],
-    ["Priv L No 96-164", "us-law/private/96/164", "private", "96", "164", 
+    ["Priv L No 96-164", "us-law/private/96/164", "private", "96", "164",
       "Nuclear Energy Authorization Act of 1980 (Priv L No 96-164; "],
-    ["Private Law 96–164", "us-law/private/96/164", "private", "96", "164", 
+    ["Private Law 96–164", "us-law/private/96/164", "private", "96", "164",
       "Nuclear Energy Authorization Act of 1980 (Private Law 96–164; "],
   ];
 
@@ -76,7 +76,7 @@ exports.testPatterns = function(test) {
   test.done();
 };
 
-exports.testSubsections = function(test) {
+exports["Subsections"] = function(test) {
   var cases = [
     // variations on text of http://www.gpo.gov/fdsys/pkg/BILLS-112hr6567ih/xml/BILLS-112hr6567ih.xml
     ["Section 4402 of Public Law 107–171", "us-law/public/107/171/4402", "us-law/public/107/171",
@@ -115,12 +115,12 @@ exports.testSubsections = function(test) {
 };
 
 // can opt-in to asking for all parents of a subsection to be returned too
-exports.testParents = function(test) {
+exports["Parent detection"] = function(test) {
   test.expect();
   var text, found, citation;
 
   text = "section 4402(e)(1) of Public Law 110-2";
-  
+
   found = Citation.find(text, {types: "law", parents: false}).citations;
   test.equal(found.length, 1);
   test.equal(found[0].law.id, "us-law/public/110/2/4402/e/1");

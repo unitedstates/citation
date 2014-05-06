@@ -25,8 +25,9 @@
         "Va\\.? Code\\.?" +
         "(?:\\s+Ann\\.?)?" +
         "(?:\\s+§+)?" +
-        "\\s+(?<title>[\\d\\.]+)\\-(?<section>[\\d\\.:]+)" +
-        "(?:\\s+\\((West )?(?<year>[12]\\d{3})\\))?",
+        "\\s+([\\d\\.]+)\\-([\\d\\.:]+)" +
+        "(?:\\s+\\((?:West )?([12]\\d{3})\\))?",
+      fields: ['title', 'section', 'year'],
       processor: function (captures) {
         return {
           title: captures.title,

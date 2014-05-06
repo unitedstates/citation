@@ -6,7 +6,7 @@
 var Citation = require('../citation');
 
 
-exports.testPatterns = function(test) {
+exports["All patterns"] = function(test) {
 
   var cases = [
     // http://dccode.org/browser/#/3/3-101.01

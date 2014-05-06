@@ -4,13 +4,15 @@
 })({
   type: "regex",
 
-  // normalize all cites to an ID, with and without subsections
+  // normalize all cites to an ID, with and without subsections,
+  // TODO: kill this?
   standardize: function(data) {
     return {
       id: underscore.flatten(["usc", data.title, data.section, data.subsections]).join("/"),
       section_id: ["usc", data.title, data.section].join("/")
     };
   },
+
 
   // field to calculate parents from
   parents_by: "subsections",
@@ -27,12 +29,18 @@
     // "50 U.S.C. App. §§ 451--473" - range
     {
       regex:
-        "(?<title>\\d+)\\s+" +
-        "(?<whatever>U\\.?\\s?S\\.?\\s?C\\.?)" +
-        "(?:\\s+(?<appendix>App)\.?)?" +
-        "(?:\\s+(?<symbol>§+))?" +
-        "\\s+(?<sections>(?:\\-*\\d+[\\w\\d\\-]*(?:\\([^\\)]+\\))*)+)" +
-        "(?:\\s+(?<note>note|et\\s+seq))?",
+        "(\\d+)\\s+" + // title
+        "U\\.?\\s?S\\.?\\s?C\\.?" +
+        "(?:\\s+(App)\.?)?" + // appendix
+        "(?:\\s+(§+))?" + // symbol
+        "\\s+((?:\\-*\\d+[\\w\\d\\-]*(?:\\([^\\)]+\\))*)+)" + // sections
+        "(?:\\s+(note|et\\s+seq))?", // note
+
+      fields: [
+        'title', 'appendix',
+        'symbol', 'sections', 'note'
+      ],
+
       processor: function(match) {
         // a few titles have distinct appendixes
         var title = match.title;
@@ -82,8 +90,11 @@
     // "section 404o-1(a) of title 50"
     {
       regex:
-        "section (?<section>\\d+[\\w\\d\-]*)(?<subsections>(?:\\([^\\)]+\\))*)" +
-        "(?:\\s+of|\\,) title (?<title>\\d+)",
+        "section (\\d+[\\w\\d\-]*)((?:\\([^\\)]+\\))*)" +
+        "(?:\\s+of|\\,) title (\\d+)",
+
+      fields: ['section', 'subsections', 'title'],
+
       processor: function(match) {
         return {
           title: match.title,

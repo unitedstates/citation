@@ -4,12 +4,12 @@
 
 var Citation = require('../citation');
 
-exports.testPattern = function(test) {
+exports["All patterns"] = function(test) {
   test.expect();
 
   var cases = [
     [ 'standard',
-      'D.C. Law 17-25, § 2(c), 54 DCR 8014', 
+      'D.C. Law 17-25, § 2(c), 54 DCR 8014',
       '54 DCR 8014',
       '54', '8014']
   ];
