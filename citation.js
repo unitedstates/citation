@@ -9,14 +9,12 @@
 
 /*
  TODO:
- * move this out of the namespace, see #56
- * rework how citators load Citation
- * move XRegExp into the closure
+ * move underscore out of the namespace, see #56
+ * rework how citators load Citation, it's hefty
 */
 
 if (typeof(require) !== "undefined") {
   underscore = require("underscore");
-  XRegExp = require('xregexp').XRegExp;
 }
 
 
