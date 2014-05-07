@@ -138,7 +138,7 @@ Citation = {
 
     // If there are any regex-based patterns being applied, combine them
     // and run a find/replace over the string.
-    var regexes = underscore.values(citators).map(function(pattern) {return pattern.regex});
+    var regexes = Object.keys(citators).map(function(key) {return citators[key].regex});
     if (regexes.length > 0) {
 
       // merge all regexes into one, so that each pattern will begin at a predictable place
