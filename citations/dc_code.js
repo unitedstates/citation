@@ -40,7 +40,8 @@
             var title = captures.title;
             var section = captures.section;
             var subsections = [];
-            if (captures.subsections) subsections = underscore.compact(captures.subsections.split(/[\(\)]+/));
+            if (captures.subsections)
+              subsections = captures.subsections.split(/[\(\)]+/).filter(function(x) {return x});
 
             return {
               title: title,
@@ -76,7 +77,7 @@
             var section = captures.section;
 
             var subsections = [];
-            if (captures.subsections) subsections = underscore.compact(captures.subsections.split(/[\(\)]+/));
+            if (captures.subsections) subsections = captures.subsections.split(/[\(\)]+/).filter(function(x) {return x});
 
             return {
               title: title,

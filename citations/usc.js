@@ -8,7 +8,7 @@
   // TODO: kill this?
   standardize: function(data) {
     return {
-      id: ["usc", data.title, data.section].concat(data.subsections).join("/"),
+      id: ["usc", data.title, data.section].concat(data.subsections || []).join("/"),
       section_id: ["usc", data.title, data.section].join("/")
     };
   },
@@ -69,7 +69,7 @@
 
         return sections.map(function(section) {
           // separate subsections for each section being considered
-          var split = underscore.compact(section.split(/[\(\)]+/));
+          var split = section.split(/[\(\)]+/).filter(function(x) {return x});
           section = split[0];
           subsections = split.splice(1);
           if (match.note)
@@ -99,7 +99,7 @@
         return {
           title: match.title,
           section: match.section,
-          subsections: underscore.compact(match.subsections.split(/[\(\)]+/))
+          subsections: match.subsections.split(/[\(\)]+/).filter(function(x) {return x})
         };
       }
     }

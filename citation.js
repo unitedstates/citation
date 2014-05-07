@@ -232,7 +232,7 @@ Citation = {
     if (types.indexOf("judicial") != -1)
       results = results.concat(Citation.types.judicial.extract(text));
 
-    var response = {citations: underscore.compact(results)};
+    var response = {citations: results};
     if (options.replace) response.text = replaced;
 
     return response;

@@ -7,7 +7,7 @@
   standardize: function(data) {
     var section = data.section || data.part;
     return {
-      id: underscore.compact(["cfr", data.title, section].concat(data.subsections)).join("/")
+      id: ["cfr", data.title, section].concat(data.subsections || []).join("/")
     };
   },
 
@@ -41,13 +41,13 @@
         var part, section, subsections;
 
         // separate subsections for each section being considered
-        var split = underscore.compact(captures.sections.split(/[\(\)]+/));
+        var split = captures.sections.split(/[\(\)]+/).filter(function(x) {return x;});
         section = split[0].trim();
         subsections = split.splice(1);
 
-        if (section.indexOf(".") > 0) {
+        if (section.indexOf(".") > 0)
           part = section.split(".")[0];
-        } else {
+        else {
           part = section;
           section = null;
           subsections = null; // don't include empty array
@@ -73,7 +73,7 @@
     //     return {
     //       title: captures.title,
     //       section: captures.section,
-    //       subsections: underscore.compact(captures.subsections.split(/[\(\)]+/))
+    //       subsections: captures.subsections.split(/[\(\)]+/).filter(function(x) {return x;})
     //     };
     //   }
     // }
