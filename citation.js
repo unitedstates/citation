@@ -169,7 +169,7 @@ Citation = {
         var cites = citator.processor(namedMatch);
 
         // one match can generate one or many citation results (e.g. ranges)
-        if (!underscore.isArray(cites)) cites = [cites];
+        if (!Array.isArray(cites)) cites = [cites];
 
         // put together the match-level information
         var matchInfo = {type: citator.type};
