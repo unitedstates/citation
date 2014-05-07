@@ -11,7 +11,11 @@ if (typeof(require) !== "undefined")
     return walverine.get_citations(text).map(function(cite) {
       var result = {};
       result.match = cite.match;
-      result.judicial = underscore.omit(cite, "match");
+
+      // modify in place
+      delete cite.match;
+
+      result.judicial = cite;
       return result;
     });
   }

@@ -54,7 +54,10 @@ singles.forEach(function(single) {
     var actual = Citation.find(text, {types: "judicial"}).citations;
     var actual = actual.map(function(result) {
       // Not worried about testing these at the moment.
-      result.judicial = underscore.omit(result.judicial, ["base_citation", "as_regex", "as_html"]);
+      ["base_citation", "as_regex", "as_html"].forEach(function(key) {
+        delete result.judicial[key];
+      });
+
       return result;
     });
     var expected = single[2];
@@ -71,10 +74,12 @@ singles.forEach(function(single) {
     test.expect();
 
     var text = single[0];
-    var actual = Citation.find(text, {types: "judicial"}).citations;
+    var actual = Citation.find(text).citations;
     var actual = actual.map(function(result) {
       // Not worried about testing these at the moment.
-      result.judicial = underscore.omit(result.judicial, ["base_citation", "as_regex", "as_html"]);
+      ["base_citation", "as_regex", "as_html"].forEach(function(key) {
+        delete result.judicial[key];
+      });
       return result;
     });
     var expected = single[2];

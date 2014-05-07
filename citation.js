@@ -203,11 +203,11 @@ Citation = {
           var result = {};
 
           // match-level info
-          underscore.extend(result, matchInfo);
+          Citation.u.extend(result, matchInfo);
 
           // cite-level info, plus ID standardization
           result[type] = cite;
-          underscore.extend(result[type], Citation.types[type].standardize(result[type]));
+          Citation.u.extend(result[type], Citation.types[type].standardize(result[type]));
 
           results.push(result);
 
@@ -229,7 +229,7 @@ Citation = {
     }
 
     // TODO: do for any external cite types, not just "judicial"
-    if (underscore.contains(types, "judicial"))
+    if (types.indexOf("judicial") != -1)
       results = results.concat(Citation.types.judicial.extract(text));
 
     var response = {citations: underscore.compact(results)};
@@ -279,6 +279,24 @@ Citation = {
       types = Object.keys(Citation.types);
 
     return types;
+  },
+
+  // small replacement for several functions previously served by
+  // the `underscore` library.
+  u: {
+    extend: function(obj) {
+      Array.prototype.slice.call(arguments, 1).forEach(function(source) {
+        if (source) {
+          for (var prop in source)
+            obj[prop] = source[prop];
+        }
+      });
+      return obj;
+    },
+
+    contains: function(obj) {
+      return obj.indexOf(target) != -1;
+    }
   }
 
 };
