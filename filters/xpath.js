@@ -1,7 +1,4 @@
-(function(def) {
-  if (typeof module !== 'undefined') module.exports = def;
-  if (typeof Citation !== 'undefined' && Citation.filters) Citation.filters.xpath = def;
-})({
+module.exports = {
 
   // INCOMPLETE: An XPath filter.
   //
@@ -34,4 +31,4 @@
 
   from: function(text, options, extract) {}
 
-});
+};

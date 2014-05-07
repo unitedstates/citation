@@ -13,7 +13,8 @@
 */
 
 var Citation = require('../citation');
-var underscore = require('underscore');
+Citation.types.judicial = require("../citations/judicial");
+
 var deepEqual = require('deep-equal');
 
 var singles = [

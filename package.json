@@ -25,7 +25,6 @@
     "start": "node bin/cite-server"
   },
   "dependencies": {
-    "underscore": "*",
     "express": "3.x",
     "reloader": "*",
     "optimist": "*",

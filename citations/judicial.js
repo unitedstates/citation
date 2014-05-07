@@ -1,10 +1,6 @@
-if (typeof(require) !== "undefined")
-  walverine = require("walverine");
+var walverine = require("walverine");
 
-(function(def) {
-    if (typeof module !== 'undefined') module.exports = def;
-    if (typeof Citation !== 'undefined' && Citation.types) Citation.types.judicial = def;
-})({
+module.exports = {
   type: "external",
 
   extract: function(text) {
@@ -19,4 +15,4 @@ if (typeof(require) !== "undefined")
       return result;
     });
   }
-});
+};

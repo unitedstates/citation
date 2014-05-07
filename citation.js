@@ -7,18 +7,8 @@
  */
 
 
-/*
- TODO:
- * move underscore out of the namespace, see #56
- * rework how citators load Citation, it's hefty
-*/
+module.exports = (function(Citation) {
 
-if (typeof(require) !== "undefined") {
-  underscore = require("underscore");
-}
-
-
-// (function(Citation) {
 Citation = {
 
   // will be filled in by individual citation types as available
@@ -309,6 +299,10 @@ Citation = {
 
       return impl(array, []);
     }
+  },
+
+  use: function(type) {
+    Citation.types[type] = require("./citations/" + type);
   }
 
 };
@@ -324,16 +318,14 @@ if (typeof(require) !== "undefined") {
   Citation.types.dc_register = require("./citations/dc_register");
   Citation.types.dc_law = require("./citations/dc_law");
   Citation.types.stat = require("./citations/stat");
-  Citation.types.judicial = require("./citations/judicial");
 
   Citation.filters.lines = require("./filters/lines");
 }
 
-
+// auto-load in-browser
 if (typeof(window) !== "undefined")
   window.Citation = Citation;
 
-if (typeof(module) !== "undefined" && module.exports)
-  module.exports = Citation;
+return Citation;
 
-// })();
+})();

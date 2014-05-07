@@ -1,7 +1,4 @@
-(function(def) {
-  if (typeof module !== 'undefined') module.exports = def;
-  if (typeof Citation !== 'undefined' && Citation.filters) Citation.filters.lines = def;
-})({
+module.exports = {
 
   // A line-by-line filter.
   //
@@ -20,4 +17,4 @@
     });
   }
 
-});
+};

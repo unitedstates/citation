@@ -1,7 +1,4 @@
-(function(def) {
-    if (typeof module !== 'undefined') module.exports = def;
-    if (typeof Citation !== 'undefined' && Citation.types) Citation.types.stat = def;
-})({
+module.exports = {
   type: "regex",
 
   // normalize all cites to an ID
@@ -28,4 +25,4 @@
       }
     }
   ]
-});
+};
