@@ -246,7 +246,7 @@ Citation = {
     var results = [];
 
     for (var i=citation[field].length; i >= 0; i--) {
-      var parent = underscore.clone(citation);
+      var parent = Citation.u.extend({}, citation);
       parent[field] = parent[field].slice(0, i);
       results.push(parent);
     }
