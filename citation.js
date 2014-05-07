@@ -273,9 +273,11 @@ Citation = {
     }
 
     // only allow valid types
-    if (types)
-      types = underscore.intersection(types, Object.keys(Citation.types));
-    else
+    if (types) {
+      types = types.filter(function(type) {
+        return Object.keys(Citation.types).indexOf(type) != -1;
+      });
+    } else
       types = Object.keys(Citation.types);
 
     return types;
