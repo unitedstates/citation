@@ -7,14 +7,8 @@
  */
 
 
-/*
- TODO:
- * rework how citators load Citation, it's hefty
-*/
+module.exports = (function(Citation) {
 
-
-
-(function(Citation) {
 Citation = {
 
   // will be filled in by individual citation types as available
@@ -328,11 +322,10 @@ if (typeof(require) !== "undefined") {
   Citation.filters.lines = require("./filters/lines");
 }
 
-
+// auto-load in-browser
 if (typeof(window) !== "undefined")
   window.Citation = Citation;
 
-if (typeof(module) !== "undefined" && module.exports)
-  module.exports = Citation;
+return Citation;
 
 })();
