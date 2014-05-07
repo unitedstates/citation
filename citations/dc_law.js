@@ -1,7 +1,4 @@
-(function(def) {
-    if (typeof module !== 'undefined') module.exports = def;
-    if (typeof Citation !== 'undefined' && Citation.types) Citation.types.dc_law = def;
-})({
+module.exports = {
   type: "regex",
 
   standardize: function(cite) {
@@ -34,4 +31,4 @@
       }
     ];
   }
-});
+};

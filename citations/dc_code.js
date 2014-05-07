@@ -1,7 +1,4 @@
-(function(def) {
-    if (typeof module !== 'undefined') module.exports = def;
-    if (typeof Citation !== 'undefined' && Citation.types) Citation.types.dc_code = def;
-})({
+module.exports = {
   type: "regex",
 
   // normalize all cites to an ID, with and without subsections
@@ -89,4 +86,4 @@
       ];
     }
   }
-});
+};
