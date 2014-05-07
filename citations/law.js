@@ -6,7 +6,7 @@
 
   standardize: function(cite) {
     return {
-      id: underscore.flatten(["us-law", cite.type, cite.congress, cite.number, cite.sections]).join("/"),
+      id: ["us-law", cite.type, cite.congress, cite.number].concat(cite.sections).join("/"),
       law_id: ["us-law", cite.type, cite.congress, cite.number].join("/")
     };
   },

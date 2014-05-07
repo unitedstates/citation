@@ -18,7 +18,7 @@ if (typeof(require) !== "undefined") {
 }
 
 
-(function(Citation) {
+// (function(Citation) {
 Citation = {
 
   // will be filled in by individual citation types as available
@@ -292,11 +292,25 @@ Citation = {
         }
       });
       return obj;
-    },
-
-    contains: function(obj) {
-      return obj.indexOf(target) != -1;
     }
+
+    // flattenImpl: function(input, shallow, output) {
+    //   if (shallow && _.every(input, _.isArray)) {
+    //     return concat.apply(output, input);
+    //   }
+    //   each(input, function(value) {
+    //     if (_.isArray(value) || _.isArguments(value)) {
+    //       shallow ? push.apply(output, value) : flatten(value, shallow, output);
+    //     } else {
+    //       output.push(value);
+    //     }
+    //   });
+    //   return output;
+    // },
+
+    // flatten: function(array, shallow) {
+    //   return Citation.u.flattenImpl(array, shallow, []);
+    // }
   }
 
 };
@@ -324,4 +338,4 @@ if (typeof(window) !== "undefined")
 if (typeof(module) !== "undefined" && module.exports)
   module.exports = Citation;
 
-})();
+// })();

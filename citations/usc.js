@@ -8,7 +8,7 @@
   // TODO: kill this?
   standardize: function(data) {
     return {
-      id: underscore.flatten(["usc", data.title, data.section, data.subsections]).join("/"),
+      id: ["usc", data.title, data.section].concat(data.subsections).join("/"),
       section_id: ["usc", data.title, data.section].join("/")
     };
   },

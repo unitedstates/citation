@@ -7,7 +7,7 @@
   // normalize all cites to an ID
   standardize: function(match) {
     return {
-      id: underscore.flatten(["dc-register", match.volume, match.page]).join("/")
+      id: ["dc-register", match.volume, match.page].join("/")
     };
   },
 

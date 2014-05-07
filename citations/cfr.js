@@ -7,7 +7,7 @@
   standardize: function(data) {
     var section = data.section || data.part;
     return {
-      id: underscore.compact(underscore.flatten(["cfr", data.title, section, data.subsections])).join("/")
+      id: underscore.compact(["cfr", data.title, section].concat(data.subsections)).join("/")
     };
   },
 
