@@ -265,7 +265,7 @@ Citation = {
   selectedTypes: function(options) {
     var types;
     if (options.types) {
-      if (underscore.isArray(options.types)) {
+      if (Array.isArray(options.types)) {
         if (options.types.length > 0)
           types = options.types;
       } else
