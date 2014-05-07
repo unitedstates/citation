@@ -194,7 +194,7 @@ Citation = {
 
         // if we want parent cites too, make those now
         if (parents && Citation.types[type].parents_by) {
-          cites = underscore.flatten(cites.map(function(cite) {
+          cites = Citation.u.flatten(cites.map(function(cite) {
             return Citation.citeParents(cite, type);
           }));
         }
@@ -292,25 +292,21 @@ Citation = {
         }
       });
       return obj;
+    },
+
+    flatten: function(array) {
+      var impl = function(input, output) {
+        input.forEach(function(value) {
+          if (Array.isArray(value))
+            impl(value, output);
+          else
+            output.push(value);
+        });
+        return output;
+      }
+
+      return impl(array, []);
     }
-
-    // flattenImpl: function(input, shallow, output) {
-    //   if (shallow && _.every(input, _.isArray)) {
-    //     return concat.apply(output, input);
-    //   }
-    //   each(input, function(value) {
-    //     if (_.isArray(value) || _.isArguments(value)) {
-    //       shallow ? push.apply(output, value) : flatten(value, shallow, output);
-    //     } else {
-    //       output.push(value);
-    //     }
-    //   });
-    //   return output;
-    // },
-
-    // flatten: function(array, shallow) {
-    //   return Citation.u.flattenImpl(array, shallow, []);
-    // }
   }
 
 };

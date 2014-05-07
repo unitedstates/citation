@@ -11,6 +11,8 @@ Currently supports:
 * DC Register
 * Judicial citations (using [walverine](https://github.com/adelevie/walverine))
 
+Compatible in-browser with modern Firefox, Chrome, and IE **9+**.
+
 ## Install
 
 [Install Node.js and NPM](http://nodejs.org/#download), then install Citation globally (may require `sudo`):
