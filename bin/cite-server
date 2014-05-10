@@ -1,6 +1,12 @@
 #!/usr/bin/env node
 
-// tiny API over Citation.js' find command
+
+/*
+ * A tiny API over Citation's find command. Doesn't handle every option
+ * that the in-browser version does, but does most things.
+ *
+ *
+ */
 
 var Citation = require('../citation');
 
@@ -46,35 +52,32 @@ var route = function(req, res) {
 // server configuration
 
 var express = require('express');
-var app = module.exports = express();
+var app = express();
 
-app.configure(function(){
-  app.use(express.urlencoded());
-  app.use(express.json());
-  app.use(express.methodOverride());
-  app.use(app.router);
-  app.use(express.static(__dirname + '/public'));
-});
-
-app.configure('development', function(){
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-});
-
-app.configure('production', function(){
-  app.use(express.errorHandler());
-});
-
-
-app.get('/', heartbeat);
-app.get('/citation/find', route);
-app.post('/citation/find', route);
-
-
-// Start server
+// environment and port
+var env = process.env.NODE_ENV || 'development';
 var port = parseInt(process.argv[2], 10);
 if (isNaN(port)) port = 3000;
 
+// app middleware/settings
+app.enable('trust proxy')
+  .use(require('body-parser')())
+  .use(require('method-override')())
+  .use(express.static(__dirname + '/public'));
 
+// development vs production
+if (env == "development")
+  app.use(require('errorhandler')({dumpExceptions: true, showStack: true}))
+else
+  app.use(require('errorhandler')())
+
+
+// routes
+app.get('/', heartbeat);
+app.route('/citation/find').get(route).post(route);
+
+
+// boot it up!
 app.listen(port, function() {
-  console.log("Express server listening on port %s in %s mode", port, app.settings.env);
+  console.log("Express server listening on port %s in %s mode", port, env);
 });
