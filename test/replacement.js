@@ -110,6 +110,37 @@ exports["Replace with null values"] = function(test) {
   test.done();
 };
 
+// You can have all parent cites returned at detect-time, using the
+// individual citator's idea of what parenthood is.
+//
+// Replacement needs to replace the matched text with a single piece
+// of text made from one detected cite. So, it should use the child cite
+// as the one to pass to the replacement function, and replace the given
+// text with it.
+exports["Replacement while including parent cites"] = function(test) {
+  var text, found, citation;
+
+  text = "31 USC 5318A(a)(1)(A)";
+
+  var results = Citation.find(text, {
+    types: "usc", parents: true,
+    replace: function(cite) {
+      return "{found}";
+    }
+  });
+  var found = results.citations;
+
+  test.equal(found.length, 4);
+
+  test.equal(found[0].usc.id, "usc/31/5318A/a/1/A");
+  test.equal(found[1].usc.id, "usc/31/5318A/a/1");
+  test.equal(found[2].usc.id, "usc/31/5318A/a");
+  test.equal(found[3].usc.id, "usc/31/5318A");
+
+  test.equal("{found}", results.text);
+
+  test.done();
+}
 
 // Filters don't support the replace option. To do so, the filter
 // would have to know how to take the pieces it breaks the text,

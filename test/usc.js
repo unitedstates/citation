@@ -248,7 +248,7 @@ exports["Chapters (unsupported)"] = function(test) {
 }
 
 // can opt-in to asking for all parents of a subsection to be returned too
-exports["Parents are supported"] = function(test) {
+exports["Parent detection"] = function(test) {
   var text, found, citation;
 
   text = "31 USC 5318A(a)(1)(A)";
