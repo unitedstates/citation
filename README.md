@@ -217,6 +217,18 @@ Test cases are stored in the `test` directory. Each test case covers a subsectio
 of the code and ensures that citations are correctly detected: for instance, see
 [test/stat.js](test/stat.js).
 
+To run all tests:
+
+```bash
+nodeunit test
+```
+
+To run a specific test:
+
+```bash
+nodeunit test/usc.js
+```
+
 ## Public domain
 
 This project is [dedicated to the public domain](LICENSE). As spelled out in [CONTRIBUTING](CONTRIBUTING.md):
