@@ -42,5 +42,3 @@ Citation.find("that term in section 5362(5) of title 31, United States Code.", {
   ...
 }]
 ```
-
-### `citation.
