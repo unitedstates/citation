@@ -142,6 +142,33 @@ exports["Replacement while including parent cites"] = function(test) {
   test.done();
 }
 
+
+// Replacement will replace the first detected cite of any detected range.
+// This should be okay.
+// explicit ranges (with §§) interpret ranges unambiguously
+exports["Replacement with a range"] = function(test) {
+  // modified version of:
+  // http://www.gpo.gov/fdsys/pkg/BILLS-112hr5972pcs/xml/BILLS-112hr5972pcs.xml
+  var text = "the Buy American Act (41 U.S.C. §§ 10a-10c).";
+  var replaced = "the Buy American Act ({usc/41/10a}).";
+
+  var results = Citation.find(text, {
+    types: "usc",
+    replace: function(cite) {
+      return "{" + cite.usc.id + "}";
+    }
+  });
+  var found = results.citations;
+
+  test.equal(found.length, 2);
+  test.equal(found[0].usc.id, "usc/41/10a");
+  test.equal(found[1].usc.id, "usc/41/10c");
+
+  test.equal(replaced, results.text);
+
+  test.done();
+};
+
 // Filters don't support the replace option. To do so, the filter
 // would have to know how to take the pieces it breaks the text,
 // and re-assemble it after running the replace callback on each
