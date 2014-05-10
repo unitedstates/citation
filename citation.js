@@ -77,10 +77,6 @@ Citation = {
     if (types.length === 0) return null;
 
 
-    // caller can provide optional context that can change what patterns individual citators apply
-    var context = options.context || {};
-
-
     // The caller can provide a replace callback to alter every found citation.
     // this function will be called with each (found and processed) cite object,
     // and should return a string to be put in the cite's place.
@@ -115,7 +111,7 @@ Citation = {
       // (individual parsers can opt to make their parsing context-specific)
       var patterns = Citation.types[type].patterns;
       if (typeof(patterns) == "function")
-        patterns = patterns(context[type] || {});
+        patterns = patterns(options[type] || {});
 
       // add each pattern, keeping a running tally of what we would
       // expect its primary index to be when found in the master regex.

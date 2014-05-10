@@ -57,7 +57,9 @@ exports["Relative patterns"] = function(test) {
 
     var found = Citation.find(text, {
       types: ["dc_code"],
-      context: {dc_code: {source: "dc_code"}} // ensures we'll detect relative cites
+
+      // ensures we'll detect relative cites
+      dc_code: {source: "dc_code"}
     }).citations;
 
     test.equal(found.length, 1);

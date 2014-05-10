@@ -58,45 +58,27 @@ cite "pursuant to 5 U.S.C. 552(a)(1)(E) and"
 
 See [etc/](etc) for an example upstart script to keep `cite-server` running in production.
 
-## Context-aware citation detection
+## Cite-specific options
 
-In the JavaScript interface, you can pass optional `context`, an object with arbitrary
-key/value pairs, that can tell the citator what you already know about
-the source text, and potentially allow more permissive detection.
+You can pass arbitrary options to individual citators, if that citator supports them.
 
-For example, most DC legal documents use the prefix "D.C. Official Code"
-before they cite the DC Code. But cross-references inside the DC Code to
-other parts of the DC Code do not include this prefix. If you know that your
-source text is the DC Code, you can detect cross-references by providing
-a `source` value of "dc_code":
+By using a key is the key of a citator, e.g. `usc` or `dc_code`, that citator's processors will get the value of that key passed in as an argument.
+
+### Example: DC Code relative cites
+
+For example, the `dc_code` citator accepts a `source` option, to indicate
+what the text source is. If the value of `source` is itself "dc_code",
+then the citator will apply a looser pattern to detect internal cites.
+
+That looks like this:
 
 ```javascript
 Citation.find("required under § 3-101.01(13)(e), the Commission shall perform the", {
-  context: {
-    dc_code: {source: "dc_code"}
-  }
+  dc_code: {source: "dc_code"}
 })
 ```
 
-Yields:
-
-```json
-[
-  {
-    "type": "dc_code",
-    "match": "§ 3-101.01(13)(e)",
-    "index": 15,
-
-    "dc_code": {
-      "id": "dc-code/3/101.01/13/e",
-      "section_id": "dc-code/3/101.01",
-      "title": "3",
-      "section": "101.01",
-      "subsections": ["13", "e"]
-    }
-  }
-]
-```
+That will match `§ 3-101.01(13)(e)`, because the `dc_code` citator assumes it's processing the text of the DC Code itself, and internal references are unambiguous.
 
 ### Tests
 
