@@ -6,8 +6,6 @@ var Citation = require('../citation');
 
 
 exports["All patterns"] = function(test) {
-  test.expect();
-
   var cases = [
     [ 'standard',
       'Va. Code Ann. § 19.2-56.2 (2010)',

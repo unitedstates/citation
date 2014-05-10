@@ -6,7 +6,6 @@ var Citation = require('../citation');
 
 
 exports["Relative patterns"] = function(test) {
-  test.expect();
 
   var cases = [
     // in 3-202 of the DC Code:
@@ -87,7 +86,6 @@ exports["Relative patterns"] = function(test) {
 
 
 exports["Absolute patterns"] = function(test) {
-  test.expect();
 
   var cases = [
     // DC bill PR 20-0035 - http://openstates.org/dc/bills/20/PR20-0035/documents/DCD00005209/

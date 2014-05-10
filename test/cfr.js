@@ -136,7 +136,6 @@ var singles = [
 singles.forEach(function(single) {
 
   exports[single[1]] = function(test) {
-    test.expect();
 
     var text = single[0];
     var expected = single[2];

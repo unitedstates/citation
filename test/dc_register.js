@@ -5,8 +5,6 @@
 var Citation = require('../citation');
 
 exports["All patterns"] = function(test) {
-  test.expect();
-
   var cases = [
     [ 'standard',
       'D.C. Law 17-25, § 2(c), 54 DCR 8014',

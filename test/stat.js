@@ -6,8 +6,6 @@
 var Citation = require('../citation');
 
 exports["All patterns"] = function(test) {
-  test.expect();
-
   var cases = [
       // text copied from the DC Code Credits
       ["110 Stat. 548", "Basic citation", "110 Stat. 548",

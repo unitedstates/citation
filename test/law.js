@@ -53,8 +53,6 @@ exports["Basic patterns"] = function(test) {
       "Nuclear Energy Authorization Act of 1980 (Private Law 96–164; "],
   ];
 
-  test.expect();
-
   for (var i=0; i<cases.length; i++) {
     var details = cases[i];
 
@@ -90,7 +88,6 @@ exports["Subsections"] = function(test) {
       "(3) Section 4402(e)(1) of Public Law 107–171 (relating"]
   ];
 
-  test.expect();
 
   for (var i=0; i<cases.length; i++) {
     var details = cases[i];
@@ -116,7 +113,6 @@ exports["Subsections"] = function(test) {
 
 // can opt-in to asking for all parents of a subsection to be returned too
 exports["Parent detection"] = function(test) {
-  test.expect();
   var text, found, citation;
 
   text = "section 4402(e)(1) of Public Law 110-2";

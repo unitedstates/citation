@@ -49,8 +49,6 @@ var singles = [
 // runs tests with "judicial" type explicit
 singles.forEach(function(single) {
   exports[single[1] + " (explicit-type)"] = function(test) {
-    test.expect();
-
     var text = single[0];
     var actual = Citation.find(text, {types: "judicial"}).citations;
     var actual = actual.map(function(result) {
@@ -72,8 +70,6 @@ singles.forEach(function(single) {
 // runs tests without "judicial" explicit
 singles.forEach(function(single) {
   exports[single[1] + " (no-judicial-type)"] = function(test) {
-    test.expect();
-
     var text = single[0];
     var actual = Citation.find(text).citations;
     var actual = actual.map(function(result) {

@@ -7,7 +7,7 @@ var util = require('util');
 
 // `replace` can be given a callback that can be run to replace
 // cites when they're detected.
-exports["test replacement"] = function(test) {
+exports["Replace"] = function(test) {
   var text = "of the Administrative Procedure Act (5 U.S.C. 552) and some";
 
   var results = Citation.find(text, {
@@ -39,7 +39,7 @@ exports["test replacement"] = function(test) {
 
 // The `replace` option can take an object whose keys are citation types,
 // and that callback will be used only for detected cites of that type.
-exports["test replacement by key"] = function(test) {
+exports["Replace per cite type"] = function(test) {
   var text = "of the Administrative Procedure Act (5 U.S.C. 552) and " +
     "some other stuff from Public Law 111-80 and more";
 
@@ -65,7 +65,27 @@ exports["test replacement by key"] = function(test) {
   test.done();
 };
 
-exports["test replacement default"] = function(test) {
+exports["Replace text doesn't get re-detected"] = function(test) {
+  var text = "of the Administrative Procedure Act (5 U.S.C. 552) and some";
+
+  var results = Citation.find(text, {
+    types: ["usc"],
+    replace: function(cite) {
+      return "three cites: 7 U.S.C. 2024 and 5 U.S.C. 552 and also 7 U.S.C. 281";
+    }
+  });
+
+  var citations = results.citations;
+  test.equal(citations.length, 1);
+  test.equal(citations[0].match, "5 U.S.C. 552")
+
+  var replaced = "of the Administrative Procedure Act (three cites: 7 U.S.C. 2024 and 5 U.S.C. 552 and also 7 U.S.C. 281) and some"
+  test.equal(results.text, replaced);
+
+  test.done();
+};
+
+exports["Replace with null values"] = function(test) {
   var text = "of the Administrative Procedure Act (5 U.S.C. 552) and some";
 
   // explicit or implicit return of null or undefined

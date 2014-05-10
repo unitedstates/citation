@@ -14,8 +14,6 @@ exports["All patterns"] = function(test) {
       "D.C. Law 19-168","DC Law 18-135A"]
   ];
 
-  test.expect();
-
   for (var i=0; i<cases.length; i++) {
     var details = cases[i];
 

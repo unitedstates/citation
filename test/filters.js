@@ -66,8 +66,6 @@ var lines = [{
 
 lines.forEach(function(line) {
   exports["Lines: " + line.name] = function(test) {
-    test.expect();
-
     var results, cite;
 
     if (line.outcome.without) {

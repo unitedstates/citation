@@ -7,8 +7,6 @@ var Citation = require('../citation');
 
 
 exports["Basic pattern"] = function(test) {
-  test.expect();
-
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr3604ih/xml/BILLS-112hr3604ih.xml
   var text = "of the Administrative Procedure Act (5 U.S.C. 552) and some";
 
@@ -43,8 +41,6 @@ exports["Basic pattern"] = function(test) {
 };
 
 exports["Multiple nearby cites"] = function(test) {
-  test.expect();
-
   var text = "[E] Section 824(g) is codified at 22 U.S.C. § 4064(g) See also U.S.AID " +
     "waiver authority under 22 U.S.C. § 23850 to waive the offset " +
     "requirement under 5 U.S.C. §§ 8344 and 8468 in order to facilitate " +
@@ -106,8 +102,6 @@ exports["Basic excerpting"] = function(test) {
 
 
 exports["Basic subsection parsing"] = function(test) {
-  test.expect();
-
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr3604ih/xml/BILLS-112hr3604ih.xml
   var text = "All regulations in effect immediately before " +
     "the enactment of subsection (f) that were promulgated under " +
@@ -132,8 +126,6 @@ exports["Basic subsection parsing"] = function(test) {
 // for what produces this, see:
 // http://www.law.cornell.edu/uscode/text/50/chapter-15/subchapter-I
 exports["Sections with hyphens"] = function(test) {
-  test.expect();
-
   // http://www.gpo.gov/fdsys/pkg/BILLS-111s3611es/xml/BILLS-111s3611es.xml
   var text = "National Counter Proliferation Center.--Section 119A(a) of the " +
     "National Security Act of 1947 (50 U.S.C. 404o-1(a)) is amended--";
@@ -177,7 +169,6 @@ exports["Sections with hyphens"] = function(test) {
 // When the range does not have double section symbols, treat it as ambiguous,
 // and return it as both an original section, and as an expanded range.
 exports["Basic ranges"] = function(test) {
-  test.expect();
   var text, found;
 
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr5972pcs/xml/BILLS-112hr5972pcs.xml
@@ -263,8 +254,6 @@ exports["Basic ranges"] = function(test) {
 
 // explicit ranges (with §§) interpret ranges unambiguously
 exports["Basic ranges (explicit)"] = function(test) {
-  test.expect();
-
   // modified version of:
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr5972pcs/xml/BILLS-112hr5972pcs.xml
   var text = "convicted of violating the Buy American Act (41 U.S.C. §§ 10a-10c).";
@@ -294,7 +283,6 @@ exports["Basic ranges (explicit)"] = function(test) {
 };
 
 exports["Basic subsection ranges"] = function(test) {
-  test.expect();
   var text, found, citation;
 
   // regulation 2012-12747
@@ -342,8 +330,6 @@ exports["Basic subsection ranges"] = function(test) {
 
 
 exports["Casual pattern"] = function(test) {
-  test.expect();
-
   // http://www.gpo.gov/fdsys/pkg/BILLS-111s3663pcs/xml/BILLS-111s3663pcs.xml
   var text = "Nothing in this section shall be considered to limit the authority " +
     "of the Coast Guard to enforce this or any other Federal law " +
@@ -386,8 +372,6 @@ exports["Casual pattern"] = function(test) {
 
 
 exports["Casual pattern (with subsections)"] = function(test) {
-  test.expect();
-
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr3261ih/xml/BILLS-112hr3261ih.xml
   var text = "(11) INTERNET- The term Internet has the meaning given " +
     "that term in section 5362(5) of title 31, United States Code."
@@ -429,8 +413,6 @@ exports["Casual pattern (with subsections)"] = function(test) {
 */
 
 exports["Section symbol is ignored"] = function(test) {
-  test.expect();
-
   var text = "  5 USC § 552 "; // spaces left intentionally
 
   var found = Citation.find(text, {types: "usc"}).citations;
@@ -448,8 +430,6 @@ exports["Section symbol is ignored"] = function(test) {
 };
 
 exports["'Appendix' titles"] = function(test) {
-  test.expect();
-
   // http://www.gpo.gov/fdsys/pkg/BILLS-112s3608is/xml/BILLS-112s3608is.xml
   var text = "Civil Relief Act (50 U.S.C. App. 595) is amended"
 
@@ -468,8 +448,6 @@ exports["'Appendix' titles"] = function(test) {
 };
 
 exports["'note' marks"] = function(test) {
-  test.expect();
-
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr6567ih/xml/BILLS-112hr6567ih.xml
   var text = "commodity supplemental food program) (7 U.S.C. 612c note).";
 
@@ -489,8 +467,6 @@ exports["'note' marks"] = function(test) {
 
 
 exports["'et seq' marks"] = function(test) {
-  test.expect();
-
   // from http://www.gpo.gov/fdsys/pkg/BILLS-113s1302rs/html/BILLS-113s1302rs.htm
   var text = "the Employee Retirement Income Security Act of 1974 (29 U.S.C. 1081 et seq.)";
 
@@ -510,8 +486,6 @@ exports["'et seq' marks"] = function(test) {
 
 // for now, no chapters
 exports["Chapters (unsupported)"] = function(test) {
-  test.expect();
-
   var text = "46 U.S.C. Chapters 701, 3306, 3703";
 
   var found = Citation.find(text, {types: "usc"}).citations;
@@ -525,7 +499,6 @@ exports["Chapters (unsupported)"] = function(test) {
 
 // can opt-in to asking for all parents of a subsection to be returned too
 exports["Parents are supported"] = function(test) {
-  test.expect();
   var text, found, citation;
 
   text = "31 USC 5318A(a)(1)(A)";
