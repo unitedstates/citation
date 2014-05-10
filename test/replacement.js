@@ -103,11 +103,51 @@ exports["Replace with null values"] = function(test) {
     });
 
     var citations = results.citations;
-    test.equal(citations.length, 1);
-    var citation = citations[0];
-
-    test.equal(results.text, text);
+    test.equal(1, citations.length);
+    test.equal(text, results.text);
   });
 
   test.done();
 };
+
+
+// Filters don't support the replace option. To do so, the filter
+// would have to know how to take the pieces it breaks the text,
+// and re-assemble it after running the replace callback on each
+// piece. That's a) complicated, but b) you'd lose the `index`
+// field anyway (as you do when using `replace` even without filters),
+// and why are you using a line-by-line filter if you don't care about
+// the relative character index?
+//
+// If you need to do advanced, filtered cite detection that gives you
+// precise detection of cites, you'll need to do your own replacement.
+
+/*
+exports["Replacement with a filter"] = function(test) {
+
+  var text = "the Administrative Procedure Act\n" +
+    "(or 5 U.S.C. 552)\n" +
+    "is here";
+
+  var replaced = "the Administrative Procedure Act\n" +
+    "(or {found})\n" +
+    "is here";
+
+  var results = Citation.find(text, {
+    filter: "lines",
+    replace: function(cite) {
+      return "{found}";
+    }
+  });
+
+  test.equal(1, results.citations.length);
+  var citation = results.citations[0];
+  test.equal("5 U.S.C. 552", citation.match);
+  test.equal(undefined, citation.index);
+  test.equal(2, citation.line);
+  test.equal(results.text, replaced);
+
+  test.done();
+};
+*/
+

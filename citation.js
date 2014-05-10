@@ -27,13 +27,11 @@ Citation = {
     // and post-processes citations after extraction
     var results;
     if (options.filter && Citation.filters[options.filter])
-      results = Citation.filtered(options.filter, text, options);
+      return Citation.filtered(options.filter, text, options);
 
     // otherwise, do a single pass over the whole text.
     else
-      results = Citation.extract(text, options);
-
-    return results;
+      return Citation.extract(text, options);
   },
 
   // return an array of matched and filter-mapped cites
@@ -45,6 +43,9 @@ Citation = {
     // filter can break up the text into pieces with accompanying metadata
     filter.from(text, options[name], function(piece, metadata) {
       var response = Citation.extract(piece, options);
+
+      // ignores any replaced text, it falls off the edge of the earth
+
       var filtered = response.citations.map(function(result) {
 
         Object.keys(metadata).forEach(function(key) {
@@ -57,6 +58,7 @@ Citation = {
       results = results.concat(filtered);
     });
 
+    // doesn't return replaced text
     return {citations: results};
   },
 
