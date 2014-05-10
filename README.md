@@ -212,7 +212,7 @@ Citation.find("required under § 3-101.01(13)(e), the Commission shall perform t
 
 That will match `§ 3-101.01(13)(e)`, because the `dc_code` citator assumes it's processing the text of the DC Code itself, and internal references are unambiguous.
 
-### Tests
+## Tests
 
 This project is tested with [nodeunit](https://github.com/caolan/nodeunit).
 
