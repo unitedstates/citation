@@ -199,6 +199,23 @@ Yields:
 ]
 ```
 
+### Tests
+
+This project is tested with [nodeunit](https://github.com/caolan/nodeunit).
+
+To run tests, you'll need to install this project from source and install its
+node dependencies:
+
+```
+git clone git@github.com:unitedstates/citation.git
+cd citation
+npm install
+npm test
+```
+
+Test cases are stored in the `test` directory. Each test case covers a subsection
+of the code and ensures that citations are correctly detected: for instance, see
+[test/stat.js](test/stat.js).
 
 ## Public domain
 
