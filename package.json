@@ -1,0 +1,43 @@
+{
+  "name": "citation-website",
+  "version": "0.0.0",
+  "description": "A fast, stand-alone legal citation extractor.",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "~1.0.2",
+    "browserify": "~4.1.2",
+    "citation-linker": "~0.0.1",
+    "deep-equal": "~0.2.1",
+    "errorhandler": "~1.0.1",
+    "express": "~4.1.2",
+    "gulp": "~3.6.2",
+    "gulp-browserify": "~0.5.0",
+    "gulp-gzip": "~0.0.8",
+    "gulp-rename": "~1.2.0",
+    "gulp-uglify": "~0.2.1",
+    "marked": "~0.3.2",
+    "method-override": "~1.0.0",
+    "nodeunit": "~0.8.7",
+    "optimist": "~0.6.1",
+    "reloader": "~1.0.2",
+    "underscore": "~1.6.0",
+    "walverine": "~0.0.6",
+    "xregexp": "~2.0.0",
+    "citation": "~0.6.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify js/main.js > js/bundle.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/unitedstates/citation.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/unitedstates/citation/issues"
+  },
+  "homepage": "https://github.com/unitedstates/citation"
+}
