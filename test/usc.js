@@ -56,60 +56,6 @@ exports["Multiple nearby cites"] = function(test) {
   test.done();
 };
 
-exports["Multiple results bug"] = function(test) {
-  var text = "Section 2333(d) of the Food, Agriculture, Conserva-" +
-    "8 tion, and Trade Act of 1990 (7 U.S.C. 950aaa-2(d)) is " +
-    "9 amended";
-  test.expect();
-  var found = Citation.find(text, {types: "usc" }).citations;
-  test.equal(found.length, 1);
-  test.done();
-};
-
-exports["Basic excerpting"] = function(test) {
-  // http://www.gpo.gov/fdsys/pkg/BILLS-112hr2045ih/html/BILLS-112hr2045ih.htm
-  var tests = [
-    ["21 U.S.C. 321(ff)(1)",
-      "(B) the term `dietary ingredient' means an " +
-      "ingredient listed in subparagraphs (A) through (F) of " +
-      "section 201(ff)(1) (21 U.S.C. 321(ff)(1)) of the " +
-      "Federal Food, Drug, and Cosmetic Act that is included " +
-      "in, or that is intended to be included in, a dietary " +
-      "supplement."],
-    ["21 U.S.C. 321(ff)(1)",
-      "dient listed in subparagraphs (A) through (F) of " +
-      "section 201(ff)(1) (21 U.S.C. 321(ff)(1)) of the " +
-      "Federal Food, Drug, and Cosmetic Act that is included " +
-      "in, or that is intended to be include"],
-    ["21 U.S.C. 321",
-      "(B) the term `dietary ingredient' means an " +
-      "ingredient listed in subparagraphs (A) through (F) of " +
-      "section 201(ff)(1) (21 U.S.C. 321) of the " +
-      "Federal Food, Drug, and Cosmetic Act that is included " +
-      "in, or that is intended to be included in, a dietary " +
-      "supplement."]
-  ];
-
-  var excerpts = [0, 1, 5, 10, 15, 20, 25, '25', 30, 35, 50, 75, 90, 100, 125, 150];
-
-  test.expect(2 * tests.length * excerpts.length);
-
-  // try out a ton of different excerpt sizes, on both strings
-  excerpts.forEach(function(excerpt) {
-    tests.forEach(function(items) {
-      var match = items[0];
-      var text = items[1];
-
-      var found = Citation.find(text, {types: "usc", excerpt: excerpt}).citations;
-      test.equal(found.length, 1);
-      var citation = found[0];
-      test.equal(citation.match, match);
-    });
-  });
-
-  test.done();
-};
-
 
 exports["Basic subsection parsing"] = function(test) {
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr3604ih/xml/BILLS-112hr3604ih.xml
@@ -131,212 +77,6 @@ exports["Basic subsection parsing"] = function(test) {
 
   test.done();
 }
-
-// this is the worst kind of hyphen, a valid section entry with a number on either end
-// for what produces this, see:
-// http://www.law.cornell.edu/uscode/text/50/chapter-15/subchapter-I
-exports["Sections with hyphens"] = function(test) {
-  // http://www.gpo.gov/fdsys/pkg/BILLS-111s3611es/xml/BILLS-111s3611es.xml
-  var text = "National Counter Proliferation Center.--Section 119A(a) of the " +
-    "National Security Act of 1947 (50 U.S.C. 404o-1(a)) is amended--";
-
-  var found = Citation.find(text, {types: "usc"}).citations;
-  test.equal(found.length, 3);
-
-  if (found.length == 3) {
-    var citation = found[0];
-    test.equal(citation.match, "50 U.S.C. 404o-1(a)");
-    test.equal(citation.usc.title, "50");
-    test.equal(citation.usc.section, "404o-1");
-    test.deepEqual(citation.usc.subsections, ["a"])
-    test.equal(citation.usc.section_id, "usc/50/404o-1");
-    test.equal(citation.usc.id, "usc/50/404o-1/a");
-
-    // even though these are wrong: for now, they are found
-    citation = found[1];
-    test.equal(citation.match, "50 U.S.C. 404o-1(a)");
-    test.equal(citation.usc.title, "50");
-    test.equal(citation.usc.section, "404o");
-    test.deepEqual(citation.usc.subsections, [])
-    test.equal(citation.usc.section_id, "usc/50/404o");
-    test.equal(citation.usc.id, "usc/50/404o");
-
-    citation = found[2];
-    test.equal(citation.match, "50 U.S.C. 404o-1(a)");
-    test.equal(citation.usc.title, "50");
-    test.equal(citation.usc.section, "1");
-    test.deepEqual(citation.usc.subsections, ["a"])
-    test.equal(citation.usc.section_id, "usc/50/1");
-    test.equal(citation.usc.id, "usc/50/1/a");
-  }
-
-  test.done();
-};
-
-
-// FOR NOW:
-// Range expansion just finds the first and last.
-// When the range does not have double section symbols, treat it as ambiguous,
-// and return it as both an original section, and as an expanded range.
-exports["Basic ranges"] = function(test) {
-  var text, found;
-
-  // http://www.gpo.gov/fdsys/pkg/BILLS-112hr5972pcs/xml/BILLS-112hr5972pcs.xml
-  text = "convicted of violating the Buy American Act (41 U.S.C. 10a-10c).";
-
-  found = Citation.find(text, {types: "usc"}).citations;
-  test.equal(found.length, 3);
-
-  if (found.length == 3) {
-    var citation = found[0];
-    test.equal(citation.match, "41 U.S.C. 10a-10c");
-    test.equal(citation.usc.title, "41");
-    test.equal(citation.usc.section, "10a-10c");
-    test.deepEqual(citation.usc.subsections, [])
-    test.equal(citation.usc.section_id, "usc/41/10a-10c");
-    test.equal(citation.usc.id, "usc/41/10a-10c");
-
-    citation = found[1];
-    test.equal(citation.match, "41 U.S.C. 10a-10c");
-    test.equal(citation.usc.title, "41");
-    test.equal(citation.usc.section, "10a");
-    test.deepEqual(citation.usc.subsections, [])
-    test.equal(citation.usc.section_id, "usc/41/10a");
-    test.equal(citation.usc.id, "usc/41/10a");
-
-    citation = found[2];
-    test.equal(citation.match, "41 U.S.C. 10a-10c");
-    test.equal(citation.usc.title, "41");
-    test.equal(citation.usc.section, "10c");
-    test.deepEqual(citation.usc.subsections, [])
-    test.equal(citation.usc.section_id, "usc/41/10c");
-    test.equal(citation.usc.id, "usc/41/10c");
-  } else
-    console.log(found);
-
-  // modified version of
-  // http://www.gpo.gov/fdsys/pkg/BILLS-112hr5972pcs/xml/BILLS-112hr5972pcs.xml
-  text = "convicted of violating the Buy American Act (41 U.S.C. 10a(1)-10c(2)).";
-
-  // ranges where there's a subsection on the left of a dash are non-ambiguous
-  found = Citation.find(text, {types: "usc"}).citations;
-  test.equal(found.length, 2);
-
-  if (found.length == 2) {
-    citation = found[0];
-    test.equal(citation.match, "41 U.S.C. 10a(1)-10c(2)");
-    test.equal(citation.usc.title, "41");
-    test.equal(citation.usc.section, "10a");
-    test.deepEqual(citation.usc.subsections, ["1"])
-    test.equal(citation.usc.section_id, "usc/41/10a");
-    test.equal(citation.usc.id, "usc/41/10a/1");
-
-    citation = found[1];
-    test.equal(citation.match, "41 U.S.C. 10a(1)-10c(2)");
-    test.equal(citation.usc.title, "41");
-    test.equal(citation.usc.section, "10c");
-    test.deepEqual(citation.usc.subsections, ["2"])
-    test.equal(citation.usc.section_id, "usc/41/10c");
-    test.equal(citation.usc.id, "usc/41/10c/2");
-  } else
-    console.log(found);
-
-  // GAO-591433, gao_id: 591433
-  text = "50 U.S.C. App. §§ 451--473";
-
-  found = Citation.find(text, {types: "usc"}).citations;
-  test.equal(found.length, 2);
-
-  if (found.length == 2) {
-    test.equal(found[0].usc.title, "50-app");
-    test.equal(found[0].usc.section, "451");
-    test.deepEqual(found[0].usc.subsections, []);
-
-    test.equal(found[1].usc.title, "50-app");
-    test.equal(found[1].usc.section, "473");
-    test.deepEqual(found[1].usc.subsections, []);
-  } else
-    console.log(found);
-
-  test.done();
-};
-
-
-// explicit ranges (with §§) interpret ranges unambiguously
-exports["Basic ranges (explicit)"] = function(test) {
-  // modified version of:
-  // http://www.gpo.gov/fdsys/pkg/BILLS-112hr5972pcs/xml/BILLS-112hr5972pcs.xml
-  var text = "convicted of violating the Buy American Act (41 U.S.C. §§ 10a-10c).";
-
-  var found = Citation.find(text, {types: "usc"}).citations;
-  test.equal(found.length, 2);
-
-  if (found.length == 2) {
-    var citation = found[0];
-    test.equal(citation.match, "41 U.S.C. §§ 10a-10c");
-    test.equal(citation.usc.title, "41");
-    test.equal(citation.usc.section, "10a");
-    test.deepEqual(citation.usc.subsections, [])
-    test.equal(citation.usc.section_id, "usc/41/10a");
-    test.equal(citation.usc.id, "usc/41/10a");
-
-    citation = found[1];
-    test.equal(citation.match, "41 U.S.C. §§ 10a-10c");
-    test.equal(citation.usc.title, "41");
-    test.equal(citation.usc.section, "10c");
-    test.deepEqual(citation.usc.subsections, [])
-    test.equal(citation.usc.section_id, "usc/41/10c");
-    test.equal(citation.usc.id, "usc/41/10c");
-  }
-
-  test.done();
-};
-
-exports["Basic subsection ranges"] = function(test) {
-  var text, found, citation;
-
-  // regulation 2012-12747
-  text = "31 U.S.C. 5318A(b)(l)-(5)";
-
-  found = Citation.find(text, {types: "usc"}).citations;
-  test.equal(found.length, 1);
-
-  if (found.length == 1) {
-    var citation = found[0];
-    test.equal(citation.match, "31 U.S.C. 5318A(b)(l)");
-    test.equal(citation.usc.title, "31");
-    test.equal(citation.usc.section, "5318A");
-    test.deepEqual(citation.usc.subsections, ["b", "l"])
-    test.equal(citation.usc.section_id, "usc/31/5318A");
-    test.equal(citation.usc.id, "usc/31/5318A/b/l");
-  } else
-    console.log(found);
-
-  // the worst part of this isn't the ambiguous range...
-  //
-  // e.g. (b)(l) - (b)(5) vs. (b)(l) - (5)
-  //
-  // ...but is the fact that there is no (b)(l). This is
-  // almost certainly meant to be (b)(1).
-  //
-  // As evidence - elsewhere, in the same regulation:
-  //
-  // "...the first special measure (31 U.S.C. 5318A(b)(1))
-  // and the fifth special measure (31 U.S.C. 5318A(b)(5)..."
-  //
-  // This is an example of a bug only fixable with an actual
-  // US Code to lookup against. Because the US Code never seems
-  // to mix up letters and numbers in the same level of a
-  // subhierarchy, it should be possible to always correctly resolve
-  // (l) to (1) if the USC can be referred to.
-
-  // So, right now we're just testing to make sure it only
-  // catches the front.
-
-
-
-  test.done();
-};
 
 
 exports["Casual pattern"] = function(test) {
@@ -530,3 +270,152 @@ exports["Parents are supported"] = function(test) {
 
   test.done();
 }
+
+// Ranges:
+// Some ranges are unambiguous.
+//  * a parenthesis appears on the left side of a hyphen.
+//  * the double section symbol (§§) indicates a range.
+//
+// Sadly, some ranges are ambiguous. The goal here is to support either
+// `generous` or `strict` resolution of ambiguous ranges.
+
+exports["Ranges: ambiguous, generous 1"] = function(test) {
+  var text, found;
+
+  // this is the worst kind of hyphen, a valid section entry with a
+  // number on either end. for what produces this, see:
+  // http://www.law.cornell.edu/uscode/text/50/chapter-15/subchapter-I
+  // http://www.gpo.gov/fdsys/pkg/BILLS-111s3611es/xml/BILLS-111s3611es.xml
+  text = "National Counter Proliferation Center.--Section 119A(a) of the " +
+    "National Security Act of 1947 (50 U.S.C. 404o-1(a)) is amended--";
+
+  found = Citation.find(text, {types: "usc"}).citations;
+  test.equal(found.length, 3);
+
+  test.equal(found[0].usc.id, "usc/50/404o-1/a");
+  test.equal(found[1].usc.id, "usc/50/404o");
+  test.equal(found[2].usc.id, "usc/50/1/a");
+
+  test.done();
+};
+
+
+exports["Ranges: ambiguous, generous 2"] = function(test) {
+  var text, found;
+
+  // http://www.gpo.gov/fdsys/pkg/BILLS-112hr5972pcs/xml/BILLS-112hr5972pcs.xml
+  text = "convicted of violating the Buy American Act (41 U.S.C. 10a-10c).";
+
+  found = Citation.find(text, {types: "usc"}).citations;
+  test.equal(found.length, 3);
+
+  if (found.length == 3) {
+    test.equal(found[0].usc.id, "usc/41/10a-10c");
+    test.equal(found[1].usc.id, "usc/41/10a");
+    test.equal(found[2].usc.id, "usc/41/10c");
+  } else
+    console.log(found);
+
+  test.done();
+};
+
+exports["Ranges: unambiguous, ()"] = function(test) {
+  var text, found;
+
+  // modified version of
+  // http://www.gpo.gov/fdsys/pkg/BILLS-112hr5972pcs/xml/BILLS-112hr5972pcs.xml
+  text = "convicted of violating the Buy American Act (41 U.S.C. 10a(1)-10c(2)).";
+
+  // ranges where there's a subsection on the left of a dash are non-ambiguous
+  found = Citation.find(text, {types: "usc"}).citations;
+  test.equal(found.length, 2);
+
+  if (found.length == 2) {
+    test.equal(found[0].usc.id, "usc/41/10a/1");
+    test.equal(found[1].usc.id, "usc/41/10c/2");
+  } else
+    console.log(found);
+
+  test.done();
+}
+
+// explicit ranges (with §§) interpret ranges unambiguously
+exports["Ranges: unambiguous, §§ 1"] = function(test) {
+  // modified version of:
+  // http://www.gpo.gov/fdsys/pkg/BILLS-112hr5972pcs/xml/BILLS-112hr5972pcs.xml
+  var text = "convicted of violating the Buy American Act (41 U.S.C. §§ 10a-10c).";
+
+  var found = Citation.find(text, {types: "usc"}).citations;
+  test.equal(found.length, 2);
+
+  if (found.length == 2) {
+    test.equal(found[0].usc.id, "usc/41/10a");
+    test.equal(found[1].usc.id, "usc/41/10c");
+  }
+
+  test.done();
+};
+
+exports["Ranges: unambiguous, §§ 2"] = function(test) {
+  var text, found;
+  // GAO-591433, gao_id: 591433
+  text = "50 U.S.C. App. §§ 451--473";
+
+  found = Citation.find(text, {types: "usc"}).citations;
+  test.equal(found.length, 2);
+
+  if (found.length == 2) {
+    test.equal(found[0].usc.id, "usc/50-app/451");
+    test.equal(found[1].usc.id, "usc/50-app/473");
+  } else
+    console.log(found);
+
+  test.done();
+};
+
+
+exports["Ranges: basic subsections"] = function(test) {
+  var text, found, citation;
+
+  // regulation 2012-12747
+  text = "31 U.S.C. 5318A(b)(l)-(5)";
+
+  found = Citation.find(text, {types: "usc"}).citations;
+  test.equal(found.length, 1);
+
+  if (found.length == 1) {
+    var citation = found[0];
+    test.equal(citation.match, "31 U.S.C. 5318A(b)(l)");
+    test.equal(citation.usc.title, "31");
+    test.equal(citation.usc.section, "5318A");
+    test.deepEqual(citation.usc.subsections, ["b", "l"])
+    test.equal(citation.usc.section_id, "usc/31/5318A");
+    test.equal(citation.usc.id, "usc/31/5318A/b/l");
+  } else
+    console.log(found);
+
+  // the worst part of this isn't the ambiguous range...
+  //
+  // e.g. (b)(l) - (b)(5) vs. (b)(l) - (5)
+  //
+  // ...but is the fact that there is no (b)(l). This is
+  // almost certainly meant to be (b)(1).
+  //
+  // As evidence - elsewhere, in the same regulation:
+  //
+  // "...the first special measure (31 U.S.C. 5318A(b)(1))
+  // and the fifth special measure (31 U.S.C. 5318A(b)(5)..."
+  //
+  // This is an example of a bug only fixable with an actual
+  // US Code to lookup against. Because the US Code never seems
+  // to mix up letters and numbers in the same level of a
+  // subhierarchy, it should be possible to always correctly resolve
+  // (l) to (1) if the USC can be referred to.
+
+  // So, right now we're just testing to make sure it only
+  // catches the front.
+
+
+
+  test.done();
+};
