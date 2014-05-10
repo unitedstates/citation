@@ -54,7 +54,17 @@ exports["Multiple nearby cites"] = function(test) {
   test.equal(found[2].match, "5 U.S.C. §§ 8344")
 
   test.done();
-}
+};
+
+exports["Multiple results bug"] = function(test) {
+  var text = "Section 2333(d) of the Food, Agriculture, Conserva-" +
+    "8 tion, and Trade Act of 1990 (7 U.S.C. 950aaa-2(d)) is " +
+    "9 amended";
+  test.expect();
+  var found = Citation.find(text, {types: "usc" }).citations;
+  test.equal(found.length, 1);
+  test.done();
+};
 
 exports["Basic excerpting"] = function(test) {
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr2045ih/html/BILLS-112hr2045ih.htm
