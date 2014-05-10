@@ -167,6 +167,29 @@ And some of the options that the [JavaScript API](#javascript-api) supports:
 
 * `--types`: Limit citation types to a comma-separated list (e.g. "usc,law")
 
+## Replacement
+
+You can perform a "find-and-replace" with detected citations, by providing a `replace` callback to be executed on each citation, that returns the string to replace that citation.
+
+By passing a `replace` callback, a `text` field will be included at the top of the returned object, with the processed text.
+
+```javascript
+Citation.find("click on 5 USC 552 to read more", {
+  replace: function(cite) {
+    var url = "http://www.law.cornell.edu/uscode/text/" + cite.usc.title + "/" + cite.usc.section;
+    return "<a href=\"" + url + "\"">" + cite.match + "</a>";
+  };
+});
+```
+
+The response will have a `text` field containing:
+
+```text
+click on <a href="http://www.law.cornell.edu/uscode/text/5/552">5 USC 552</a> to read more
+```
+
+This feature is only available in the JavaScript API.
+
 ## Cite-specific options
 
 You can pass arbitrary options to individual citators, if that citator supports them.
