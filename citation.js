@@ -299,10 +299,6 @@ Citation = {
 
       return impl(array, []);
     }
-  },
-
-  use: function(type) {
-    Citation.types[type] = require("./citations/" + type);
   }
 
 };
