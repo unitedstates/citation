@@ -95,8 +95,6 @@ Citation = {
     var results = [];
 
 
-    ///////////// prepare citation patterns /////////////
-
     // will hold the calculated context-specific patterns we are to run
     // over the given text, tracked by index we expect to find them at.
     // nextIndex tracks a running index as we loop through patterns.
@@ -182,7 +180,7 @@ Citation = {
 
         // if we want parent cites too, make those now
         if (parents && Citation.types[type].parents_by) {
-          cites = Citation.u.flatten(cites.map(function(cite) {
+          cites = Citation._.flatten(cites.map(function(cite) {
             return Citation.citeParents(cite, type);
           }));
         }
@@ -191,11 +189,11 @@ Citation = {
           var result = {};
 
           // match-level info
-          Citation.u.extend(result, matchInfo);
+          Citation._.extend(result, matchInfo);
 
           // cite-level info, plus ID standardization
           result[type] = cite;
-          Citation.u.extend(result[type], Citation.types[type].standardize(result[type]));
+          Citation._.extend(result[type], Citation.types[type].standardize(result[type]));
 
           results.push(result);
 
@@ -234,7 +232,7 @@ Citation = {
     var results = [];
 
     for (var i=citation[field].length; i >= 0; i--) {
-      var parent = Citation.u.extend({}, citation);
+      var parent = Citation._.extend({}, citation);
       parent[field] = parent[field].slice(0, i);
       results.push(parent);
     }
@@ -273,7 +271,7 @@ Citation = {
 
   // small replacement for several functions previously served by
   // the `underscore` library.
-  u: {
+  _: {
     extend: function(obj) {
       Array.prototype.slice.call(arguments, 1).forEach(function(source) {
         if (source) {
