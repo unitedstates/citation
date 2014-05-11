@@ -39,6 +39,7 @@ h1 {
 ul.inline-list {
     margin:0;
     padding:0;
+    cursor: pointer;
 }
 
 ul.inline-list li {
