@@ -17,16 +17,6 @@ Currently supports:
 
 Compatible in-browser with modern browsers, including IE **9+**.
 
-## Install
-
-[Install Node.js and NPM](http://nodejs.org/#download), then install Citation globally (may require `sudo`):
-
-```bash
-npm install -g citation
-```
-
-Or install it locally to a `node_modules` directory with `npm install citation`.
-
 ## Use
 
 Citation can be used:
@@ -35,7 +25,44 @@ Citation can be used:
 2. **[Over HTTP](#http-api)**, via GET or POST. Supports JSON and JSONP. Options require function callbacks are *not* supported (it won't eval JavaScript).
 3. **[On the command line](#command-line-api)** or Unix pipes, over STDOUT. Options require function callbacks are *not* supported (it won't eval JavaScript).
 
+But one way or another, you pass in text:
 
+```javascript
+Citation.find("pursuant to 5 U.S.C. 552(a)(1)(E) and");
+```
+
+And you get back data about matched citations:
+
+```javascript
+[{
+  "match": "5 U.S.C. 552(a)(1)(E)",
+  "type": "usc",
+  "index": "0",
+  "usc": {
+    "title": "5",
+    "section": "552",
+    "subsections": ["a", "1", "E"],
+    "id": "usc/5/552/a/1/E",
+    "section_id": "usc/5/552"
+  }
+}]
+```
+
+### In the browser
+
+[Check out /browser](/browser) for browser-ready compressed and uncompressed versions of the library.
+
+Loading any of them with a `<script>` tag will result in a global `Citation` object being available for immediate use.
+
+### In Node
+
+[Install Node.js and NPM](http://nodejs.org/#download), then install Citation globally (may require `sudo`):
+
+```bash
+npm install -g citation
+```
+
+Or install it locally to a `node_modules` directory with `npm install citation`.
 
 ## JavaScript API
 
