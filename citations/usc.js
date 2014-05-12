@@ -1,13 +1,10 @@
 module.exports = {
   type: "regex",
 
-  // normalize all cites to an ID, with and without subsections,
-  // TODO: kill this?
-  standardize: function(data) {
-    return {
-      id: ["usc", data.title, data.section].concat(data.subsections || []).join("/"),
-      section_id: ["usc", data.title, data.section].join("/")
-    };
+  id: function(cite) {
+    return ["usc", cite.title, cite.section]
+      .concat(cite.subsections || [])
+      .join("/");
   },
 
 

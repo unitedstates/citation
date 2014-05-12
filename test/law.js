@@ -64,7 +64,6 @@ exports["Basic patterns"] = function(test) {
       var citation = found[0];
       test.equal(citation.match, details[0]);
       test.equal(citation.law.id, details[1]);
-      test.equal(citation.law.law_id, details[1]);
       test.equal(citation.law.type, details[2]);
       test.equal(citation.law.congress, details[3]);
       test.equal(citation.law.number, details[4]);
@@ -77,13 +76,13 @@ exports["Basic patterns"] = function(test) {
 exports["Subsections"] = function(test) {
   var cases = [
     // variations on text of http://www.gpo.gov/fdsys/pkg/BILLS-112hr6567ih/xml/BILLS-112hr6567ih.xml
-    ["Section 4402 of Public Law 107–171", "us-law/public/107/171/4402", "us-law/public/107/171",
+    ["Section 4402 of Public Law 107–171", "us-law/public/107/171/4402",
       "public", "107", "171", ["4402"],
       "(3) Section 4402 of Public Law 107–171 (relating"],
-    ["Section 4402(e) of PL 107–171", "us-law/public/107/171/4402/e", "us-law/public/107/171",
+    ["Section 4402(e) of PL 107–171", "us-law/public/107/171/4402/e",
       "public", "107", "171", ["4402", "e"],
       "(3) Section 4402(e) of PL 107–171 (relating"],
-    ["Section 4402(e)(1) of Public Law 107–171", "us-law/public/107/171/4402/e/1", "us-law/public/107/171",
+    ["Section 4402(e)(1) of Public Law 107–171", "us-law/public/107/171/4402/e/1",
       "public", "107", "171", ["4402", "e", "1"],
       "(3) Section 4402(e)(1) of Public Law 107–171 (relating"]
   ];
@@ -92,7 +91,7 @@ exports["Subsections"] = function(test) {
   for (var i=0; i<cases.length; i++) {
     var details = cases[i];
 
-    var text = details[7];
+    var text = details[6];
     var found = Citation.find(text, {types: "law"}).citations;
     test.equal(found.length, 1, "No match found in: " + text);
 
@@ -100,11 +99,10 @@ exports["Subsections"] = function(test) {
       var citation = found[0];
       test.equal(citation.match, details[0]);
       test.equal(citation.law.id, details[1]);
-      test.equal(citation.law.law_id, details[2]);
-      test.equal(citation.law.type, details[3]);
-      test.equal(citation.law.congress, details[4]);
-      test.equal(citation.law.number, details[5]);
-      test.deepEqual(citation.law.sections, details[6]);
+      test.equal(citation.law.type, details[2]);
+      test.equal(citation.law.congress, details[3]);
+      test.equal(citation.law.number, details[4]);
+      test.deepEqual(citation.law.sections, details[5]);
     }
   }
 

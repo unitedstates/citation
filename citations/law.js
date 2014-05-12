@@ -1,11 +1,10 @@
 module.exports = {
   type: "regex",
 
-  standardize: function(cite) {
-    return {
-      id: ["us-law", cite.type, cite.congress, cite.number].concat(cite.sections || []).join("/"),
-      law_id: ["us-law", cite.type, cite.congress, cite.number].join("/")
-    };
+  id: function(cite) {
+    return ["us-law", cite.type, cite.congress, cite.number]
+      .concat(cite.sections || [])
+      .join("/");
   },
 
   // field to calculate parents from

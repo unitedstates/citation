@@ -2,11 +2,10 @@ module.exports = {
   type: "regex",
 
   // normalize all cites to an ID, with and without subsections
-  standardize: function(data) {
-    return {
-      id: ["dc-code", data.title, data.section].concat(data.subsections).join("/"),
-      section_id: ["dc-code", data.title, data.section].join("/")
-    };
+  id: function(cite) {
+    return ["dc-code", cite.title, cite.section]
+      .concat(cite.subsections)
+      .join("/");
   },
 
   // field to calculate parents from

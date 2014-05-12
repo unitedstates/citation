@@ -25,7 +25,6 @@ exports["Replace"] = function(test) {
   test.equal(citation.usc.title, "5");
   test.equal(citation.usc.section, "552");
   test.deepEqual(citation.usc.subsections, [])
-  test.equal(citation.usc.section_id, "usc/5/552");
   test.equal(citation.usc.id, "usc/5/552");
 
   test.equal(results.text, "of the Administrative Procedure Act (<a href=\"http://www.law.cornell.edu/uscode/text/5/552\">5 U.S.C. 552</a>) and some");

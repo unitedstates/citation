@@ -1,11 +1,8 @@
 module.exports = {
   type: "regex",
 
-  // normalize all cites to an ID
-  standardize: function(match) {
-    return {
-      id: ["dc-register", match.volume, match.page].join("/")
-    };
+  id: function(cite) {
+    return ["dc-register", cite.volume, cite.page].join("/");
   },
 
   patterns: [

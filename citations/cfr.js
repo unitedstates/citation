@@ -1,11 +1,10 @@
 module.exports = {
   type: "regex",
 
-  standardize: function(data) {
-    var section = data.section || data.part;
-    return {
-      id: ["cfr", data.title, section].concat(data.subsections || []).join("/")
-    };
+  id: function(data) {
+    return ["cfr", data.title, (data.section || data.part)]
+      .concat(data.subsections || [])
+      .join("/")
   },
 
   patterns: [

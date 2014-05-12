@@ -19,7 +19,6 @@ exports["Basic pattern"] = function(test) {
   test.equal(citation.usc.title, "5");
   test.equal(citation.usc.section, "552");
   test.deepEqual(citation.usc.subsections, [])
-  test.equal(citation.usc.section_id, "usc/5/552");
   test.equal(citation.usc.id, "usc/5/552");
 
   var foundExcerpt = Citation.find(text, {types: "usc", excerpt: 5}).citations;
@@ -72,7 +71,6 @@ exports["Basic subsection parsing"] = function(test) {
   test.equal(citation.usc.title, "5");
   test.equal(citation.usc.section, "552");
   test.deepEqual(citation.usc.subsections, ["a", "1", "E"])
-  test.equal(citation.usc.section_id, "usc/5/552");
   test.equal(citation.usc.id, "usc/5/552/a/1/E");
 
   test.done();
@@ -93,7 +91,6 @@ exports["Casual pattern"] = function(test) {
   test.equal(citation.usc.title, "14");
   test.equal(citation.usc.section, "89");
   test.deepEqual(citation.usc.subsections, [])
-  test.equal(citation.usc.section_id, "usc/14/89");
   test.equal(citation.usc.id, "usc/14/89");
 
   var foundExcerpt = Citation.find(text, {types: "usc", excerpt: 5}).citations;
@@ -114,7 +111,6 @@ exports["Casual pattern"] = function(test) {
   test.equal(citation.usc.title, "14");
   test.equal(citation.usc.section, "89");
   test.deepEqual(citation.usc.subsections, [])
-  test.equal(citation.usc.section_id, "usc/14/89");
   test.equal(citation.usc.id, "usc/14/89");
 
   test.done();
@@ -134,7 +130,6 @@ exports["Casual pattern (with subsections)"] = function(test) {
   test.equal(citation.usc.title, "31");
   test.equal(citation.usc.section, "5362");
   test.deepEqual(citation.usc.subsections, ["5"])
-  test.equal(citation.usc.section_id, "usc/31/5362");
   test.equal(citation.usc.id, "usc/31/5362/5");
 
 
@@ -150,7 +145,6 @@ exports["Casual pattern (with subsections)"] = function(test) {
   test.equal(citation.usc.title, "31");
   test.equal(citation.usc.section, "5362-10c");
   test.deepEqual(citation.usc.subsections, ["5"])
-  test.equal(citation.usc.section_id, "usc/31/5362-10c");
   test.equal(citation.usc.id, "usc/31/5362-10c/5");
 
   test.done();
@@ -173,7 +167,6 @@ exports["Section symbol is ignored"] = function(test) {
   test.equal(citation.usc.title, "5");
   test.equal(citation.usc.section, "552");
   test.deepEqual(citation.usc.subsections, [])
-  test.equal(citation.usc.section_id, "usc/5/552");
   test.equal(citation.usc.id, "usc/5/552");
 
   test.done();
@@ -191,7 +184,6 @@ exports["'Appendix' titles"] = function(test) {
   test.equal(citation.usc.title, "50-app");
   test.equal(citation.usc.section, "595");
   test.deepEqual(citation.usc.subsections, [])
-  test.equal(citation.usc.section_id, "usc/50-app/595");
   test.equal(citation.usc.id, "usc/50-app/595");
 
   test.done();
@@ -209,7 +201,6 @@ exports["'note' marks"] = function(test) {
   test.equal(citation.usc.title, "7");
   test.equal(citation.usc.section, "612c");
   test.deepEqual(citation.usc.subsections, ["note"])
-  test.equal(citation.usc.section_id, "usc/7/612c");
   test.equal(citation.usc.id, "usc/7/612c/note");
 
   test.done();
@@ -228,7 +219,6 @@ exports["'et seq' marks"] = function(test) {
   test.equal(citation.usc.title, "29");
   test.equal(citation.usc.section, "1081");
   test.deepEqual(citation.usc.subsections, ["et-seq"])
-  test.equal(citation.usc.section_id, "usc/29/1081");
   test.equal(citation.usc.id, "usc/29/1081/et-seq");
 
   test.done();
@@ -389,7 +379,6 @@ exports["Ranges: basic subsections"] = function(test) {
     test.equal(citation.usc.title, "31");
     test.equal(citation.usc.section, "5318A");
     test.deepEqual(citation.usc.subsections, ["b", "l"])
-    test.equal(citation.usc.section_id, "usc/31/5318A");
     test.equal(citation.usc.id, "usc/31/5318A/b/l");
   } else
     console.log(found);

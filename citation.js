@@ -193,7 +193,7 @@ Citation = {
 
           // cite-level info, plus ID standardization
           result[type] = cite;
-          Citation._.extend(result[type], Citation.types[type].standardize(result[type]));
+          result[type].id = Citation.types[type].id(cite);
 
           results.push(result);
 

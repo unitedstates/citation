@@ -1,10 +1,8 @@
 module.exports = {
   type: "regex",
 
-  standardize: function(cite) {
-    return {
-      id: ["dc-law", cite.period, cite.number].join("/")
-    };
+  id: function(cite) {
+    return ["dc-law", cite.period, cite.number].join("/");
   },
 
   patterns: function(context) {
