@@ -5,8 +5,17 @@
 var Citation = require('../citation');
 var util = require('util');
 
+exports["Invalid text input"] = function(test) {
 
-exports["test all types"] = function(test) {
+  var invalids = [null, undefined, 1234, true, false, NaN, [], {}, function() {}];
+  invalids.forEach(function(invalid) {
+    test.equal(null, Citation.find(invalid));
+  });
+
+  test.done();
+};
+
+exports["Asking for all types"] = function(test) {
   var text, results;
 
   var types = ["usc", "law", "cfr"];
@@ -28,7 +37,7 @@ exports["test all types"] = function(test) {
   test.done();
 };
 
-exports["test types"] = function(test) {
+exports["Asking for a specific type"] = function(test) {
   var text, results;
 
   // limit results by a string or an array, ignoring invalid results

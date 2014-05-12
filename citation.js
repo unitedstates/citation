@@ -22,6 +22,7 @@ Citation = {
   // return an array of matches, with citation broken out into fields
   find: function(text, options) {
     if (!options) options = {};
+    if (typeof(text) !== "string") return;
 
     // client can apply a filter that pre-processes text before extraction,
     // and post-processes citations after extraction
