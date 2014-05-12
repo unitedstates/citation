@@ -248,7 +248,7 @@ That will match `§ 3-101.01(13)(e)`, because the `dc_code` citator assumes it's
 
 Citation can integrate with [walverine](https://github.com/adelevie/walverine) to detect and return results for US court opinions.
 
-To use walverine, you need to "opt-in" to including `judicial`-type citations.
+To use walverine, you may need to "opt-in" to including `judicial`-type citations.
 
 In JavaScript:
 
@@ -262,7 +262,15 @@ In CLI:
 cite --judicial "Text to scan"
 ```
 
-The HTTP server actually loads `judicial` cites by default, since the performance penalty is absorbed on start-up. No opt-in required if you're using `cite-server`.
+The HTTP server, `cite-server` actually loads `judicial` cites by default, since the performance penalty is absorbed on start-up.
+
+#### Unsupported features
+
+walverine's support for extra features is limited. When detecting `judicial`-type cites, there is no support for:
+
+* Returning parent citations
+* Replacing detected text
+* A character index of detected citations
 
 ## Tests
 
