@@ -6,6 +6,7 @@ var citation = require('../citation');
 var optimist = require('optimist');
 var args = optimist
   .boolean("pretty")
+  .boolean("judicial")
   .usage("Extract legal citations from text.")
   .alias('input', 'i')
   .alias('output', 'o')
@@ -15,6 +16,7 @@ var args = optimist
   .describe('input', 'Path to file to read for input.')
   .describe('output', 'Path to file to write output.')
   .describe('pretty', 'Prettify JSON output.')
+  .describe('judicial', 'Detect court opinion cites using walverine.')
   .describe('parents', 'Include additional citations for parent sections.')
   .describe('types', 'Limit citation types to a comma-separated list (e.g. "usc,law")')
   .describe('filter', 'Apply a named filter, e.g. \'lines\', to results.')
@@ -27,6 +29,9 @@ if (args.help) {
   process.exit(0);
 }
 
+// load walverine if asked
+if (args.judicial)
+  citation.types.judicial = require("../citations/judicial");
 
 /**
   Read text from STDIN or a file, send it into Citation.find(),

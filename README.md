@@ -10,10 +10,15 @@ Currently supports:
 * `law`: US Slip Laws (public and private laws)
 * `stat`: US Statutes at Large
 * `cfr`: US Code of Federal Regulations
-* `judicial`: US court opinions, using [walverine](https://github.com/adelevie/walverine) (some features unsupported)
 * `dc_code`: DC Code
 * `dc_register`: DC Register
 * `dc_law`: DC Slip Law
+
+With limited, opt-in support for:
+
+* `judicial`: US court opinions, using [walverine](https://github.com/adelevie/walverine) ([more below](#court-opinions))
+
+As you can see, Citation is currently US-only, but we'd love for that to change. There are lots more citation types out there, and it's [easy to contribute](HOWTO.md), so please help us grow!
 
 Compatible in-browser with modern browsers, including IE **9+**.
 
@@ -238,6 +243,26 @@ Citation.find("required under § 3-101.01(13)(e), the Commission shall perform t
 ```
 
 That will match `§ 3-101.01(13)(e)`, because the `dc_code` citator assumes it's processing the text of the DC Code itself, and internal references are unambiguous.
+
+## Court opinions
+
+Citation can integrate with [walverine](https://github.com/adelevie/walverine) to detect and return results for US court opinions.
+
+To use walverine, you need to "opt-in" to including `judicial`-type citations.
+
+In JavaScript:
+
+```javascript
+Citation.types.judicial = require("./citations/judicial");
+```
+
+In CLI:
+
+```javascript
+cite --judicial "Text to scan"
+```
+
+The HTTP server actually loads `judicial` cites by default, since the performance penalty is absorbed on start-up. No opt-in required if you're using `cite-server`.
 
 ## Tests
 
