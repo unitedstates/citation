@@ -1,5 +1,7 @@
 ## How To Write a Citator
 
+**(In progress)**
+
 
 * Open a ticket with a brief description
 * Create the regex(es) that catch the cite
