@@ -61,7 +61,7 @@ if (isNaN(port)) port = 3000;
 
 // app middleware/settings
 app.enable('trust proxy')
-  .use(require('body-parser')())
+  .use(require('body-parser')({limit: "100mb"}))
   .use(require('method-override')())
   .use(express.static(__dirname + '/public'));
 
