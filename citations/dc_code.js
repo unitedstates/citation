@@ -60,7 +60,7 @@ module.exports = {
         // D.C. Official Code § 3 -1201.01
         {
           regex:
-            "D\\.?C\\.? Official Code\\s+" + // absolute identifier
+            "D\\.?C\\.? (?:Official )?Code\\s+" + // absolute identifier
             "(?:§+\\s+)?(\\d+A?)" +            // optional section sign, plus title
             "\\s?\\-\\s?" +
             "([\\w\\d]+(?:\\.?[\\w\\d]+)?)" +      // section identifier, letters/numbers/dots
