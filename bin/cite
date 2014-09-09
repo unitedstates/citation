@@ -12,6 +12,7 @@ var args = optimist
   .alias('output', 'o')
   .alias('pretty', 'p')
   .alias('types', 't')
+  .alias('option', 'x')
   .alias('help', 'h')
   .describe('input', 'Path to file to read for input.')
   .describe('output', 'Path to file to write output.')
@@ -21,6 +22,7 @@ var args = optimist
   .describe('types', 'Limit citation types to a comma-separated list (e.g. "usc,law")')
   .describe('filter', 'Apply a named filter, e.g. \'lines\', to results.')
   .describe('excerpt', 'Number of characters of excerpt surrounding matches to include.')
+  .describe('option', 'Set a citator-specific option, e.g. --option dc_code/source=dc_code')
   .describe('help', 'Show this message.')
   .argv;
 
@@ -90,6 +92,24 @@ function cite(text) {
     options.filter = args.filter;
     if (args[options.filter])
       options[options.filter] = args[options.filter];
+  }
+  if (args.option) {
+    // An array of strings in the form path/to/key=value.
+    if (typeof args.option == "string") args.option = [args.option]; // promote to array
+    for (var i = 0; i < args.option.length; i++) {
+       // Split into ['path/to/key', 'value'].
+       var kv = args.option[i].split("=", 2);
+       var key = kv[0].split('/');
+       var obj = options;
+       // Walk the options object down 'path' and 'to', creating objects where necessary.
+       for (var j = 0; j < key.length-1; j++) {
+          if (typeof obj[key[j]] == "undefined")
+             obj[key[j]] = { };
+          obj = obj[key[j]];
+       }
+       // Set 'key' on the innermost object to 'value'.
+       obj[key[key.length-1]] = kv[1];
+    }
   }
 
   output(citation.find(text, options));
