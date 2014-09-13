@@ -162,10 +162,10 @@ Citation = {
         var matchInfo = {type: citator.type};
         matchInfo.match = match.toString(); // match data can be converted to the plain string
 
-        // store the matched character offset, except if we're replacing
-        if (!replace)
-          matchInfo.index = index;
-
+        // store the matched character offset (if we're replacing we need it to handle
+        // some multiple citations, but the index will be useless to the caller after
+        // the replacement) so we wipe it out later.
+        matchInfo.index = index;
 
         // use index to grab surrounding excerpt
         if (excerpt > 0) {
@@ -192,6 +192,14 @@ Citation = {
           // match-level info
           Citation._.extend(result, matchInfo);
 
+          // handle _submatch, which lets the user-level citator override the
+          // match and index with a sub-part of the whole matched regex
+          if (cite._submatch) {
+            result.match = cite._submatch.text;
+            result.index += cite._submatch.offset;
+            delete cite._submatch;
+          }
+
           // cite-level info, plus ID standardization
           result[type] = cite;
           result[type].id = Citation.types[type].id(cite);
@@ -201,17 +209,32 @@ Citation = {
           return result;
         });
 
-        // I don't know what to do about ranges yet - but for now, screw it
-        var replacedCite;
+        // If a replace function is given, replace each matched citation. The
+        // matched citations may overlap. In those cases only use the first.
+        var finalstring = matchInfo.match;
+        var replace_func = null;
         if (typeof(replace) === "function")
-          replacedCite = replace(cites[0]);
+          replace_func = replace;
         else if ((typeof(replace) === "object") && (typeof(replace[type]) === "function"))
-          replacedCite = replace[type](cites[0]);
-
-        if (replacedCite)
-          return replacedCite;
+          replace_func = replace[type];
         else
-          return matchInfo.match;
+          replace_func = null;
+        if (replace_func) {
+          var last_index = 0;
+          var dx = 0;
+          for (var i = 0; i < cites.length; i++) {
+            if (cites[i].index >= last_index) {
+              var replacement = replace_func(cites[i]);
+              if (replacement) {
+                finalstring = finalstring.substring(0, cites[i].index-index+dx) + replacement + finalstring.substring(cites[i].index-index+cites[i].match.length+dx);
+                dx += replacement.length - cites[i].match.length;
+                last_index = cites[i].index + cites[i].match.length;
+              }
+            }
+            delete cites[i].index; // because not helpful anymore
+          }
+        }
+        return finalstring;
       });
     }
 

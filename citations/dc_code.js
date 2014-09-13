@@ -34,13 +34,44 @@ module.exports = {
 
     var prefix_regex = "";
     var section_regex = "(?:sections?|§+)\\s+";
+    var sections_regex = "(?:sections|§§)\\s+";
     if (context.source != "dc_code") {
       // Require "DC Official Code" but then make the section symbol optional.
       prefix_regex = "D\\.?C\\.? (?:Official )?Code\\s+";
       section_regex = "(?:" + section_regex + ")?";
+      sections_regex = "(?:" + sections_regex + ")?";
     }
 
     return [
+      // multiple citations
+      // has precedence over a single citation
+      // Unlike the single citation, the matched parts are just the title/section/subsection
+      // and omits "DC Code" and the section symbols (if present) from the matched text.
+      {
+        regex: "(" + prefix_regex + sections_regex + ")(" + base_regex + "(?:(?:,|, and|\\s+and|\\s+through|\\s+to)\\s+" + base_regex + ")+)",
+
+        fields: ["prefix", "multicite", "title1", "section1", "subsections1", "title2", "section2", "subsections2"],
+
+        processor: function(captures) {
+          var rx = new RegExp(base_regex, "g");
+          var matches = new Array();
+          var match;
+          while((match = rx.exec(captures.multicite)) !== null) {
+            matches.push({
+              _submatch: {
+                text: match[0],
+                offset: captures.prefix.length + match.index,
+              },
+              title: match[1],
+              section: match[2],
+              subsections: split_subsections(match[3])
+            });
+          }
+          return matches;
+        }
+      },
+
+      // a single citation
       {
         regex: prefix_regex + section_regex + base_regex,
 
@@ -49,9 +80,7 @@ module.exports = {
         processor: function(captures) {
           var title = captures.title;
           var section = captures.section;
-          var subsections = [];
-          if (captures.subsections)
-            subsections = captures.subsections.split(/[\(\)]+/).filter(function(x) {return x});
+          var subsections = split_subsections(captures.subsections);
 
           return {
             title: title,
@@ -63,3 +92,10 @@ module.exports = {
     ];
   }
 };
+
+function split_subsections(match) {
+  if (match)
+    return match.split(/[\(\)]+/).filter(function(x) {return x});
+  else
+    return [];
+}
