@@ -2,6 +2,8 @@ module.exports = {
 
   // INCOMPLETE: An XPath filter.
   //
+  // See notes at https://github.com/unitedstates/citation/issues/52
+  //
   // Should parse the given text as XML, walk through the DOM,
   // and feed every text node to the `extract` callback,
   // with an attached unique XPath as metadata. The char offset
