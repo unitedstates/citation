@@ -32,7 +32,7 @@
     "method-override": "*",
     "errorhandler": "*",
 
-    "optimist": "*"
+    "minimist": "*"
   },
   "devDependencies": {
     "deep-equal": "*",
