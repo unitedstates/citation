@@ -1,67 +1,30 @@
 #!/usr/bin/env node
 
 var fs = require('fs');
+var minimist = require('minimist')
 var citation = require('../citation');
 
-var optimist = require('optimist');
-var args = optimist
-  .boolean("pretty")
-  .boolean("judicial")
-  .usage("Extract legal citations from text.")
-  .alias('input', 'i')
-  .alias('output', 'o')
-  .alias('pretty', 'p')
-  .alias('types', 't')
-  .alias('help', 'h')
-  .describe('input', 'Path to file to read for input.')
-  .describe('output', 'Path to file to write output.')
-  .describe('pretty', 'Prettify JSON output.')
-  .describe('judicial', 'Detect court opinion cites using walverine.')
-  .describe('parents', 'Include additional citations for parent sections.')
-  .describe('types', 'Limit citation types to a comma-separated list (e.g. "usc,law")')
-  .describe('filter', 'Apply a named filter, e.g. \'lines\', to results.')
-  .describe('excerpt', 'Number of characters of excerpt surrounding matches to include.')
-  .describe('help', 'Show this message.')
-  .argv;
 
-if (args.help) {
-  console.log(optimist.help());
-  process.exit(0);
-}
+// load in options, allow a couple booleans
+var options = minimist(process.argv, {
+  boolean: ["judicial", "parents"]
+});
+var text = options._[2];
+delete options._;
+// console.log(options);
 
-// load walverine if asked
-if (args.judicial)
+
+// minimal option processing - array-split types, load walverine
+if (options.types) options.types = options.types.split(",");
+if (options.judicial)
   citation.types.judicial = require("../citations/judicial");
 
-/**
-  Read text from STDIN or a file, send it into Citation.find(),
-  and output the resulting JSON into STDOUT or a file.
-*/
 
-// file input
-if (args.input) {
-  var filename = args.input;
-  if (fs.existsSync(filename)) {
-    fs.readFile(filename, "utf8", function(err, text) {
-      if (!err)
-        cite(text);
-      else {
-        console.log(err);
-        process.exit(-1);
-      }
-    });
-  } else {
-    console.log("Can't find file: " + filename);
-    process.exit(-1);
-  }
-}
+// if text on the command line, process that...
+if (text)
+ cite(text);
 
-// command line argument
-else if (args._[0]) {
-  cite(args._[0]);
-}
-
-// stdin (will hang if nothing is piped in)
+// otherwise, expect it via stdin
 else {
   var text = "";
   process.stdin.resume();
@@ -82,33 +45,7 @@ else {
 
 // actually extract the citations
 function cite(text) {
-  var options = {};
-  if (args.excerpt) options.excerpt = args.excerpt;
-  if (args.types) options.types = args.types.split(",");
-  if (args.parents) options.parents = true;
-  if (args.filter) {
-    options.filter = args.filter;
-    if (args[options.filter])
-      options[options.filter] = args[options.filter];
-  }
-
-  output(citation.find(text, options));
-}
-
-// will either be output file or stdout
-function output(results) {
-
-  var json;
-  if (args.pretty)
-    json = JSON.stringify(results, null, 2);
-  else
-    json = JSON.stringify(results);
-
-  if (args.output) {
-    fs.writeFileSync(args.output, json, "utf8");
-    console.log("Written to " + args.output + ".");
-  } else
-    console.log(json);
-
+  var results = citation.find(text, options);
+  console.log(JSON.stringify(results, null, 2))
   process.exit(0);
 }

@@ -174,30 +174,37 @@ See [etc/](etc) for an example upstart script to keep `cite-server` running in p
 
 ## Command line API
 
-The shell command can accept a string to parse as an argument, through STDIN,
-or from a file. It can output results to STDOUT, or to a file.
+The shell command can accept a string to parse as an argument or through STDIN, and outputs results to STDOUT as indented JSON.
 
 ```bash
 cite "section 5362(5) of title 31"
 
 echo "section 5362(5) of title 31" | cite
 
-cite --input=in-file.txt --output=out-file.json
-
-cite "pursuant to 5 U.S.C. 552(a)(1)(E) and"
+cite "pursuant to 5 U.S.C. 552(a)(1)(E) and > results.json"
 ```
 
 ### Options
 
-Some CLI-specific parameters:
+Pass any options the library takes, using dot operators to pass nested options.
 
-* `--input`: Filename to read text from
-* `--output`: Filename to output text to
-* `--pretty`: Prettify (indent) output
+For example, searching among types:
 
-And some of the options that the [JavaScript API](#javascript-api) supports:
+```bash
+cite --types=usc,law "section 5362(5) of title 31"
+```
 
-* `--types`: Limit citation types to a comma-separated list (e.g. "usc,law")
+Passing nested options:
+
+```bash
+cite --dc_code.source=dc_code "and then § 3-101.01 happened"
+```
+
+Opt-in to using `walverine` to search judicial cites with `--judicial`:
+
+```bash
+cite --judicial "Smith v. Hardibble, 111 Cal.2d 222, 555, 558, 333 Cal.3d 444 (1988)"
+```
 
 ## Replacement
 
