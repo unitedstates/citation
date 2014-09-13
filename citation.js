@@ -311,6 +311,8 @@ if (typeof(require) !== "undefined") {
   Citation.types.dc_register = require("./citations/dc_register");
   Citation.types.dc_law = require("./citations/dc_law");
   Citation.types.stat = require("./citations/stat");
+  Citation.types.reporter = require("./citations/reporter");
+
 
   Citation.filters.lines = require("./filters/lines");
 }
