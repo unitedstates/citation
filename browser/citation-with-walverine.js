@@ -23,18 +23,17 @@ Citation = {
   // return an array of matches, with citation broken out into fields
   find: function(text, options) {
     if (!options) options = {};
+    if (typeof(text) !== "string") return;
 
     // client can apply a filter that pre-processes text before extraction,
     // and post-processes citations after extraction
     var results;
     if (options.filter && Citation.filters[options.filter])
-      results = Citation.filtered(options.filter, text, options);
+      return Citation.filtered(options.filter, text, options);
 
     // otherwise, do a single pass over the whole text.
     else
-      results = Citation.extract(text, options);
-
-    return results;
+      return Citation.extract(text, options);
   },
 
   // return an array of matched and filter-mapped cites
@@ -46,6 +45,9 @@ Citation = {
     // filter can break up the text into pieces with accompanying metadata
     filter.from(text, options[name], function(piece, metadata) {
       var response = Citation.extract(piece, options);
+
+      // ignores any replaced text, it falls off the edge of the earth
+
       var filtered = response.citations.map(function(result) {
 
         Object.keys(metadata).forEach(function(key) {
@@ -58,6 +60,7 @@ Citation = {
       results = results.concat(filtered);
     });
 
+    // doesn't return replaced text
     return {citations: results};
   },
 
@@ -78,10 +81,6 @@ Citation = {
     if (types.length === 0) return null;
 
 
-    // caller can provide optional context that can change what patterns individual citators apply
-    var context = options.context || {};
-
-
     // The caller can provide a replace callback to alter every found citation.
     // this function will be called with each (found and processed) cite object,
     // and should return a string to be put in the cite's place.
@@ -97,8 +96,6 @@ Citation = {
     // accumulate the results
     var results = [];
 
-
-    ///////////// prepare citation patterns /////////////
 
     // will hold the calculated context-specific patterns we are to run
     // over the given text, tracked by index we expect to find them at.
@@ -116,7 +113,7 @@ Citation = {
       // (individual parsers can opt to make their parsing context-specific)
       var patterns = Citation.types[type].patterns;
       if (typeof(patterns) == "function")
-        patterns = patterns(context[type] || {});
+        patterns = patterns(options[type] || {});
 
       // add each pattern, keeping a running tally of what we would
       // expect its primary index to be when found in the master regex.
@@ -185,7 +182,7 @@ Citation = {
 
         // if we want parent cites too, make those now
         if (parents && Citation.types[type].parents_by) {
-          cites = Citation.u.flatten(cites.map(function(cite) {
+          cites = Citation._.flatten(cites.map(function(cite) {
             return Citation.citeParents(cite, type);
           }));
         }
@@ -194,11 +191,11 @@ Citation = {
           var result = {};
 
           // match-level info
-          Citation.u.extend(result, matchInfo);
+          Citation._.extend(result, matchInfo);
 
           // cite-level info, plus ID standardization
           result[type] = cite;
-          Citation.u.extend(result[type], Citation.types[type].standardize(result[type]));
+          result[type].id = Citation.types[type].id(cite);
 
           results.push(result);
 
@@ -237,7 +234,7 @@ Citation = {
     var results = [];
 
     for (var i=citation[field].length; i >= 0; i--) {
-      var parent = Citation.u.extend({}, citation);
+      var parent = Citation._.extend({}, citation);
       parent[field] = parent[field].slice(0, i);
       results.push(parent);
     }
@@ -276,7 +273,7 @@ Citation = {
 
   // small replacement for several functions previously served by
   // the `underscore` library.
-  u: {
+  _: {
     extend: function(obj) {
       Array.prototype.slice.call(arguments, 1).forEach(function(source) {
         if (source) {
@@ -300,10 +297,6 @@ Citation = {
 
       return impl(array, []);
     }
-  },
-
-  use: function(type) {
-    Citation.types[type] = require("./citations/" + type);
   }
 
 };
@@ -319,6 +312,8 @@ if (typeof(require) !== "undefined") {
   Citation.types.dc_register = require("./citations/dc_register");
   Citation.types.dc_law = require("./citations/dc_law");
   Citation.types.stat = require("./citations/stat");
+  Citation.types.reporter = require("./citations/reporter");
+
 
   Citation.filters.lines = require("./filters/lines");
 }
@@ -331,15 +326,14 @@ return Citation;
 
 })();
 
-},{"./citations/cfr":2,"./citations/dc_code":3,"./citations/dc_law":4,"./citations/dc_register":5,"./citations/law":7,"./citations/stat":8,"./citations/usc":9,"./citations/va_code":10,"./filters/lines":12}],2:[function(require,module,exports){
+},{"./citations/cfr":2,"./citations/dc_code":3,"./citations/dc_law":4,"./citations/dc_register":5,"./citations/law":7,"./citations/reporter":8,"./citations/stat":9,"./citations/usc":10,"./citations/va_code":11,"./filters/lines":13}],2:[function(require,module,exports){
 module.exports = {
   type: "regex",
 
-  standardize: function(data) {
-    var section = data.section || data.part;
-    return {
-      id: ["cfr", data.title, section].concat(data.subsections || []).join("/")
-    };
+  id: function(data) {
+    return ["cfr", data.title, (data.section || data.part)]
+      .concat(data.subsections || [])
+      .join("/")
   },
 
   patterns: [
@@ -416,11 +410,10 @@ module.exports = {
   type: "regex",
 
   // normalize all cites to an ID, with and without subsections
-  standardize: function(data) {
-    return {
-      id: ["dc-code", data.title, data.section].concat(data.subsections).join("/"),
-      section_id: ["dc-code", data.title, data.section].join("/")
-    };
+  id: function(cite) {
+    return ["dc-code", cite.title, cite.section]
+      .concat(cite.subsections)
+      .join("/");
   },
 
   // field to calculate parents from
@@ -475,7 +468,7 @@ module.exports = {
         // D.C. Official Code § 3 -1201.01
         {
           regex:
-            "D\\.?C\\.? Official Code\\s+" + // absolute identifier
+            "D\\.?C\\.? (?:Official )?Code\\s+" + // absolute identifier
             "(?:§+\\s+)?(\\d+A?)" +            // optional section sign, plus title
             "\\s?\\-\\s?" +
             "([\\w\\d]+(?:\\.?[\\w\\d]+)?)" +      // section identifier, letters/numbers/dots
@@ -506,10 +499,8 @@ module.exports = {
 module.exports = {
   type: "regex",
 
-  standardize: function(cite) {
-    return {
-      id: ["dc-law", cite.period, cite.number].join("/")
-    };
+  id: function(cite) {
+    return ["dc-law", cite.period, cite.number].join("/");
   },
 
   patterns: function(context) {
@@ -542,11 +533,8 @@ module.exports = {
 module.exports = {
   type: "regex",
 
-  // normalize all cites to an ID
-  standardize: function(match) {
-    return {
-      id: ["dc-register", match.volume, match.page].join("/")
-    };
+  id: function(cite) {
+    return ["dc-register", cite.volume, cite.page].join("/");
   },
 
   patterns: [
@@ -586,15 +574,14 @@ module.exports = {
     });
   }
 };
-},{"walverine":14}],7:[function(require,module,exports){
+},{"walverine":15}],7:[function(require,module,exports){
 module.exports = {
   type: "regex",
 
-  standardize: function(cite) {
-    return {
-      id: ["us-law", cite.type, cite.congress, cite.number].concat(cite.sections || []).join("/"),
-      law_id: ["us-law", cite.type, cite.congress, cite.number].join("/")
-    };
+  id: function(cite) {
+    return ["us-law", cite.type, cite.congress, cite.number]
+      .concat(cite.sections || [])
+      .join("/");
   },
 
   // field to calculate parents from
@@ -659,10 +646,35 @@ module.exports = {
   type: "regex",
 
   // normalize all cites to an ID
-  standardize: function(cite) {
-    return {
-      id: ["stat", cite.volume, cite.page].join("/")
-    };
+  id: function(cite) {
+    return ["reporter", cite.volume, cite.reporter, cite.page].join("/")
+  },
+
+  patterns: [
+    {
+      regex:
+        "(\\d{1,3})\\s" +
+        "(\\w+(?:\\.\\dd)?|U\\.?S\\.?|F\\. Supp\\.(?:\\s\\dd)?)\\s" +
+        "(\\d{1,4})",
+      fields: ['volume',  'reporter', 'page'],
+      processor: function(match) {
+        return {
+          volume: match.volume,
+          reporter: match.reporter,
+          page: match.page,
+        };
+      }
+    }
+  ]
+};
+
+},{}],9:[function(require,module,exports){
+module.exports = {
+  type: "regex",
+
+  // normalize all cites to an ID
+  id: function(cite) {
+    return ["stat", cite.volume, cite.page].join("/")
   },
 
   patterns: [
@@ -684,17 +696,14 @@ module.exports = {
   ]
 };
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 module.exports = {
   type: "regex",
 
-  // normalize all cites to an ID, with and without subsections,
-  // TODO: kill this?
-  standardize: function(data) {
-    return {
-      id: ["usc", data.title, data.section].concat(data.subsections || []).join("/"),
-      section_id: ["usc", data.title, data.section].join("/")
-    };
+  id: function(cite) {
+    return ["usc", cite.title, cite.section]
+      .concat(cite.subsections || [])
+      .join("/");
   },
 
 
@@ -790,14 +799,12 @@ module.exports = {
   ]
 };
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 module.exports = {
   type: "regex",
 
-  standardize: function(data) {
-    return {
-      id: ["va-code", data.title, data.section].join("/")
-    };
+  id: function(cite) {
+    return ["va-code", data.title, data.section].join("/");
   },
 
   patterns: [
@@ -829,12 +836,22 @@ module.exports = {
   ]
 };
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 Citation = require("./citation");
 Citation.types.judicial = require("./citations/judicial");
 module.exports = Citation;
-},{"./citation":1,"./citations/judicial":6}],12:[function(require,module,exports){
+},{"./citation":1,"./citations/judicial":6}],13:[function(require,module,exports){
 module.exports = {
+
+  /*
+    Filters receive:
+      * text: the entire input text
+      * options: any filter-specific options, e.g. delimiter
+      * extract: execute this function once with every substring the filter
+          breaks the input text into, e.g. each line,
+          along with any associated metadata, e.g. the line number.
+
+  */
 
   // A line-by-line filter.
   //
@@ -846,8 +863,13 @@ module.exports = {
   //   delimiter: override the default delimiter
 
   from: function(text, options, extract) {
+    // by default, break lines on any combination of \n\r
     var delimiter = (options && options.delimiter) || /[\n\r]+/;
+
+    // split the text into an array of lines
     var lines = text.split(new RegExp(delimiter));
+
+    // for each line, submit it to the extractor along with its line number
     lines.forEach(function(line, i) {
       extract(line, {line: (i+1)});
     });
@@ -855,7 +877,7 @@ module.exports = {
 
 };
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 var reporters = {
     "A.": [{"cite_type": "state_regional",
             "editions": {"A.": [{"year":1885, "month":0, "day":1},
@@ -4048,7 +4070,7 @@ var reporters = {
 };
 
 module.exports.reporters = reporters;
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 WalverineCitation = function(volume, reporter, page) {
     /*
      * Convenience class which represents a single citation found in a document.
@@ -5283,4 +5305,4 @@ Walverine.get_citations = function (text, html, do_post_citation, do_defendant) 
 module.exports = Walverine;
 
 
-},{"./reporters":13}]},{},[11])
+},{"./reporters":14}]},{},[12])
