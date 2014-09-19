@@ -19,6 +19,12 @@ exports["Absolute patterns"] = function(test) {
       '499 A.2d 815',
       '499','A.2d','815'
       ],
+      
+      ["Atlantic",
+      "If the language of the statute is clear and unambiguous and conveys a definite and sensible meaning that does not contradict an evident legislative purpose, the court must apply the words literally.' Rathbun v. Leesona Corp., R.I. 460 A.2d 931, 933 (1983).",
+      '460 A.2d 931',
+      '460', 'A.2d', '931'
+      ],
 
        //  Federal Reporter
       ["Federal Reporter",
@@ -32,9 +38,21 @@ exports["Absolute patterns"] = function(test) {
       'See, e.g., Hearn v. Meyer, 664 F. Supp. 832, 847 (S.D.N.Y. 1987) ("Copyright protection is afforded rarely where a fact permits only a narrow continuum or spectrum of expression.").',
       '664 F. Supp. 832',
       '664','F. Supp.','832'
+      ],
+      
+      //  Pacific Reporter
+      ["Pacific Reporter",
+      'and (3) a duty should be found under the factors presented in Mostert v. CBL & Assocs., 741 P.2d 1090 (Wyo.1987). A hearing was held on October 6, 1998, and the district court issued a decision letter on November 3, 1998, granting summary judgment in favor of the appellees.',
+      '741 P.2d 1090',
+      '741', 'P.2d', '1090'
+      ],
+      
+      // Southwestern Reporter
+      ["Southwestern Reporter",
+      "State asserts and whether those objectives are compelling enough to override appellees' right of privacy. The burden of proof rests with the State to demonstrate a compelling governmental objective. TSEU, 746 S.W.2d at 205.",
+      '746 S.W.2d 205',
+      '746', 'S.W.2d', '205'
       ]
-
-
   ];
 
   for (var i=0; i<cases.length; i++) {
