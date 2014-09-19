@@ -20,6 +20,22 @@ exports["Absolute patterns"] = function(test) {
       '499','A.2d','815'
       ],
 
+      // Southwest Reporter
+      ["Southwest",
+      "the State contends in its first point of error that a court cannot review this statute in a civil action. Passel, 440 S.W.2d 61 (Tex.1969), ....",
+      '440 S.W.2d 61',
+      '440','S.W.2d','61'
+      ],
+
+
+      // Northwest Reporter
+      ["Northwest",
+      "Noyes v. State, 1 N.W. 1 (Wis., 1879)  ....",
+      '1 N.W. 1',
+      '1','N.W.','1'
+      ],
+
+
        //  Federal Reporter
       ["Federal Reporter",
       "MATTHEW BENDER & CO. v. WEST PUBLISHING CO., 158 F.3d 674 (2nd Cir. 1998)",
