@@ -209,9 +209,18 @@ Citation = {
           return result;
         });
 
-        // If a replace function is given, replace each matched citation. The
-        // matched citations may overlap. In those cases only use the first.
+        // If a replace function is given, replace each matched citation by the
+        // result of calling the replace function with the citation passed as its
+        // only argument.
+        //
+        // Most citators return only a single citation match per regex match, but
+        // some return multiple citations for strings like "§§ 32-701 through 32-703".
+
+        // Collect the final match string here.
         var finalstring = matchInfo.match;
+
+        // Get the replace function. If options.replace is a function use that,
+        // or if it is an object mapping the citator type to a function use that.
         var replace_func = null;
         if (typeof(replace) === "function")
           replace_func = replace;
@@ -219,19 +228,40 @@ Citation = {
           replace_func = replace[type];
         else
           replace_func = null;
+
+        // If there's a replacement function...
         if (replace_func) {
+          // Process the citations in the order they are returned. Assume they are
+          // ordered from left to right.
           var last_index = 0;
           var dx = 0;
           for (var i = 0; i < cites.length; i++) {
+            // Skip citations that overlap with the previous citation (e.g. there
+            // may be two citations for the same text range.)
             if (cites[i].index >= last_index) {
+              // Execute the replacement function. If the return is truth-y, perform
+              // a replacement.
               var replacement = replace_func(cites[i]);
               if (replacement) {
+                // Replace the substring.
                 finalstring = finalstring.substring(0, cites[i].index-index+dx) + replacement + finalstring.substring(cites[i].index-index+cites[i].match.length+dx);
+
+                // The replacement text may have a different length than the text
+                // being replaced. Keep track of the total change in string length
+                // as we go because we have to adjust future citation replacements's
+                // indexes so that we make the edit to finalstring in the right place.
                 dx += replacement.length - cites[i].match.length;
+
+                // And track the end of last citation so we can skip any future citations
+                // that overlap with this text range.
                 last_index = cites[i].index + cites[i].match.length;
               }
             }
-            delete cites[i].index; // because not helpful anymore
+
+            // Per the citation API, delete the index field when doing a replacement.
+            // After replacements, the index will no longer be useful to the caller
+            // because the string has been edited.
+            delete cites[i].index;
           }
         }
         return finalstring;
