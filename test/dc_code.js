@@ -151,6 +151,62 @@ exports["Absolute patterns"] = function(test) {
   test.done();
 };
 
+exports["Lists"] = function(test, with_replacement) {
+
+  var cases = [
+    // made-up example which tests:
+    // comma, comma+'and', 'and' separators
+    // through separator
+    // subsections
+    // replacement
+    [ 'standard',
+      'DC Code §§ 1-206.01, 1-206.02 through 1-206.03(a) and 1-206.04, and 1-206.05 through 1-206.06',
+      [
+        [11, "1-206.01", "1", "206.01", []],
+        [21, "1-206.02", "1", "206.02", []],
+        [38, "1-206.03(a)", "1", "206.03", ['a']],
+        [54, "1-206.04", "1", "206.04", []],
+        [68, "1-206.05", "1", "206.05", []],
+        [85, "1-206.06", "1", "206.06", []]],
+        'DC Code §§ {dc-code/1/206.01}, {dc-code/1/206.02} through {dc-code/1/206.03/a} and {dc-code/1/206.04}, and {dc-code/1/206.05} through {dc-code/1/206.06}',
+      ],
+  ];
+
+  for (var i=0; i<cases.length; i++) {
+    var details = cases[i];
+    var text = details[1];
+
+    var results = Citation.find(text, {
+      types: ["dc_code"],
+      context: {}, // leaving out a context means the parser will require an absolute cite
+      replace: with_replacement ? function(cite) { return "{" + cite.dc_code.id + "}"; } : {},
+    })
+
+    var found = results.citations;
+
+    if (with_replacement)
+      test.equal(details[3], results.text)
+
+    test.equal(found.length, details[2].length);
+
+    if (found.length == details[2].length) {
+      for (var j = 0; j < found.length; j++) {
+        var citation = found[j];
+        if (!with_replacement) test.equal(citation.index, details[2][j][0], details[0]); // not available if replacement is used
+        test.equal(citation.match, details[2][j][1], details[0]);
+        test.equal(citation.dc_code.title, details[2][j][2]);
+        test.equal(citation.dc_code.section, details[2][j][3]);
+        test.deepEqual(citation.dc_code.subsections, details[2][j][4]);
+      }
+    } else
+      console.log("Incorrect number of matches found in: " + text);
+  }
+
+  test.done();
+};
+
+exports["ListsWithReplacement"] = function(test) { exports["Lists"](test, true); }
+
 // todo, should return *two* sections:
 // DC mayoral order 2013-060, download PDF at
 // [ 'two-sections-with-and'

@@ -162,10 +162,10 @@ Citation = {
         var matchInfo = {type: citator.type};
         matchInfo.match = match.toString(); // match data can be converted to the plain string
 
-        // store the matched character offset, except if we're replacing
-        if (!replace)
-          matchInfo.index = index;
-
+        // store the matched character offset (if we're replacing we need it to handle
+        // some multiple citations, but the index will be useless to the caller after
+        // the replacement) so we wipe it out later.
+        matchInfo.index = index;
 
         // use index to grab surrounding excerpt
         if (excerpt > 0) {
@@ -192,6 +192,14 @@ Citation = {
           // match-level info
           Citation._.extend(result, matchInfo);
 
+          // handle _submatch, which lets the user-level citator override the
+          // match and index with a sub-part of the whole matched regex
+          if (cite._submatch) {
+            result.match = cite._submatch.text;
+            result.index += cite._submatch.offset;
+            delete cite._submatch;
+          }
+
           // cite-level info, plus ID standardization
           result[type] = cite;
           result[type].id = Citation.types[type].id(cite);
@@ -201,17 +209,62 @@ Citation = {
           return result;
         });
 
-        // I don't know what to do about ranges yet - but for now, screw it
-        var replacedCite;
-        if (typeof(replace) === "function")
-          replacedCite = replace(cites[0]);
-        else if ((typeof(replace) === "object") && (typeof(replace[type]) === "function"))
-          replacedCite = replace[type](cites[0]);
+        // If a replace function is given, replace each matched citation by the
+        // result of calling the replace function with the citation passed as its
+        // only argument.
+        //
+        // Most citators return only a single citation match per regex match, but
+        // some return multiple citations for strings like "§§ 32-701 through 32-703".
 
-        if (replacedCite)
-          return replacedCite;
+        // Collect the final match string here.
+        var finalstring = matchInfo.match;
+
+        // Get the replace function. If options.replace is a function use that,
+        // or if it is an object mapping the citator type to a function use that.
+        var replace_func = null;
+        if (typeof(replace) === "function")
+          replace_func = replace;
+        else if ((typeof(replace) === "object") && (typeof(replace[type]) === "function"))
+          replace_func = replace[type];
         else
-          return matchInfo.match;
+          replace_func = null;
+
+        // If there's a replacement function...
+        if (replace_func) {
+          // Process the citations in the order they are returned. Assume they are
+          // ordered from left to right.
+          var last_index = 0;
+          var dx = 0;
+          for (var i = 0; i < cites.length; i++) {
+            // Skip citations that overlap with the previous citation (e.g. there
+            // may be two citations for the same text range.)
+            if (cites[i].index >= last_index) {
+              // Execute the replacement function. If the return is truth-y, perform
+              // a replacement.
+              var replacement = replace_func(cites[i]);
+              if (replacement) {
+                // Replace the substring.
+                finalstring = finalstring.substring(0, cites[i].index-index+dx) + replacement + finalstring.substring(cites[i].index-index+cites[i].match.length+dx);
+
+                // The replacement text may have a different length than the text
+                // being replaced. Keep track of the total change in string length
+                // as we go because we have to adjust future citation replacements's
+                // indexes so that we make the edit to finalstring in the right place.
+                dx += replacement.length - cites[i].match.length;
+
+                // And track the end of last citation so we can skip any future citations
+                // that overlap with this text range.
+                last_index = cites[i].index + cites[i].match.length;
+              }
+            }
+
+            // Per the citation API, delete the index field when doing a replacement.
+            // After replacements, the index will no longer be useful to the caller
+            // because the string has been edited.
+            delete cites[i].index;
+          }
+        }
+        return finalstring;
       });
     }
 
