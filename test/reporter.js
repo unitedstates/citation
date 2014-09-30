@@ -13,6 +13,13 @@ exports["Absolute patterns"] = function(test) {
       '558 U.S. 310',
       '558', 'U.S.', '310'],
 
+    // Supreme Court Opinion with extra space
+    [ 'US Reporter Spacing',
+      'Citizens United v. Federal Election Commission, 558 U. S. 310 (2010), (Docket No. 08-205), is a U.S. constitutional law case dealing with the regulation of campaign spending by corporations',
+  '558 U. S. 310',
+  '558', 'U. S.', '310'],
+
+
       //  Atlantic Reporter
       ["Atlantic",
       "In enacting the 1984 amendment, Congress undertook to authorize the Council in certain circumstances to do by resolution what the Congress itself could not do in its capacity as a national legislature. Cf. Gary v. United States, 499 A.2d 815, 818-821 (D.C.1985) (en banc)....",
