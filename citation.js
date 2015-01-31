@@ -363,6 +363,7 @@ if (typeof(require) !== "undefined") {
   Citation.types.dc_code = require("./citations/dc_code");
   Citation.types.dc_register = require("./citations/dc_register");
   Citation.types.dc_law = require("./citations/dc_law");
+  Citation.types.dc_stat = require("./citations/dc_stat");
   Citation.types.stat = require("./citations/stat");
   Citation.types.reporter = require("./citations/reporter");
 
