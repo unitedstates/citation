@@ -71,17 +71,19 @@ singles.forEach(function(single) {
 singles.forEach(function(single) {
   exports[single[1] + " (no-judicial-type)"] = function(test) {
     var text = single[0];
-    var actual = Citation.find(text).citations;
+    var actual = Citation.find(text, {types: "judicial"}).citations;
     var actual = actual.map(function(result) {
       // Not worried about testing these at the moment.
-      ["base_citation", "as_regex", "as_html"].forEach(function(key) {
-        delete result.judicial[key];
-      });
+      if (result.judicial) {
+        ["base_citation", "as_regex", "as_html"].forEach(function(key) {
+          delete result.judicial[key];
+        });
+      }
       return result;
     });
     var expected = single[2];
 
-    test.ok(deepEqual(actual, expected), "derp");
+    test.ok(deepEqual(actual, expected), "Expected:\n " + JSON.stringify(expected) + "\n\nactual:\n" + JSON.stringify(actual));
     test.done();
   };
 
