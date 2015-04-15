@@ -366,6 +366,7 @@ if (typeof(require) !== "undefined") {
   Citation.types.dc_stat = require("./citations/dc_stat");
   Citation.types.stat = require("./citations/stat");
   Citation.types.reporter = require("./citations/reporter");
+  Citation.types.fedreg = require("./citations/fedreg");
 
 
   Citation.filters.lines = require("./filters/lines");

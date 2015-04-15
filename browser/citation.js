@@ -78,6 +78,12 @@ module.exports = {
 };
 
 },{}],2:[function(require,module,exports){
+var base_regex =
+  "(\\d+A?)" + // title
+  "\\s?\\-\\s?" + // dash
+  "([\\w\\d]+(?:\\.?[\\w\\d]+)?)" +  // section identifier (letters/numbers/dots)
+  "((?:\\([^\\)]+\\))*)"; // subsection (any number of adjacent parenthesized subsections)
+
 module.exports = {
   type: "regex",
 
@@ -92,81 +98,87 @@ module.exports = {
   parents_by: "subsections",
 
   patterns: function(context) {
-    // only apply this regex if we're confident that relative citations refer to the DC Code
-    if (context.source == "dc_code") {
-      return [
+    // D.C. Official Code 3-1202.04
+    // D.C. Official Code § 3-1201.01
+    // D.C. Official Code §§ 38-2602(b)(11)
+    // D.C. Official Code § 3- 1201.01
+    // D.C. Official Code § 3 -1201.01
+    //
+    // § 32-701
+    // § 32-701(4)
+    // § 3-101.01
+    // § 1-603.01(13)
+    // § 1- 1163.33
+    // § 1 -1163.33
+    // section 16-2326.01
 
-        // § 32-701
-        // § 32-701(4)
-        // § 3-101.01
-        // § 1-603.01(13)
-        // § 1- 1163.33
-        // § 1 -1163.33
-        // section 16-2326.01
-        {
-          regex:
-            "(?:section(?:s)?|§+)\\s+(\\d+A?)" +
-            "\\s?\\-\\s?" +
-            "([\\w\\d]+(?:\\.?[\\w\\d]+)?)" +  // section identifier, letters/numbers/dots
-            "((?:\\([^\\)]+\\))*)", // any number of adjacent parenthesized subsections
-
-          fields: ["title", "section", "subsections"],
-
-          processor: function(captures) {
-            var title = captures.title;
-            var section = captures.section;
-            var subsections = [];
-            if (captures.subsections)
-              subsections = captures.subsections.split(/[\(\)]+/).filter(function(x) {return x});
-
-            return {
-              title: title,
-              section: section,
-              subsections: subsections
-            };
-          }
-        }
-      ];
+    var prefix_regex = "";
+    var section_regex = "(?:sections?|§+)\\s+";
+    var sections_regex = "(?:sections|§§)\\s+";
+    if (context.source != "dc_code") {
+      // Require "DC Official Code" but then make the section symbol optional.
+      prefix_regex = "D\\.?C\\.? (?:Official )?Code\\s+";
+      section_regex = "(?:" + section_regex + ")?";
+      sections_regex = "(?:" + sections_regex + ")?";
     }
 
-    // absolute cites
-    else {
-      return [
+    return [
+      // multiple citations
+      // has precedence over a single citation
+      // Unlike the single citation, the matched parts are just the title/section/subsection
+      // and omits "DC Code" and the section symbols (if present) from the matched text.
+      {
+        regex: "(" + prefix_regex + sections_regex + ")(" + base_regex + "(?:(?:,|, and|\\s+and|\\s+through|\\s+to)\\s+" + base_regex + ")+)",
 
-        // D.C. Official Code 3-1202.04
-        // D.C. Official Code § 3-1201.01
-        // D.C. Official Code §§ 38-2602(b)(11)
-        // D.C. Official Code § 3- 1201.01
-        // D.C. Official Code § 3 -1201.01
-        {
-          regex:
-            "D\\.?C\\.? (?:Official )?Code\\s+" + // absolute identifier
-            "(?:§+\\s+)?(\\d+A?)" +            // optional section sign, plus title
-            "\\s?\\-\\s?" +
-            "([\\w\\d]+(?:\\.?[\\w\\d]+)?)" +      // section identifier, letters/numbers/dots
-            "((?:\\([^\\)]+\\))*)", // any number of adjacent parenthesized subsections
+        fields: ["prefix", "multicite", "title1", "section1", "subsections1", "title2", "section2", "subsections2"],
 
-          fields: ["title", "section", "subsections"],
-
-          processor: function(captures) {
-            var title = captures.title;
-            var section = captures.section;
-
-            var subsections = [];
-            if (captures.subsections) subsections = captures.subsections.split(/[\(\)]+/).filter(function(x) {return x});
-
-            return {
-              title: title,
-              section: section,
-              subsections: subsections
-            };
+        processor: function(captures) {
+          var rx = new RegExp(base_regex, "g");
+          var matches = new Array();
+          var match;
+          while((match = rx.exec(captures.multicite)) !== null) {
+            matches.push({
+              _submatch: {
+                text: match[0],
+                offset: captures.prefix.length + match.index,
+              },
+              title: match[1],
+              section: match[2],
+              subsections: split_subsections(match[3])
+            });
           }
+          return matches;
         }
-      ];
-    }
+      },
+
+      // a single citation
+      {
+        regex: prefix_regex + section_regex + base_regex,
+
+        fields: ["title", "section", "subsections"],
+
+        processor: function(captures) {
+          var title = captures.title;
+          var section = captures.section;
+          var subsections = split_subsections(captures.subsections);
+
+          return {
+            title: title,
+            section: section,
+            subsections: subsections
+          };
+        }
+      }
+    ];
   }
 };
 
+function split_subsections(match) {
+  if (match)
+    return match.split(/[\(\)]+/).filter(function(x) {return x});
+  else
+    return [];
+}
 },{}],3:[function(require,module,exports){
 module.exports = {
   type: "regex",
@@ -177,10 +189,11 @@ module.exports = {
 
   patterns: function(context) {
     // If the context for this citation is the DC Code, then Law XX-YYY can be assumed
-    // to be a DC law. In other context, require the "DC Law" prefix.
-    var context_regex = "";
-    if (context.source != "dc_code")
-      context_regex = "D\\.?\\s*C\\.?\\s+";
+    // to be a DC law. In other context, require the "DC Law" prefix. In the DC Code
+    // context also slurp in the "DC" prefix.
+    var context_regex = "D\\.?\\s*C\\.?\\s+";
+    if (context.source == "dc_code")
+      context_regex = "(?:" + context_regex + ")?"
 
     return [
       // "D.C. Law 111-89"
@@ -228,6 +241,61 @@ module.exports = {
 };
 
 },{}],5:[function(require,module,exports){
+module.exports = {
+  type: "regex",
+
+  // normalize all cites to an ID
+  id: function(cite) {
+    return ["dcstat", cite.volume, cite.page].join("/")
+  },
+
+  patterns: [
+    // "20 DCSTAT 1952"
+    {
+      regex:
+        "(\\d+)\\s+" +
+        "DCSTAT" +
+        "\\s+(\\d+)",
+      fields: ['volume', 'page'],
+      processor: function(match) {
+        return {
+          volume: match.volume,
+          page: match.page,
+        };
+      }
+    }
+  ]
+};
+
+},{}],6:[function(require,module,exports){
+module.exports = {
+  type: "regex",
+
+  // normalize all cites to an ID
+  id: function(cite) {
+    return ["fedreg", cite.volume, cite.page].join("/")
+  },
+
+  patterns: [
+    // "75 Fed. Reg. 28404"
+    // "69 FR 22135"
+    {
+      regex:
+        "(\\d+)\\s+" +
+        "(?:Fed\\.?\\sReg?\\.?|F\\.?R\\.?)" +
+        "\\s+(\\d+)",
+      fields: ['volume', 'page'],
+      processor: function(match) {
+        return {
+          volume: match.volume,
+          page: match.page,
+        };
+      }
+    }
+  ]
+};
+
+},{}],7:[function(require,module,exports){
 module.exports = {
   type: "regex",
 
@@ -294,7 +362,7 @@ module.exports = {
   ]
 };
 
-},{}],6:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 module.exports = {
   type: "regex",
 
@@ -307,7 +375,7 @@ module.exports = {
     {
       regex:
         "(\\d{1,3})\\s" +
-        "(\\w+(?:\\.\\dd)?|U\\.?S\\.?|F\\. Supp\\.(?:\\s\\dd)?)\\s" +
+        "(\\w+(?:\\.\\w+(?:\\.)?)?(?:\\.\\dd)?|U\\.?\\s?S\\.?|F\\. Supp\\.(?:\\s\\dd)?)\\s" +
         "(\\d{1,4})",
       fields: ['volume',  'reporter', 'page'],
       processor: function(match) {
@@ -321,7 +389,7 @@ module.exports = {
   ]
 };
 
-},{}],7:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 module.exports = {
   type: "regex",
 
@@ -349,7 +417,7 @@ module.exports = {
   ]
 };
 
-},{}],8:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 module.exports = {
   type: "regex",
 
@@ -452,7 +520,7 @@ module.exports = {
   ]
 };
 
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 module.exports = {
   type: "regex",
 
@@ -489,7 +557,7 @@ module.exports = {
   ]
 };
 
-},{}],10:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /* Citation.js - a legal citation extractor.
  *
  * Open source, dedicated to the public domain: https://github.com/unitedstates/citation
@@ -654,10 +722,10 @@ Citation = {
         var matchInfo = {type: citator.type};
         matchInfo.match = match.toString(); // match data can be converted to the plain string
 
-        // store the matched character offset, except if we're replacing
-        if (!replace)
-          matchInfo.index = index;
-
+        // store the matched character offset (if we're replacing we need it to handle
+        // some multiple citations, but the index will be useless to the caller after
+        // the replacement) so we wipe it out later.
+        matchInfo.index = index;
 
         // use index to grab surrounding excerpt
         if (excerpt > 0) {
@@ -684,6 +752,14 @@ Citation = {
           // match-level info
           Citation._.extend(result, matchInfo);
 
+          // handle _submatch, which lets the user-level citator override the
+          // match and index with a sub-part of the whole matched regex
+          if (cite._submatch) {
+            result.match = cite._submatch.text;
+            result.index += cite._submatch.offset;
+            delete cite._submatch;
+          }
+
           // cite-level info, plus ID standardization
           result[type] = cite;
           result[type].id = Citation.types[type].id(cite);
@@ -693,17 +769,62 @@ Citation = {
           return result;
         });
 
-        // I don't know what to do about ranges yet - but for now, screw it
-        var replacedCite;
-        if (typeof(replace) === "function")
-          replacedCite = replace(cites[0]);
-        else if ((typeof(replace) === "object") && (typeof(replace[type]) === "function"))
-          replacedCite = replace[type](cites[0]);
+        // If a replace function is given, replace each matched citation by the
+        // result of calling the replace function with the citation passed as its
+        // only argument.
+        //
+        // Most citators return only a single citation match per regex match, but
+        // some return multiple citations for strings like "§§ 32-701 through 32-703".
 
-        if (replacedCite)
-          return replacedCite;
+        // Collect the final match string here.
+        var finalstring = matchInfo.match;
+
+        // Get the replace function. If options.replace is a function use that,
+        // or if it is an object mapping the citator type to a function use that.
+        var replace_func = null;
+        if (typeof(replace) === "function")
+          replace_func = replace;
+        else if ((typeof(replace) === "object") && (typeof(replace[type]) === "function"))
+          replace_func = replace[type];
         else
-          return matchInfo.match;
+          replace_func = null;
+
+        // If there's a replacement function...
+        if (replace_func) {
+          // Process the citations in the order they are returned. Assume they are
+          // ordered from left to right.
+          var last_index = 0;
+          var dx = 0;
+          for (var i = 0; i < cites.length; i++) {
+            // Skip citations that overlap with the previous citation (e.g. there
+            // may be two citations for the same text range.)
+            if (cites[i].index >= last_index) {
+              // Execute the replacement function. If the return is truth-y, perform
+              // a replacement.
+              var replacement = replace_func(cites[i]);
+              if (replacement) {
+                // Replace the substring.
+                finalstring = finalstring.substring(0, cites[i].index-index+dx) + replacement + finalstring.substring(cites[i].index-index+cites[i].match.length+dx);
+
+                // The replacement text may have a different length than the text
+                // being replaced. Keep track of the total change in string length
+                // as we go because we have to adjust future citation replacements's
+                // indexes so that we make the edit to finalstring in the right place.
+                dx += replacement.length - cites[i].match.length;
+
+                // And track the end of last citation so we can skip any future citations
+                // that overlap with this text range.
+                last_index = cites[i].index + cites[i].match.length;
+              }
+            }
+
+            // Per the citation API, delete the index field when doing a replacement.
+            // After replacements, the index will no longer be useful to the caller
+            // because the string has been edited.
+            delete cites[i].index;
+          }
+        }
+        return finalstring;
       });
     }
 
@@ -802,8 +923,10 @@ if (typeof(require) !== "undefined") {
   Citation.types.dc_code = require("./citations/dc_code");
   Citation.types.dc_register = require("./citations/dc_register");
   Citation.types.dc_law = require("./citations/dc_law");
+  Citation.types.dc_stat = require("./citations/dc_stat");
   Citation.types.stat = require("./citations/stat");
   Citation.types.reporter = require("./citations/reporter");
+  Citation.types.fedreg = require("./citations/fedreg");
 
 
   Citation.filters.lines = require("./filters/lines");
@@ -817,7 +940,7 @@ return Citation;
 
 })();
 
-},{"./citations/cfr":1,"./citations/dc_code":2,"./citations/dc_law":3,"./citations/dc_register":4,"./citations/law":5,"./citations/reporter":6,"./citations/stat":7,"./citations/usc":8,"./citations/va_code":9,"./filters/lines":11}],11:[function(require,module,exports){
+},{"./citations/cfr":1,"./citations/dc_code":2,"./citations/dc_law":3,"./citations/dc_register":4,"./citations/dc_stat":5,"./citations/fedreg":6,"./citations/law":7,"./citations/reporter":8,"./citations/stat":9,"./citations/usc":10,"./citations/va_code":11,"./filters/lines":13}],13:[function(require,module,exports){
 module.exports = {
 
   /*
@@ -854,4 +977,4 @@ module.exports = {
 
 };
 
-},{}]},{},[10])
+},{}]},{},[12])
