@@ -370,6 +370,7 @@ if (typeof(require) !== "undefined") {
 
 
   Citation.filters.lines = require("./filters/lines");
+  Citation.filters.xpath = require("./filters/xpath");
 }
 
 // auto-load in-browser

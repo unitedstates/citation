@@ -91,3 +91,121 @@ lines.forEach(function(line) {
     test.done();
   };
 });
+
+var xpath = [{
+  name: "Basic",
+  text: "<html><head></head><body>" +
+    "Body, 5 USC 552 citation." +
+    "</body></html>",
+  outcome: {
+    without: {
+      xpath: undefined,
+      index: 31,
+      match: "5 USC 552"
+    },
+    with: {
+      xpath: "/html[1]/body[1]/text()[1]",
+      index: 6,
+      match: "5 USC 552"
+    }
+  }
+}, {
+  name: "Node type smoke test",
+  text: "<!DOCTYPE html><!-- comment --><html><head></head><body>" +
+    "<?xml-stylesheet ...xsl ?>" +
+    "<![CDATA[ CDATA section ]]>" +
+    "<!ENTITY xml entities >" +
+    "<!NOTATION notation >" +
+    "Text 5 USC 552 citation." +
+    "</body></html>",
+  outcome: {
+    without: {
+      xpath: undefined,
+      index: 158,
+      match: "5 USC 552"
+    },
+    with: {
+      xpath: "/html[1]/body[1]/text()[1]",
+      index: 5,
+      match: "5 USC 552"
+    }
+  }
+}, {
+  name: "Deeply nested",
+  text: "<html><head></head><body>" +
+    "<div><div><div><div><table><tbody><tr><td>" +
+    "Text<br>text<br>text<br>text<b>text 5 USC 552</b>" +
+    "</td></tr></tbody></table></div></div></div></div>" +
+    "</body></html>",
+  outcome: {
+    without: {
+      xpath: undefined,
+      index: 103,
+      match: "5 USC 552"
+    },
+    with: {
+      xpath: "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/table[1]/tbody[1]/tr[1]/td[1]/b[1]/text()[1]",
+      index: 5,
+      match: "5 USC 552"
+    }
+  }
+}, {
+  name: "Multiple text nodes",
+  text: "<html><head></head></body>" +
+    "Text<br>Text <a href=\"#anchor\">link</a> text<br>Text<br>Text 5 USC 552" +
+    "</body></html>",
+  outcome: {
+    without: {
+      xpath: undefined,
+      index: 87,
+      match: "5 USC 552"
+    },
+    with: {
+      xpath: "/html[1]/body[1]/text()[5]",
+      index: 5,
+      match: "5 USC 552"
+    }
+  }
+}, {
+  name: "Document fragment",
+  text: "5 USC 552",
+  outcome: {
+    without: {
+      xpath: undefined,
+      index: 0,
+      match: "5 USC 552"
+    },
+    with: {
+      xpath: "/html[1]/body[1]/text()[1]",
+      index: 0,
+      match: "5 USC 552"
+    }
+  }
+}];
+
+xpath.forEach(function(xpathcase) {
+  exports["XPath: " + xpathcase.name] = function(test) {
+    var results, cite;
+
+    if (xpathcase.outcome.without) {
+      results = Citation.find(xpathcase.text).citations;
+      test.equal(results.length, 1);
+      cite = results[0];
+      test.equal(cite.xpath, xpathcase.outcome.without.xpath);
+      test.equal(cite.index, xpathcase.outcome.without.index);
+      test.equal(cite.match, xpathcase.outcome.without.match);
+    }
+
+    if (xpathcase.outcome.with) {
+      var options = {filter: "xpath"};
+      results = Citation.find(xpathcase.text, options).citations;
+      test.equal(results.length, 1);
+      cite = results[0];
+      test.equal(cite.xpath, xpathcase.outcome.with.xpath);
+      test.equal(cite.index, xpathcase.outcome.with.index);
+      test.equal(cite.match, xpathcase.outcome.with.match);
+    }
+
+    test.done();
+  };
+});

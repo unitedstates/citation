@@ -32,7 +32,8 @@
     "method-override": "*",
     "errorhandler": "*",
 
-    "minimist": "*"
+    "minimist": "*",
+    "parse5": "*"
   },
   "devDependencies": {
     "deep-equal": "*",
