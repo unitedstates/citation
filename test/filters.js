@@ -92,7 +92,7 @@ lines.forEach(function(line) {
   };
 });
 
-var xpath = [{
+var html = [{
   name: "Basic",
   text: "<html><head></head><body>" +
     "Body, 5 USC 552 citation." +
@@ -183,8 +183,8 @@ var xpath = [{
   }
 }];
 
-xpath.forEach(function(xpathcase) {
-  exports["XPath: " + xpathcase.name] = function(test) {
+html.forEach(function(xpathcase) {
+  exports["HTML XPath: " + xpathcase.name] = function(test) {
     var results, cite;
 
     if (xpathcase.outcome.without) {
@@ -197,7 +197,7 @@ xpath.forEach(function(xpathcase) {
     }
 
     if (xpathcase.outcome.with) {
-      var options = {filter: "xpath"};
+      var options = {filter: "xpath", xpath: {input: "html"}};
       results = Citation.find(xpathcase.text, options).citations;
       test.equal(results.length, 1);
       cite = results[0];
@@ -209,3 +209,108 @@ xpath.forEach(function(xpathcase) {
     test.done();
   };
 });
+
+var xml = [{
+  name: "Basic",
+  text: "<?xml version=\"1.0\" ?>\n" +
+    "<document>\n" +
+    "  <title>Best Bill of 2012</title>\n" +
+    "  <bill>\n" +
+    "    <introduction>Bill to enforce happiness amongst all the children</introduction>\n" +
+    "    <closing>All information releasable through 5 U.S.C. 552 is now banned</closing>\n" +
+    "    <footer>(c) Congress</footer>\n" +
+    "  </bill>\n" +
+    "</document>\n",
+  outcome: {
+    without: {
+      xpath: undefined,
+      index: 210,
+      match: "5 U.S.C. 552"
+    },
+    with: {
+      xpath: "/document[1]/bill[1]/closing[1]/text()[1]",
+      index: 35,
+      match: "5 U.S.C. 552"
+    }
+  }
+}, {
+  name: "Node type smoke test",
+  text: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+    "<!DOCTYPE test SYSTEM \"test.dtd\">\n" +
+    "<element>\n" +
+    "<?xml-stylesheet stylesheet.xsl ?>\n" +
+    "<!-- comment -->\n" +
+    "5 U.S.C. 552\n" +
+    "</element>",
+  outcome: {
+    without: {
+      xpath: undefined,
+      index: 135,
+      match: "5 U.S.C. 552"
+    },
+    with: {
+      xpath: "/element[1]/text()[3]",
+      index: 1,
+      match: "5 U.S.C. 552"
+    }
+  }
+}, {
+  name: "CDATA test",
+  text: "<?xml version=\"1.0\" ?><doc><![CDATA[ 5 U.S.C. 552 ]]></doc>",
+  outcome: {
+    without: {
+      xpath: undefined,
+      index: 37,
+      match: "5 U.S.C. 552"
+    },
+    with: {
+      xpath: "/doc[1]/text()[1]",
+      index: 1,
+      match: "5 U.S.C. 552"
+    }
+  }
+}];
+
+xml.forEach(function(xpathcase) {
+  exports["XML XPath: " + xpathcase.name] = function(test) {
+    var results, cite;
+
+    if (xpathcase.outcome.without) {
+      results = Citation.find(xpathcase.text).citations;
+      test.equal(results.length, 1);
+      cite = results[0];
+      test.equal(cite.xpath, xpathcase.outcome.without.xpath);
+      test.equal(cite.index, xpathcase.outcome.without.index);
+      test.equal(cite.match, xpathcase.outcome.without.match);
+    }
+
+    if (xpathcase.outcome.with) {
+      var options = {filter: "xpath", xpath: {input: "xml"}};
+      results = Citation.find(xpathcase.text, options).citations;
+      test.equal(results.length, 1);
+      cite = results[0];
+      test.equal(cite.xpath, xpathcase.outcome.with.xpath);
+      test.equal(cite.index, xpathcase.outcome.with.index);
+      test.equal(cite.match, xpathcase.outcome.with.match);
+    }
+
+    test.done();
+  };
+});
+
+/* The XPath expressions from the above test cases can be validated in a
+ * browser by using the following snippet.
+function verify(serialized, mime, xpath) {
+  var parser = new DOMParser();
+  var doc = parser.parseFromString(serialized, mime);
+  return doc.evaluate(xpath, doc, null, XPathResult.STRING_TYPE, null).stringValue;
+}
+
+for (var i = 0; i < html.length; i++) {
+  console.log(verify(html[i].text, "text/html", html[i].outcome.with.xpath));
+}
+
+for (var i = 0; i < xml.length; i++) {
+  console.log(verify(xml[i].text, "text/xml", xml[i].outcome.with.xpath));
+}
+ */

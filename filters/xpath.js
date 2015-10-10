@@ -1,6 +1,7 @@
-var Parser = require("parse5").Parser;
+var HTMLParser = require("parse5").Parser;
+var XMLParser = require("xmldom").DOMParser;
 
-function from_recurse(node, partialXpath, extract) {
+function html_recurse(node, partialXpath, extract) {
   if (node.nodeName == "#text") {
     // Pass contents of text nodes to the extractor
     extract(node.value, {xpath: partialXpath});
@@ -29,7 +30,41 @@ function from_recurse(node, partialXpath, extract) {
       }
 
       // Recurse through each child element node
-      from_recurse(next, nextXpath, extract);
+      html_recurse(next, nextXpath, extract);
+    }
+  }
+}
+
+function xml_recurse(node, partialXpath, extract) {
+  if (node.nodeType == node.TEXT_NODE || node.nodeType == node.CDATA_SECTION_NODE) {
+    extract(node.nodeValue, {xpath: partialXpath});
+  } else if (node.nodeType == node.ELEMENT_NODE || node.nodeType == node.DOCUMENT_NODE) {
+    for (var i = 0; i < node.childNodes.length; i++) {
+      var next = node.childNodes[i];
+      var nextXpath, index, j;
+
+      if (next.nodeType == next.TEXT_NODE ||
+          next.nodeType == next.CDATA_SECTION_NODE) {
+        index = 1;
+        for (j = 0; j < i; j++) {
+          if (node.childNodes[j].nodeType == node.TEXT_NODE ||
+              node.childNodes[j].nodeType == node.CDATA_SECTION_NODE) {
+            index++;
+          }
+        }
+        nextXpath = partialXpath + "/text()[" + index + "]";
+      } else if (next.nodeType == next.ELEMENT_NODE) {
+        index = 1;
+        for (j = 0; j < i; j++) {
+          if (node.childNodes[j].nodeType == node.ELEMENT_NODE &&
+              node.childNodes[j].nodeName == next.nodeName) {
+            index++;
+          }
+        }
+        nextXpath = partialXpath + "/" + next.nodeName + "[" + index + "]";
+      }
+
+      xml_recurse(next, nextXpath, extract);
     }
   }
 }
@@ -53,15 +88,29 @@ module.exports = {
   // be relative to the beginning of the text node.
   //
   // Accepts options:
-  //   no options
+  //   input: xml or html, chooses parser to use (default to html)
 
   from: function(text, options, extract) {
-    // Parse the input text
-    var parser = new Parser();
-    var doc = parser.parse(text);
+    var input = (options && options.input) || "html";
+    input = input.toLowerCase();
 
-    // Hand off to recursive function, which will walk the DOM
-    from_recurse(doc, '', extract);
+    // Parse the input text
+    var parser, doc;
+    if (input == "html") {
+      parser = new HTMLParser();
+      doc = parser.parse(text);
+
+      // Hand off to recursive function, which will walk the DOM
+      html_recurse(doc, '', extract);
+    } else if (input == "xml") {
+      parser = new XMLParser();
+      doc = parser.parseFromString(text, "text/xml");
+
+      // Hand off to recursive function, which will walk the DOM
+      xml_recurse(doc, '', extract);
+    } else {
+      throw "The XPath filter requires 'input' to be specified as either 'html' or 'xml'";
+    }
   }
 
 };

@@ -33,7 +33,8 @@
     "errorhandler": "*",
 
     "minimist": "*",
-    "parse5": "*"
+    "parse5": "*",
+    "xmldom": "*"
   },
   "devDependencies": {
     "deep-equal": "*",
