@@ -197,7 +197,7 @@ html.forEach(function(xpathcase) {
     }
 
     if (xpathcase.outcome.with) {
-      var options = {filter: "xpath", xpath: {input: "html"}};
+      var options = {filter: "xpath_html"};
       results = Citation.find(xpathcase.text, options).citations;
       test.equal(results.length, 1);
       cite = results[0];
@@ -285,7 +285,7 @@ xml.forEach(function(xpathcase) {
     }
 
     if (xpathcase.outcome.with) {
-      var options = {filter: "xpath", xpath: {input: "xml"}};
+      var options = {filter: "xpath_xml"};
       results = Citation.find(xpathcase.text, options).citations;
       test.equal(results.length, 1);
       cite = results[0];

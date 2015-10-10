@@ -371,7 +371,8 @@ if (typeof(require) !== "undefined") {
 
 
   Citation.filters.lines = require("./filters/lines");
-  Citation.filters.xpath = require("./filters/xpath");
+  Citation.filters.xpath_html = require("./filters/xpath_html");
+  Citation.filters.xpath_xml = require("./filters/xpath_xml");
 }
 
 // auto-load in-browser
@@ -382,7 +383,7 @@ return Citation;
 
 })();
 
-},{"./citations/cfr":2,"./citations/dc_code":3,"./citations/dc_law":4,"./citations/dc_register":5,"./citations/dc_stat":6,"./citations/fedreg":7,"./citations/law":9,"./citations/reporter":10,"./citations/stat":11,"./citations/usc":12,"./citations/va_code":13,"./filters/lines":15,"./filters/xpath":16}],2:[function(require,module,exports){
+},{"./citations/cfr":2,"./citations/dc_code":3,"./citations/dc_law":4,"./citations/dc_register":5,"./citations/dc_stat":6,"./citations/fedreg":7,"./citations/law":9,"./citations/reporter":10,"./citations/stat":11,"./citations/usc":12,"./citations/va_code":13,"./filters/lines":15,"./filters/xpath_html":16,"./filters/xpath_xml":17}],2:[function(require,module,exports){
 module.exports = {
   type: "regex",
 
@@ -698,7 +699,7 @@ module.exports = {
     });
   }
 };
-},{"walverine":40}],9:[function(require,module,exports){
+},{"walverine":41}],9:[function(require,module,exports){
 module.exports = {
   type: "regex",
 
@@ -1002,10 +1003,9 @@ module.exports = {
 };
 
 },{}],16:[function(require,module,exports){
-var HTMLParser = require("parse5").Parser;
-var XMLParser = require("xmldom").DOMParser;
+var Parser = require("parse5").Parser;
 
-function html_recurse(node, partialXpath, extract) {
+function recurse(node, partialXpath, extract) {
   if (node.nodeName == "#text") {
     // Pass contents of text nodes to the extractor
     extract(node.value, {xpath: partialXpath});
@@ -1034,12 +1034,45 @@ function html_recurse(node, partialXpath, extract) {
       }
 
       // Recurse through each child element node
-      html_recurse(next, nextXpath, extract);
+      recurse(next, nextXpath, extract);
     }
   }
 }
 
-function xml_recurse(node, partialXpath, extract) {
+module.exports = {
+
+  /*
+    Filters receive:
+      * text: the entire input text
+      * options: any filter-specific options
+      * extract: execute this function once with every substring the filter
+          breaks the input tet into, along with any associated metadata, e.g.
+          the XPath expression associated with each text fragment.
+   */
+
+  // An HTML/XPath filter.
+  //
+  // Parses the text as an HTML document, using an HTML5 parser, and feeds
+  // each text node into the extractor. Attaches an XPath expression that
+  // locates the text node as metadata to each cite. Character offsets will
+  // be relative to the beginning of the text node.
+
+  from: function(text, options, extract) {
+    // Parse the input text
+    var parser, doc;
+    parser = new Parser();
+    doc = parser.parse(text);
+
+    // Hand off to recursive function, which will walk the DOM
+    recurse(doc, '', extract);
+  }
+
+};
+
+},{"parse5":19}],17:[function(require,module,exports){
+var DOMParser = require("xmldom").DOMParser;
+
+function recurse(node, partialXpath, extract) {
   if (node.nodeType == node.TEXT_NODE || node.nodeType == node.CDATA_SECTION_NODE) {
     extract(node.nodeValue, {xpath: partialXpath});
   } else if (node.nodeType == node.ELEMENT_NODE || node.nodeType == node.DOCUMENT_NODE) {
@@ -1068,7 +1101,7 @@ function xml_recurse(node, partialXpath, extract) {
         nextXpath = partialXpath + "/" + next.nodeName + "[" + index + "]";
       }
 
-      xml_recurse(next, nextXpath, extract);
+      recurse(next, nextXpath, extract);
     }
   }
 }
@@ -1084,42 +1117,26 @@ module.exports = {
           the XPath expression associated with each text fragment.
    */
 
-  // An HTML/XPath filter.
+  // An XML/XPath filter.
   //
-  // Parses the text as an HTML document, using an HTML5 parser, and feeds
+  // Parses the text as an XML document, using the "xmldom" parser, and feeds
   // each text node into the extractor. Attaches an XPath expression that
   // locates the text node as metadata to each cite. Character offsets will
   // be relative to the beginning of the text node.
-  //
-  // Accepts options:
-  //   input: xml or html, chooses parser to use (default to html)
 
   from: function(text, options, extract) {
-    var input = (options && options.input) || "html";
-    input = input.toLowerCase();
-
     // Parse the input text
     var parser, doc;
-    if (input == "html") {
-      parser = new HTMLParser();
-      doc = parser.parse(text);
+    parser = new DOMParser();
+    doc = parser.parseFromString(text, "text/xml");
 
-      // Hand off to recursive function, which will walk the DOM
-      html_recurse(doc, '', extract);
-    } else if (input == "xml") {
-      parser = new XMLParser();
-      doc = parser.parseFromString(text, "text/xml");
-
-      // Hand off to recursive function, which will walk the DOM
-      xml_recurse(doc, '', extract);
-    } else {
-      throw "The XPath filter requires 'input' to be specified as either 'html' or 'xml'";
-    }
+    // Hand off to recursive function, which will walk the DOM
+    recurse(doc, '', extract);
   }
 
 };
 
-},{"parse5":18,"xmldom":41}],17:[function(require,module,exports){
+},{"xmldom":42}],18:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -1184,7 +1201,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 'use strict';
 
 exports.Parser = require('./lib/tree_construction/parser');
@@ -1198,7 +1215,7 @@ exports.TreeAdapters = {
     htmlparser2: require('./lib/tree_adapters/htmlparser2')
 };
 
-},{"./lib/jsdom/jsdom_parser":24,"./lib/serialization/serializer":26,"./lib/simple_api/simple_api_parser":27,"./lib/tree_adapters/default":33,"./lib/tree_adapters/htmlparser2":34,"./lib/tree_construction/parser":38}],19:[function(require,module,exports){
+},{"./lib/jsdom/jsdom_parser":25,"./lib/serialization/serializer":27,"./lib/simple_api/simple_api_parser":28,"./lib/tree_adapters/default":34,"./lib/tree_adapters/htmlparser2":35,"./lib/tree_construction/parser":39}],20:[function(require,module,exports){
 'use strict';
 
 //Const
@@ -1334,7 +1351,7 @@ exports.serializeContent = function (name, publicId, systemId) {
     return str;
 };
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 'use strict';
 
 var Tokenizer = require('../tokenization/tokenizer'),
@@ -1593,7 +1610,7 @@ exports.isHtmlIntegrationPoint = function (tn, ns, attrs) {
     return ns === NS.SVG && (tn === $.FOREIGN_OBJECT || tn === $.DESC || tn === $.TITLE);
 };
 
-},{"../tokenization/tokenizer":32,"./html":21}],21:[function(require,module,exports){
+},{"../tokenization/tokenizer":33,"./html":22}],22:[function(require,module,exports){
 'use strict';
 
 var NS = exports.NAMESPACES = {
@@ -1863,7 +1880,7 @@ SPECIAL_ELEMENTS[NS.SVG][$.TITLE] = true;
 SPECIAL_ELEMENTS[NS.SVG][$.FOREIGN_OBJECT] = true;
 SPECIAL_ELEMENTS[NS.SVG][$.DESC] = true;
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 'use strict';
 
 exports.REPLACEMENT_CHARACTER = '\uFFFD';
@@ -1913,7 +1930,7 @@ exports.CODE_POINT_SEQUENCES = {
     SYSTEM_STRING: [0x53, 0x59, 0x53, 0x54, 0x45, 0x4D] //SYSTEM
 };
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 'use strict';
 
 exports.mergeOptions = function (defaults, options) {
@@ -1928,7 +1945,7 @@ exports.mergeOptions = function (defaults, options) {
     }, {});
 };
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -1970,7 +1987,7 @@ exports.parseInnerHtml = function (innerHtml, contextElement, treeAdapter) {
     return parser.parseFragment(innerHtml, contextElement);
 };
 }).call(this,require("IrXUsu"))
-},{"../tree_construction/parser":38,"./parsing_unit":25,"IrXUsu":17}],25:[function(require,module,exports){
+},{"../tree_construction/parser":39,"./parsing_unit":26,"IrXUsu":18}],26:[function(require,module,exports){
 'use strict';
 
 var ParsingUnit = module.exports = function (parser) {
@@ -2025,7 +2042,7 @@ ParsingUnit.prototype.done = function (callback) {
     return this;
 };
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 'use strict';
 
 var DefaultTreeAdapter = require('../tree_adapters/default'),
@@ -2206,7 +2223,7 @@ Serializer.prototype._serializeDocumentTypeNode = function (node) {
     this.html += '<' + Doctype.serializeContent(name, publicId, systemId) + '>';
 };
 
-},{"../common/doctype":19,"../common/html":21,"../common/utils":23,"../tree_adapters/default":33}],27:[function(require,module,exports){
+},{"../common/doctype":20,"../common/html":22,"../common/utils":24,"../tree_adapters/default":34}],28:[function(require,module,exports){
 'use strict';
 
 var Tokenizer = require('../tokenization/tokenizer'),
@@ -2315,7 +2332,7 @@ SimpleApiParser.prototype._emitPendingText = function () {
     }
 };
 
-},{"../common/utils":23,"../tokenization/tokenizer":32,"./tokenizer_proxy":28}],28:[function(require,module,exports){
+},{"../common/utils":24,"../tokenization/tokenizer":33,"./tokenizer_proxy":29}],29:[function(require,module,exports){
 'use strict';
 
 var Tokenizer = require('../tokenization/tokenizer'),
@@ -2439,7 +2456,7 @@ TokenizerProxy.prototype._handleEndTagToken = function (token) {
         this._leaveCurrentNamespace();
 };
 
-},{"../common/foreign_content":20,"../common/html":21,"../common/unicode":22,"../tokenization/tokenizer":32}],29:[function(require,module,exports){
+},{"../common/foreign_content":21,"../common/html":22,"../common/unicode":23,"../tokenization/tokenizer":33}],30:[function(require,module,exports){
 'use strict';
 
 exports.assign = function (tokenizer) {
@@ -2521,7 +2538,7 @@ exports.assign = function (tokenizer) {
         });
 };
 
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 'use strict';
 
 //NOTE: this file contains auto generated trie structure that is used for named entity references consumption
@@ -2581,7 +2598,7 @@ module.exports = {
     0x5A: {l: {0x61: {l: {0x63: {l: {0x75: {l: {0x74: {l: {0x65: {l: {0x3B: {c: [377]}}}}}}}}}}}, 0x63: {l: {0x61: {l: {0x72: {l: {0x6F: {l: {0x6E: {l: {0x3B: {c: [381]}}}}}}}}}, 0x79: {l: {0x3B: {c: [1047]}}}}}, 0x64: {l: {0x6F: {l: {0x74: {l: {0x3B: {c: [379]}}}}}}}, 0x65: {l: {0x72: {l: {0x6F: {l: {0x57: {l: {0x69: {l: {0x64: {l: {0x74: {l: {0x68: {l: {0x53: {l: {0x70: {l: {0x61: {l: {0x63: {l: {0x65: {l: {0x3B: {c: [8203]}}}}}}}}}}}}}}}}}}}}}}}}}, 0x74: {l: {0x61: {l: {0x3B: {c: [918]}}}}}}}, 0x66: {l: {0x72: {l: {0x3B: {c: [8488]}}}}}, 0x48: {l: {0x63: {l: {0x79: {l: {0x3B: {c: [1046]}}}}}}}, 0x6F: {l: {0x70: {l: {0x66: {l: {0x3B: {c: [8484]}}}}}}}, 0x73: {l: {0x63: {l: {0x72: {l: {0x3B: {c: [119989]}}}}}}}}},
     0x7A: {l: {0x61: {l: {0x63: {l: {0x75: {l: {0x74: {l: {0x65: {l: {0x3B: {c: [378]}}}}}}}}}}}, 0x63: {l: {0x61: {l: {0x72: {l: {0x6F: {l: {0x6E: {l: {0x3B: {c: [382]}}}}}}}}}, 0x79: {l: {0x3B: {c: [1079]}}}}}, 0x64: {l: {0x6F: {l: {0x74: {l: {0x3B: {c: [380]}}}}}}}, 0x65: {l: {0x65: {l: {0x74: {l: {0x72: {l: {0x66: {l: {0x3B: {c: [8488]}}}}}}}}}, 0x74: {l: {0x61: {l: {0x3B: {c: [950]}}}}}}}, 0x66: {l: {0x72: {l: {0x3B: {c: [120119]}}}}}, 0x68: {l: {0x63: {l: {0x79: {l: {0x3B: {c: [1078]}}}}}}}, 0x69: {l: {0x67: {l: {0x72: {l: {0x61: {l: {0x72: {l: {0x72: {l: {0x3B: {c: [8669]}}}}}}}}}}}}}, 0x6F: {l: {0x70: {l: {0x66: {l: {0x3B: {c: [120171]}}}}}}}, 0x73: {l: {0x63: {l: {0x72: {l: {0x3B: {c: [120015]}}}}}}}, 0x77: {l: {0x6A: {l: {0x3B: {c: [8205]}}}, 0x6E: {l: {0x6A: {l: {0x3B: {c: [8204]}}}}}}}}}
 };
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 'use strict';
 
 var UNICODE = require('../common/unicode');
@@ -2698,7 +2715,7 @@ Preprocessor.prototype.retreat = function () {
     this.pos--;
 };
 
-},{"../common/unicode":22}],32:[function(require,module,exports){
+},{"../common/unicode":23}],33:[function(require,module,exports){
 'use strict';
 
 var Preprocessor = require('./preprocessor'),
@@ -5017,7 +5034,7 @@ _[CDATA_SECTION_STATE] = function cdataSectionState(cp) {
     }
 };
 
-},{"../common/unicode":22,"./location_info_mixin":29,"./named_entity_trie":30,"./preprocessor":31}],33:[function(require,module,exports){
+},{"../common/unicode":23,"./location_info_mixin":30,"./named_entity_trie":31,"./preprocessor":32}],34:[function(require,module,exports){
 'use strict';
 
 //Node construction
@@ -5219,7 +5236,7 @@ exports.isElementNode = function (node) {
     return !!node.tagName;
 };
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict';
 
 var Doctype = require('../common/doctype');
@@ -5538,7 +5555,7 @@ exports.isElementNode = function (node) {
     return !!node.attribs;
 };
 
-},{"../common/doctype":19}],35:[function(require,module,exports){
+},{"../common/doctype":20}],36:[function(require,module,exports){
 'use strict';
 
 //Const
@@ -5707,7 +5724,7 @@ FormattingElementList.prototype.getElementEntry = function (element) {
     return null;
 };
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 'use strict';
 
 var OpenElementStack = require('./open_element_stack'),
@@ -5906,7 +5923,7 @@ exports.assign = function (parser) {
 };
 
 
-},{"../common/html":21,"../tokenization/tokenizer":32,"./open_element_stack":37}],37:[function(require,module,exports){
+},{"../common/html":22,"../tokenization/tokenizer":33,"./open_element_stack":38}],38:[function(require,module,exports){
 'use strict';
 
 var HTML = require('../common/html');
@@ -6287,7 +6304,7 @@ OpenElementStack.prototype.generateImpliedEndTagsWithExclusion = function (exclu
         this.pop();
 };
 
-},{"../common/html":21}],38:[function(require,module,exports){
+},{"../common/html":22}],39:[function(require,module,exports){
 'use strict';
 
 var Tokenizer = require('../tokenization/tokenizer'),
@@ -9116,7 +9133,7 @@ function endTagInForeignContent(p, token) {
     }
 }
 
-},{"../common/doctype":19,"../common/foreign_content":20,"../common/html":21,"../common/unicode":22,"../common/utils":23,"../tokenization/tokenizer":32,"../tree_adapters/default":33,"./formatting_element_list":35,"./location_info_mixin":36,"./open_element_stack":37}],39:[function(require,module,exports){
+},{"../common/doctype":20,"../common/foreign_content":21,"../common/html":22,"../common/unicode":23,"../common/utils":24,"../tokenization/tokenizer":33,"../tree_adapters/default":34,"./formatting_element_list":36,"./location_info_mixin":37,"./open_element_stack":38}],40:[function(require,module,exports){
 var reporters = {
     "A.": [{"cite_type": "state_regional",
             "editions": {"A.": [{"year":1885, "month":0, "day":1},
@@ -12309,7 +12326,7 @@ var reporters = {
 };
 
 module.exports.reporters = reporters;
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 WalverineCitation = function(volume, reporter, page) {
     /*
      * Convenience class which represents a single citation found in a document.
@@ -13544,7 +13561,7 @@ Walverine.get_citations = function (text, html, do_post_citation, do_defendant) 
 module.exports = Walverine;
 
 
-},{"./reporters":39}],41:[function(require,module,exports){
+},{"./reporters":40}],42:[function(require,module,exports){
 function DOMParser(options){
 	this.options = options ||{locator:{}};
 	
@@ -13801,7 +13818,7 @@ if(typeof require == 'function'){
 	exports.DOMParser = DOMParser;
 }
 
-},{"./dom":42,"./sax":43}],42:[function(require,module,exports){
+},{"./dom":43,"./sax":44}],43:[function(require,module,exports){
 /*
  * DOM Level 2
  * Object DOMException
@@ -14941,7 +14958,7 @@ if(typeof require == 'function'){
 	exports.XMLSerializer = XMLSerializer;
 }
 
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 //[4]   	NameStartChar	   ::=   	":" | [A-Z] | "_" | [a-z] | [#xC0-#xD6] | [#xD8-#xF6] | [#xF8-#x2FF] | [#x370-#x37D] | [#x37F-#x1FFF] | [#x200C-#x200D] | [#x2070-#x218F] | [#x2C00-#x2FEF] | [#x3001-#xD7FF] | [#xF900-#xFDCF] | [#xFDF0-#xFFFD] | [#x10000-#xEFFFF]
 //[4a]   	NameChar	   ::=   	NameStartChar | "-" | "." | [0-9] | #xB7 | [#x0300-#x036F] | [#x203F-#x2040]
 //[5]   	Name	   ::=   	NameStartChar (NameChar)*
