@@ -216,7 +216,7 @@ By passing a `replace` callback, a `text` field will be included at the top of t
 Citation.find("click on 5 USC 552 to read more", {
   replace: function(cite) {
     var url = "http://www.law.cornell.edu/uscode/text/" + cite.usc.title + "/" + cite.usc.section;
-    return "<a href=\"" + url + "\"">" + cite.match + "</a>";
+    return "<a href=\"" + url + "\">" + cite.match + "</a>";
   };
 });
 ```
