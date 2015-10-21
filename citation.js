@@ -200,6 +200,11 @@ Citation = {
             delete cite._submatch;
           }
 
+          // since a single text region can match multiple citations, such as when
+          // a range is given, clarify what this match represents
+          if ('canonical' in Citation.types[type])
+            result.citation = Citation.types[type].canonical(cite);
+
           // cite-level info, plus ID standardization
           result[type] = cite;
           result[type].id = Citation.types[type].id(cite);

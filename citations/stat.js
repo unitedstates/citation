@@ -6,6 +6,10 @@ module.exports = {
     return ["stat", cite.volume, cite.page].join("/")
   },
 
+  canonical: function(cite) {
+    return cite.volume + " Stat. " + cite.page;
+  },
+
   patterns: [
     // "117 Stat. 1952"
     // "77 STAT. 77"
