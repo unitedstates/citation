@@ -205,9 +205,12 @@ Citation = {
           if ('canonical' in Citation.types[type])
             result.citation = Citation.types[type].canonical(cite);
 
-          // cite-level info, plus ID standardization
+          // cite-level info, plus ID standardization and permalinks if supported
+          // by the citator
           result[type] = cite;
           result[type].id = Citation.types[type].id(cite);
+          if (result[type].id && 'links' in Citation.types[type])
+            result[type].links = Citation.types[type].links(cite);
 
           results.push(result);
 

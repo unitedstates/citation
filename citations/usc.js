@@ -121,5 +121,60 @@ module.exports = {
         };
       }
     }
-  ]
+  ],
+
+  links: function(cite) {
+    // US GPO
+    var title_without_app = cite.title.replace(/-app$/, '');
+    var ret = { };
+    for (var i = 0; i < us_code_editions.length; i++) {
+        if (us_code_editions[i].titles == null
+            || us_code_editions[i].titles.indexOf(title_without_app) >= 0) {
+            // This edition contains the title.
+            var url = "http://api.fdsys.gov/link?collection=uscode&year="
+              + us_code_editions[i].edition + "&title=" + title_without_app
+              + "&section=" + cite.section
+              + "&type=" + (cite.title.indexOf("-app") == -1 ? "usc" : "uscappendix");
+            ret['usgpo'] = {
+                _source: {
+                    name: "U.S. Government Publishing Office",
+                    abbrev: "US GPO",
+                    link: "http://gpo.gov/",
+                    authoritative: true,
+                    note: us_code_editions[i].edition + " edition." + ((cite.subsections&&cite.subsections.length) ? " Sub-section citation is not reflected in the link." : "")
+                },
+                pdf: url,
+                html: url + "&link-type=html",
+                webpage: url + "&link-type=contentdetail",
+            };
+            break;
+        }
+    }
+
+    // Cornell Legal Information Institute
+    // (for current citations only, i.e. not tied to a publication or effective date)
+    ret['cornell_lii'] = {
+        _source: {
+            name: "Cornell Legal Information Institute",
+            abbrev: "Cornell LII",
+            link: "https://www.law.cornell.edu/uscode/text",
+            authoritative: false,
+            note: "Link is to most current version of the US Code, as available at law.cornell.edu."
+        },
+        webpage: "http://www.law.cornell.edu/uscode/text/" + (title_without_app + (cite.title.indexOf("-app") >= 0 ? "a" : ""))
+                          + "/" + cite.section
+                          + ((cite.subsections&&cite.subsections.length) ? ("#" + cite.subsections.join("_")) : "")
+    };
+
+    return ret;
+  }
 };
+
+// Map published editions of the US Code to the titles they contain. Not all
+// published editions have the full US Code. Some are updates. This is per
+// http://www.gpo.gov/fdsys/browse/collectionUScode.action?collectionCode=USCODE.
+// Most recent first.
+var us_code_editions = [
+    { edition: '2014', titles: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15'] },
+    { edition: '2013', titles: null }, // all titles available in this edition
+];
