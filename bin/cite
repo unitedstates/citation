@@ -7,7 +7,7 @@ var citation = require('../citation');
 
 // load in options, allow a couple booleans
 var options = minimist(process.argv, {
-  boolean: ["judicial", "parents"]
+  boolean: ["judicial", "parents", "links"]
 });
 var text = options._[2];
 delete options._;

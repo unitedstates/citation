@@ -167,7 +167,7 @@ module.exports = {
             authoritative: false,
             note: "Link is to most current version of the US Code, as available at law.cornell.edu."
         },
-        html: "https://www.law.cornell.edu/uscode/text/" + (title + (cite.title.indexOf("-app") >= 0 ? "a" : ""))
+        landing: "https://www.law.cornell.edu/uscode/text/" + (title + (cite.title.indexOf("-app") >= 0 ? "a" : ""))
                           + "/" + cite.section
                           + ((cite.subsections && cite.subsections.length) ? ("#" + cite.subsections.join("_")) : "")
     };

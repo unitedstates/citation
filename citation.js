@@ -209,7 +209,7 @@ Citation = {
           // by the citator
           result[type] = cite;
           result[type].id = Citation.types[type].id(cite);
-          if (result[type].id && 'links' in Citation.types[type])
+          if (options.links && result[type].id && 'links' in Citation.types[type])
             result[type].links = Citation.types[type].links(cite);
 
           results.push(result);
