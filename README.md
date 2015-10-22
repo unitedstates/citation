@@ -41,6 +41,7 @@ And you get back data about matched citations:
 ```javascript
 [{
   "match": "5 U.S.C. 552(a)(1)(E)",
+  "citation": "5 U.S.C. 552(a)(1)(E)",
   "type": "usc",
   "index": "0",
   "usc": {
@@ -94,6 +95,7 @@ Citation.find("pursuant to 5 U.S.C. 552(a)(1)(E) and");
 
 [{
   "match": "5 U.S.C. 552(a)(1)(E)",
+  "citation": "5 U.S.C. 552(a)(1)(E)",
   "type": "usc",
   "index": "0",
   "usc": {
@@ -113,6 +115,7 @@ Citation.find("that term in section 5362(5) of title 31, United States Code.", {
 
 [{
   "match": "section 5362(5) of title 31",
+  "citation": "31 U.S.C. 5362(5)",
   "excerpt": "t term in section 5362(5) of title 31, United S",
   // ... more details ...
 }]
@@ -141,6 +144,7 @@ Will return the results of running Citation.find() on the block of text, under a
   "results": [
     {
       "match": "5 U.S.C. 552(a)(1)(E)",
+      "citation": "5 U.S.C. 552(a)(1)(E)",
       "type": "usc",
       "index": "0",
       "usc": {
