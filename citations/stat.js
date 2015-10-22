@@ -31,19 +31,17 @@ module.exports = {
   links: function(cite) {
     var usgpo_url = "http://api.fdsys.gov/link?collection=statute&volume=" + cite.volume + "&page=" + cite.page;
 
-    var ret = {
+    return {
       usgpo: {
-        _source: {
+        source: {
             name: "U.S. Government Publishing Office",
-            abbrev: "US GPO",
-            link: "http://gpo.gov/",
+            abbreviation: "US GPO",
+            link: "http://www.gpo.gov",
             authoritative: true
         },
         pdf: usgpo_url,
         mods: usgpo_url + "&link-type=mods"
       }
     };
-
-    return ret;
   }
 };

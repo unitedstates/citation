@@ -74,29 +74,27 @@ module.exports = {
   ],
 
   links: function(cite) {
-    var ret = {
+    return {
       usgpo: {
-        _source: {
-            name: "U.S. Government Publishing Office",
-            abbrev: "US GPO",
-            link: "http://gpo.gov/",
-            authoritative: true
+        source: {
+          name: "U.S. Government Publishing Office",
+          abbreviation: "US GPO",
+          link: "http://www.gpo.gov",
+          authoritative: true
         },
         pdf: "http://api.fdsys.gov/link?collection=plaw&congress=" + cite.congress + "&lawtype=" + cite.type + "&lawnum=" + cite.number,
         mods: "http://api.fdsys.gov/link?collection=plaw&congress=" + cite.congress + "&lawtype=" + cite.type + "&lawnum=" + cite.number + "&link-type=mods"
       },
       
       govtrack: {
-        _source: {
-            name: "GovTrack.us",
-            abbrev: "GovTrack.us",
-            link: "https://www.govtrack.us/",
-            authoritative: false
+        source: {
+          name: "GovTrack.us",
+          abbreviation: "GovTrack.us",
+          link: "https://www.govtrack.us",
+          authoritative: false
         },
-        webpage: "https://www.govtrack.us/search?q=" + (cite.type=="public"?"Pub":"Priv") + "Law+" + cite.congress + "-" + cite.number
+        landing: "https://www.govtrack.us/search?q=" + (cite.type=="public"?"Pub":"Priv") + "Law+" + cite.congress + "-" + cite.number
       }
     };
-
-    return ret;
   }
 };
