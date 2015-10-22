@@ -16,6 +16,7 @@ exports["Basic pattern"] = function(test) {
   var citation = found[0];
   test.equal(citation.match, "5 U.S.C. 552");
   test.equal(citation.index, 37);
+  test.equal(citation.citation, "5 U.S.C. 552");
   test.equal(citation.usc.title, "5");
   test.equal(citation.usc.section, "552");
   test.deepEqual(citation.usc.subsections, [])
@@ -34,6 +35,7 @@ exports["Basic pattern"] = function(test) {
   test.equal(foundSmall.length, 1);
   test.equal(foundSmall[0].match, "5 usc 552")
   test.equal(foundSmall[0].excerpt, "5 usc 552")
+  test.equal(foundSmall[0].citation, "5 U.S.C. 552")
   test.equal(foundSmall[0].index, 0)
 
   test.done();
@@ -68,6 +70,7 @@ exports["Basic subsection parsing"] = function(test) {
 
   var citation = found[0];
   test.equal(citation.match, "5 U.S.C. 552(a)(1)(E)");
+  test.equal(citation.citation, "5 U.S.C. 552(a)(1)(E)");
   test.equal(citation.usc.title, "5");
   test.equal(citation.usc.section, "552");
   test.deepEqual(citation.usc.subsections, ["a", "1", "E"])
@@ -88,6 +91,7 @@ exports["Casual pattern"] = function(test) {
 
   var citation = found[0];
   test.equal(citation.match, "section 89 of title 14");
+  test.equal(citation.citation, "14 U.S.C. 89");
   test.equal(citation.usc.title, "14");
   test.equal(citation.usc.section, "89");
   test.deepEqual(citation.usc.subsections, [])
@@ -108,6 +112,7 @@ exports["Casual pattern"] = function(test) {
 
   var citation = found[0];
   test.equal(citation.match, "section 89, title 14");
+  test.equal(citation.citation, "14 U.S.C. 89");
   test.equal(citation.usc.title, "14");
   test.equal(citation.usc.section, "89");
   test.deepEqual(citation.usc.subsections, [])
@@ -127,6 +132,7 @@ exports["Casual pattern (with subsections)"] = function(test) {
 
   var citation = found[0];
   test.equal(citation.match, "section 5362(5) of title 31");
+  test.equal(citation.citation, "31 U.S.C. 5362(5)");
   test.equal(citation.usc.title, "31");
   test.equal(citation.usc.section, "5362");
   test.deepEqual(citation.usc.subsections, ["5"])
@@ -142,6 +148,7 @@ exports["Casual pattern (with subsections)"] = function(test) {
 
   var citation = found[0];
   test.equal(citation.match, "section 5362-10c(5) of title 31");
+  test.equal(citation.citation, "31 U.S.C. 5362-10c(5)");
   test.equal(citation.usc.title, "31");
   test.equal(citation.usc.section, "5362-10c");
   test.deepEqual(citation.usc.subsections, ["5"])
@@ -164,6 +171,7 @@ exports["Section symbol is ignored"] = function(test) {
 
   var citation = found[0];
   test.equal(citation.match, "5 USC § 552");
+  test.equal(citation.citation, "5 U.S.C. 552");
   test.equal(citation.usc.title, "5");
   test.equal(citation.usc.section, "552");
   test.deepEqual(citation.usc.subsections, [])
@@ -181,6 +189,7 @@ exports["'Appendix' titles"] = function(test) {
 
   var citation = found[0];
   test.equal(citation.match, "50 U.S.C. App. 595");
+  test.equal(citation.citation, "50 U.S.C. App. 595");
   test.equal(citation.usc.title, "50-app");
   test.equal(citation.usc.section, "595");
   test.deepEqual(citation.usc.subsections, [])
@@ -198,6 +207,7 @@ exports["'note' marks"] = function(test) {
 
   var citation = found[0];
   test.equal(citation.match, "7 U.S.C. 612c note");
+  test.equal(citation.citation, "7 U.S.C. 612c note");
   test.equal(citation.usc.title, "7");
   test.equal(citation.usc.section, "612c");
   test.deepEqual(citation.usc.subsections, ["note"])
@@ -216,6 +226,7 @@ exports["'et seq' marks"] = function(test) {
 
   var citation = found[0];
   test.equal(citation.match, "29 U.S.C. 1081 et seq");
+  test.equal(citation.citation, "29 U.S.C. 1081 et seq");
   test.equal(citation.usc.title, "29");
   test.equal(citation.usc.section, "1081");
   test.deepEqual(citation.usc.subsections, ["et-seq"])
@@ -376,6 +387,7 @@ exports["Ranges: basic subsections"] = function(test) {
   if (found.length == 1) {
     var citation = found[0];
     test.equal(citation.match, "31 U.S.C. 5318A(b)(l)");
+    test.equal(citation.citation, "31 U.S.C. 5318A(b)(l)");
     test.equal(citation.usc.title, "31");
     test.equal(citation.usc.section, "5318A");
     test.deepEqual(citation.usc.subsections, ["b", "l"])

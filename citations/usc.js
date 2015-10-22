@@ -7,6 +7,30 @@ module.exports = {
       .join("/");
   },
 
+  canonical: function(cite) {
+    // title, which alos may specify it is an appendix title
+    var title = cite.title;
+    var app = "";
+    var title_without_app = cite.title.replace(/-app$/, '');
+    if (title != title_without_app) app = "App. ";
+
+    // subsections, possibly with a note/et-seq as a leaf which should
+    // be rendered differently from a normal subsection item
+    var subsections = cite.subsections.slice(); // clone
+    var suffix = "";
+    var leaf = subsections.length > 0 ? subsections[subsections.length-1] : null;
+    if (leaf == "note") {
+      subsections.pop();
+      suffix = " note"
+    } else if (leaf == "et-seq") {
+      subsections.pop();
+      suffix = " et seq"
+    }
+
+    return title_without_app + " U.S.C. " + app + cite.section
+     + subsections.map(function(item) { return "(" + item + ")" }).join("")
+     + suffix;
+  },
 
   // field to calculate parents from
   parents_by: "subsections",

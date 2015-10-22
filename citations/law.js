@@ -7,6 +7,16 @@ module.exports = {
       .join("/");
   },
 
+  canonical: function(cite) {
+    if (!cite.sections || cite.sections.length == 0)
+      // this style matches GPO at http://www.gpo.gov/fdsys/browse/collection.action?collectionCode=PLAW&browsePath=112&isCollapsed=false&leafLevelBrowse=false&ycord=0
+      return (cite.type == "public" ? "Pub. L." : "Pvt. L.") + " " + cite.congress + "-" + cite.number;
+    else
+      return "Section " + cite.sections[0] + cite.sections.slice(1).map(function(item) { return "(" + item + ")" }).join("")
+        + " of " +
+        (cite.type == "public" ? "Public" : "Private") + " Law " + cite.congress + "-" + cite.number;
+  },
+
   // field to calculate parents from
   parents_by: "sections",
 
