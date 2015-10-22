@@ -159,6 +159,8 @@ module.exports = {
 
     // Cornell Legal Information Institute
     // (for current citations only, i.e. not tied to a publication or effective date)
+    var subsections = (cite.subsections.slice() || []); // clone
+    if (subsections.length && subsections[subsections.length-1] == "et-seq") subsections.pop(); // don't include eq-seq in a link
     links.cornell_lii = {
         source: {
             name: "Cornell Legal Information Institute",
@@ -169,7 +171,7 @@ module.exports = {
         },
         landing: "https://www.law.cornell.edu/uscode/text/" + (title + (cite.title.indexOf("-app") >= 0 ? "a" : ""))
                           + "/" + cite.section
-                          + ((cite.subsections && cite.subsections.length) ? ("#" + cite.subsections.join("_")) : "")
+                          + (subsections.length ? ("#" + subsections.join("_")) : "")
     };
 
     return links;

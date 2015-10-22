@@ -18,7 +18,7 @@ exports["All patterns"] = function(test) {
     var details = cases[i];
 
     var text = details[0];
-    var found = Citation.find(text, {types: "stat"}).citations;
+    var found = Citation.find(text, {types: "stat", links: true}).citations;
     test.equal(found.length, 1);
 
     if (found.length == 1) {
@@ -28,6 +28,7 @@ exports["All patterns"] = function(test) {
       test.equal(citation.stat.id, details[5]);
       test.equal(citation.stat.volume, details[3]);
       test.equal(citation.stat.page, details[4]);
+      test.equal(citation.stat.links.usgpo.source.link, "http://www.gpo.gov");
     }
     else
       console.log("No match found in: " + text);;
