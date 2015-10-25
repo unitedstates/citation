@@ -6,6 +6,10 @@ module.exports = {
     return ["reporter", cite.volume, cite.reporter, cite.page].join("/")
   },
 
+  canonical: function(cite) {
+    return cite.volume + " " + cite.reporter + " " + cite.page;
+  },
+
   patterns: [
     {
       regex:
@@ -21,5 +25,20 @@ module.exports = {
         };
       }
     }
-  ]
+  ],
+
+  links: function(cite) {
+    return {
+      courtlistener: {
+        source: {
+            name: "Court Listener",
+            abbreviation: "CL",
+            link: "https://www.courtlistener.com",
+            authoritative: false
+        },
+
+        landing: "https://www.courtlistener.com/?citation=" + encodeURIComponent(module.exports.canonical(cite))
+      }
+    };
+  }
 };
