@@ -2,7 +2,7 @@
   "name": "citation",
   "author": "Eric Mill <eric@konklone.com",
   "description": "Legal citation extractor. Standalone library, and optional HTTP API.",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "license": "cc0",
   "keywords": [
     "congress",
