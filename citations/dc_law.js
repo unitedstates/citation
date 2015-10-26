@@ -14,8 +14,8 @@ module.exports = {
       context_regex = "(?:" + context_regex + ")?"
 
     return [
-      // "D.C. Law 111-89"
-      // "DC Law 111-89"
+      // "D.C. Law 20-17"
+      // "DC Law 20-17"
       // "DC Law 18-135A"
       {
         regex:
@@ -29,5 +29,22 @@ module.exports = {
         }
       }
     ];
+  },
+
+  links: function(cite) {
+    // Only available for CP's 19 and 20.
+    if (cite.period < 19 || cite.period > 20) return { };
+    return {
+      dccodeorg: {
+        source: {
+            name: "Council of the District of Columbia",
+            abbreviation: "DC Council",
+            link: "https://dccode.gov",
+            authoritative: true
+        },
+
+        pdf: "https://dcstat.dccode.gov/public/Law_" + cite.period + "-" + cite.number + ".pdf"
+      }
+    };
   }
 };

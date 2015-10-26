@@ -84,6 +84,7 @@ matches with citations broken out into fields.
 * `parents`: (boolean) For any cite, return any "parent" cites alongside it. For example, matching "5 USC 552(b)(3)" would return 3 results - one for the parent section, one for `(b)`, and one for `(b)(3)`.
 * `filter`: (string) Enable [Filtering](#filtering).
 * `replace`: (function | object) Enable [Replacement](#replacement).
+* `links`: (boolean) [Include Links](#include-links).
 * Also: see [Cite-specific options](#cite-specific-options) to pass in options for a particular citation type.
 
 Some examples:
@@ -210,6 +211,8 @@ Opt-in to using `walverine` to search judicial cites with `--judicial`:
 cite --judicial "Smith v. Hardibble, 111 Cal.2d 222, 555, 558, 333 Cal.3d 444 (1988)"
 ```
 
+Add `--links` to [include links](#include-links) in the output.
+
 ## Replacement
 
 You can perform a "find-and-replace" with detected citations, by providing a `replace` callback to be executed on each citation, that returns the string to replace that citation.
@@ -232,6 +235,54 @@ click on <a href="http://www.law.cornell.edu/uscode/text/5/552">5 USC 552</a> to
 ```
 
 This feature is only available in the JavaScript API.
+
+## Include Links
+
+With the `links` option, each matched citation will include URLs to access the content of the citation on the web. For:
+
+```javascript
+Citation.find("pursuant to 5 U.S.C. 552(a)(1)(E) and", { links: true });
+```
+
+you will get back an extended object with permalinks:
+
+```javascript
+[{
+  "match": "5 U.S.C. 552(a)(1)(E)",
+  "type": "usc",
+  ...
+  "usc": {
+    "id": "usc/5/552/a/1/E",
+    ...
+    "links": {
+      "usgpo": {
+        "source": {
+          "name": "U.S. Government Publishing Office",
+          "abbreviation": "US GPO",
+          "link": "http://www.gpo.gov",
+          "authoritative": true,
+          "note": "2014 edition. Sub-section citation is not reflected in the link."
+        },
+        "pdf": "http://api.fdsys.gov/link?collection=uscode&year=2014&title=5&section=552&type=usc",
+        "html": "http://api.fdsys.gov/link?collection=uscode&year=2014&title=5&section=552&type=usc&link-type=html",
+        "landing": "http://api.fdsys.gov/link?collection=uscode&year=2014&title=5&section=552&type=usc&link-type=contentdetail"
+      },
+      "cornell_lii": {
+        "source": {
+          "name": "Cornell Legal Information Institute",
+          "abbreviation": "Cornell LII",
+          "link": "https://www.law.cornell.edu/uscode/text",
+          "authoritative": false,
+          "note": "Link is to most current version of the US Code, as available at law.cornell.edu."
+        },
+        "landing": "https://www.law.cornell.edu/uscode/text/5/552#a_1_E"
+      }
+    }
+  }
+}]
+```
+
+The `links` object maps sources to one or more renditions. The rendition types are `pdf`, `html` (for raw HTML content), `landing` for a landing page (i.e. a website) about the document refered to by the citation, and `mods` (US GPO MODS XML files).
 
 ## Cite-specific options
 

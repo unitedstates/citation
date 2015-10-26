@@ -12,43 +12,43 @@ exports["Relative patterns"] = function(test) {
     [ 'standard',
       'as that term is defined in § 32-701(4), to the deceased',
       '§ 32-701(4)',
-      '32', '701', ['4']],
+      '32', '701', ['4'], "http://dccode.org/simple/sections/32-701.html"],
 
     // in 3-101 of the DC Code:
     [ 'into-newline',
       'as provided in § 1-603.01(13).\n\n(b) In addition to the',
       '§ 1-603.01(13)',
-      '1', '603.01', ['13']],
+      '1', '603.01', ['13'], "http://dccode.org/simple/sections/1-603.01.html"],
 
     // in 3-101 of the DC Code
     [ 'section-with-dot',
       'required under § 3-101.01, the Commission',
       '§ 3-101.01',
-      '3', '101.01', []],
+      '3', '101.01', [], "http://dccode.org/simple/sections/3-101.01.html"],
 
     // in 1-611.1 of the DC Code
     [ 'section-ending-with-dot',
       'accordance with the policies of § 1-611.01.',
       '§ 1-611.01',
-      '1', '611.01', []],
+      '1', '611.01', [], "http://dccode.org/simple/sections/1-611.01.html"],
 
     // in 1-1163.20 of the DC Code
     [ 'section-forgiving-with-space',
       'contribution limits for the candidate as provided under § 1- 1163.33.',
       '§ 1- 1163.33',
-      '1', '1163.33', []],
+      '1', '1163.33', [], "http://dccode.org/simple/sections/1-1163.33.html"],
 
     // hypothetical (modified from 1-1163.20 of the DC Code)
     [ 'section-forgiving-with-space',
       'contribution limits for the candidate as provided under § 1 -1163.33.',
       '§ 1 -1163.33',
-      '1', '1163.33', []],
+      '1', '1163.33', [], "http://dccode.org/simple/sections/1-1163.33.html"],
 
     // in 16-316 of the DC Code
     [ 'section-with-word-section',
       'case shall be subject to the limitation set forth in [section 16-2326.01(b)(2)].',
       'section 16-2326.01(b)(2)',
-      '16', '2326.01', ['b', '2']]
+      '16', '2326.01', ['b', '2'], "http://dccode.org/simple/sections/16-2326.01.html"]
   ];
 
   for (var i=0; i<cases.length; i++) {
@@ -57,6 +57,7 @@ exports["Relative patterns"] = function(test) {
 
     var found = Citation.find(text, {
       types: ["dc_code"],
+      links: true,
 
       // ensures we'll detect relative cites
       dc_code: {source: "dc_code"}
@@ -70,6 +71,7 @@ exports["Relative patterns"] = function(test) {
       test.equal(citation.dc_code.title, details[3]);
       test.equal(citation.dc_code.section, details[4]);
       test.deepEqual(citation.dc_code.subsections, details[5]);
+      test.equal(citation.dc_code.links.dccodeorg.landing, details[6]);
     } else
       console.log("No match found in: " + text);
 

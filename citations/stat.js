@@ -26,5 +26,22 @@ module.exports = {
         };
       }
     }
-  ]
+  ],
+
+  links: function(cite) {
+    var usgpo_url = "http://api.fdsys.gov/link?collection=statute&volume=" + cite.volume + "&page=" + cite.page;
+
+    return {
+      usgpo: {
+        source: {
+            name: "U.S. Government Publishing Office",
+            abbreviation: "US GPO",
+            link: "http://www.gpo.gov",
+            authoritative: true
+        },
+        pdf: usgpo_url,
+        mods: usgpo_url + "&link-type=mods"
+      }
+    };
+  }
 };

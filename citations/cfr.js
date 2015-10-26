@@ -73,5 +73,24 @@ module.exports = {
     //     };
     //   }
     // }
-  ]
+  ],
+
+  links: function(cite) {
+    var gpo_url = "http://api.fdsys.gov/link?collection=cfr&titlenum=" +
+        cite.title + "&partnum=" + cite.part + "&sectionnum=" +
+        cite.section + "&year=mostrecent";
+
+    return {
+      usgpo: {
+        source: {
+            name: "U.S. Government Publishing Office",
+            abbreviation: "US GPO",
+            link: "http://www.gpo.gov",
+            authoritative: true
+        },
+
+        pdf: gpo_url
+      }
+    };
+  }
 };

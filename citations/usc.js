@@ -121,5 +121,68 @@ module.exports = {
         };
       }
     }
-  ]
+  ],
+
+  links: function(cite) {
+    // US GPO
+    var title = cite.title.replace(/-app$/, '');
+    var links = {};
+
+    var edition;
+    for (var i = 0; i < us_code_editions.length; i++) {
+        if (us_code_editions[i].titles == null || us_code_editions[i].titles.indexOf(title) >= 0) {
+          // This edition contains the title.
+          edition = us_code_editions[i]
+          break;
+        }
+    }
+
+    if (edition) {
+      var url = "http://api.fdsys.gov/link?collection=uscode&year="
+        + edition.edition + "&title=" + title
+        + "&section=" + cite.section
+        + "&type=" + (cite.title.indexOf("-app") == -1 ? "usc" : "uscappendix");
+      
+      links.usgpo = {
+          source: {
+              name: "U.S. Government Publishing Office",
+              abbreviation: "US GPO",
+              link: "http://www.gpo.gov",
+              authoritative: true,
+              note: edition.edition + " edition." + ((cite.subsections && cite.subsections.length) ? " Sub-section citation is not reflected in the link." : "")
+          },
+          pdf: url,
+          html: url + "&link-type=html",
+          landing: url + "&link-type=contentdetail",
+      };
+    }
+
+    // Cornell Legal Information Institute
+    // (for current citations only, i.e. not tied to a publication or effective date)
+    var subsections = (cite.subsections.slice() || []); // clone
+    if (subsections.length && subsections[subsections.length-1] == "et-seq") subsections.pop(); // don't include eq-seq in a link
+    links.cornell_lii = {
+        source: {
+            name: "Cornell Legal Information Institute",
+            abbreviation: "Cornell LII",
+            link: "https://www.law.cornell.edu/uscode/text",
+            authoritative: false,
+            note: "Link is to most current version of the US Code, as available at law.cornell.edu."
+        },
+        landing: "https://www.law.cornell.edu/uscode/text/" + (title + (cite.title.indexOf("-app") >= 0 ? "a" : ""))
+                          + "/" + cite.section
+                          + (subsections.length ? ("#" + subsections.join("_")) : "")
+    };
+
+    return links;
+  }
 };
+
+// Map published editions of the US Code to the titles they contain. Not all
+// published editions have the full US Code. Some are updates. This is per
+// http://www.gpo.gov/fdsys/browse/collectionUScode.action?collectionCode=USCODE.
+// Most recent first.
+var us_code_editions = [
+    { edition: '2014', titles: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15'] },
+    { edition: '2013', titles: null }, // all titles available in this edition
+];

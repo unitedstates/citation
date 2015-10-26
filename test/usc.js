@@ -10,7 +10,7 @@ exports["Basic pattern"] = function(test) {
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr3604ih/xml/BILLS-112hr3604ih.xml
   var text = "of the Administrative Procedure Act (5 U.S.C. 552) and some";
 
-  var found = Citation.find(text, {types: "usc"}).citations;
+  var found = Citation.find(text, {types: "usc", links: true}).citations;
   test.equal(found.length, 1);
 
   var citation = found[0];
@@ -21,6 +21,8 @@ exports["Basic pattern"] = function(test) {
   test.equal(citation.usc.section, "552");
   test.deepEqual(citation.usc.subsections, [])
   test.equal(citation.usc.id, "usc/5/552");
+  test.equal(citation.usc.links.usgpo.pdf, "http://api.fdsys.gov/link?collection=uscode&year=2014&title=5&section=552&type=usc");
+  test.equal(citation.usc.links.cornell_lii.landing, "https://www.law.cornell.edu/uscode/text/5/552");
 
   var foundExcerpt = Citation.find(text, {types: "usc", excerpt: 5}).citations;
   test.equal(foundExcerpt.length, 1);
@@ -65,7 +67,7 @@ exports["Basic subsection parsing"] = function(test) {
     "the authority of this section shall be repealed in accordance " +
     "... of the Administrative Procedure Act (5 U.S.C. 552(a)(1)(E)) ...";
 
-  var found = Citation.find(text, {types: "usc"}).citations;
+  var found = Citation.find(text, {types: "usc", links: true}).citations;
   test.equal(found.length, 1);
 
   var citation = found[0];
@@ -75,6 +77,8 @@ exports["Basic subsection parsing"] = function(test) {
   test.equal(citation.usc.section, "552");
   test.deepEqual(citation.usc.subsections, ["a", "1", "E"])
   test.equal(citation.usc.id, "usc/5/552/a/1/E");
+  test.equal(citation.usc.links.usgpo.pdf, "http://api.fdsys.gov/link?collection=uscode&year=2014&title=5&section=552&type=usc");
+  test.equal(citation.usc.links.cornell_lii.landing, "https://www.law.cornell.edu/uscode/text/5/552#a_1_E");
 
   test.done();
 }
@@ -184,7 +188,7 @@ exports["'Appendix' titles"] = function(test) {
   // http://www.gpo.gov/fdsys/pkg/BILLS-112s3608is/xml/BILLS-112s3608is.xml
   var text = "Civil Relief Act (50 U.S.C. App. 595) is amended"
 
-  var found = Citation.find(text, {types: "usc"}).citations;
+  var found = Citation.find(text, {types: "usc", links: true}).citations;
   test.equal(found.length, 1);
 
   var citation = found[0];
@@ -194,6 +198,8 @@ exports["'Appendix' titles"] = function(test) {
   test.equal(citation.usc.section, "595");
   test.deepEqual(citation.usc.subsections, [])
   test.equal(citation.usc.id, "usc/50-app/595");
+  test.equal(citation.usc.links.usgpo.pdf, "http://api.fdsys.gov/link?collection=uscode&year=2013&title=50&section=595&type=uscappendix");
+  test.equal(citation.usc.links.cornell_lii.landing, "https://www.law.cornell.edu/uscode/text/50a/595");
 
   test.done();
 };
@@ -202,7 +208,7 @@ exports["'note' marks"] = function(test) {
   // http://www.gpo.gov/fdsys/pkg/BILLS-112hr6567ih/xml/BILLS-112hr6567ih.xml
   var text = "commodity supplemental food program) (7 U.S.C. 612c note).";
 
-  var found = Citation.find(text, {types: "usc"}).citations;
+  var found = Citation.find(text, {types: "usc", links: true}).citations;
   test.equal(found.length, 1);
 
   var citation = found[0];
@@ -212,6 +218,8 @@ exports["'note' marks"] = function(test) {
   test.equal(citation.usc.section, "612c");
   test.deepEqual(citation.usc.subsections, ["note"])
   test.equal(citation.usc.id, "usc/7/612c/note");
+  test.equal(citation.usc.links.usgpo.pdf, "http://api.fdsys.gov/link?collection=uscode&year=2014&title=7&section=612c&type=usc");
+  test.equal(citation.usc.links.cornell_lii.landing, "https://www.law.cornell.edu/uscode/text/7/612c#note"); // incorrect but close enough
 
   test.done();
 }
@@ -221,7 +229,7 @@ exports["'et seq' marks"] = function(test) {
   // from http://www.gpo.gov/fdsys/pkg/BILLS-113s1302rs/html/BILLS-113s1302rs.htm
   var text = "the Employee Retirement Income Security Act of 1974 (29 U.S.C. 1081 et seq.)";
 
-  var found = Citation.find(text, {types: "usc"}).citations;
+  var found = Citation.find(text, {types: "usc", links: true}).citations;
   test.equal(found.length, 1);
 
   var citation = found[0];
@@ -231,6 +239,8 @@ exports["'et seq' marks"] = function(test) {
   test.equal(citation.usc.section, "1081");
   test.deepEqual(citation.usc.subsections, ["et-seq"])
   test.equal(citation.usc.id, "usc/29/1081/et-seq");
+  test.equal(citation.usc.links.usgpo.pdf, "http://api.fdsys.gov/link?collection=uscode&year=2013&title=29&section=1081&type=usc");
+  test.equal(citation.usc.links.cornell_lii.landing, "https://www.law.cornell.edu/uscode/text/29/1081");
 
   test.done();
 }
