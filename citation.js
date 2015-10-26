@@ -378,6 +378,8 @@ if (typeof(require) !== "undefined") {
 
 
   Citation.filters.lines = require("./filters/lines");
+  Citation.filters.xpath_html = require("./filters/xpath_html");
+  Citation.filters.xpath_xml = require("./filters/xpath_xml");
 }
 
 // auto-load in-browser

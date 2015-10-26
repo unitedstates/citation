@@ -32,7 +32,9 @@
     "method-override": "*",
     "errorhandler": "*",
 
-    "minimist": "*"
+    "minimist": "*",
+    "parse5": "*",
+    "xmldom": "*"
   },
   "devDependencies": {
     "deep-equal": "*",
