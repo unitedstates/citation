@@ -213,6 +213,83 @@ cite --judicial "Smith v. Hardibble, 111 Cal.2d 222, 555, 558, 333 Cal.3d 444 (1
 
 Add `--links` to [include links](#include-links) in the output.
 
+## Filters
+
+Instead of treating the input text as just a blob of text that matches citations at a string index, you can apply a "filter" that will parse the input text and provide more precise context.
+
+##### Lines
+
+For each citation, return the line number and the relative character index of the match inside that line.
+
+Example:
+
+```
+cite --pretty --filter=lines "I once met a cite named nancy
+whose 5 usc 552 was awfully fancy
+and then the poem ended"
+```
+
+```json
+{
+  "citations": [
+    {
+      "type": "usc",
+      "match": "5 usc 552",
+      "index": 6,
+      "citation": "5 U.S.C. 552",
+      "usc": {
+        "title": "5",
+        "section": "552",
+        "subsections": [],
+        "id": "usc/5/552"
+      },
+      "line": 2
+    }
+  ]
+}
+```
+
+##### XPath
+
+For each citation, return an XPath statement identifying the match's specific node in the input document, and the relative character index of the match inside that node.
+
+Example:
+
+```
+cite --pretty --filter=xpath_xml "
+<?xml>
+<document>
+  <title>Best Bill of 2012</title>
+  <bill>
+    <introduction>Bill to enforce happiness amongst all the children</introduction>
+    <closing>All information releasable through 5 U.S.C. 552 is now banned</closing>
+    <footer>(c) Congress</footer>
+  </bill>
+</document>
+"
+```
+
+```json
+{
+  "citations": [
+    {
+      "type": "usc",
+      "match": "5 U.S.C. 552",
+      "index": 35,
+      "citation": "5 U.S.C. 552",
+      "usc": {
+        "title": "5",
+        "section": "552",
+        "subsections": [],
+        "id": "usc/5/552"
+      },
+      "xpath": "/document[1]/bill[1]/closing[1]/text()[1]"
+    }
+  ]
+}
+```
+
+
 ## Replacement
 
 You can perform a "find-and-replace" with detected citations, by providing a `replace` callback to be executed on each citation, that returns the string to replace that citation.
