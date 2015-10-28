@@ -29,6 +29,9 @@ module.exports = {
   ],
 
   links: function(cite) {
+    // GPO only has volumes starting with 65.
+    if (cite.volume < 65) return { };
+
     var usgpo_url = "http://api.fdsys.gov/link?collection=statute&volume=" + cite.volume + "&page=" + cite.page;
 
     return {

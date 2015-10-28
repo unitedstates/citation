@@ -9,9 +9,9 @@ exports["All patterns"] = function(test) {
   var cases = [
       // text copied from the DC Code Credits
       ["110 Stat. 548", "Basic citation", "110 Stat. 548",
-      "110", "548", "stat/110/548", "110 Stat. 548"],
+      "110", "548", "stat/110/548", "110 Stat. 548", true],
       ["Mar. 3, 1887, 24 Stat. 501, ch. 355", "DC Code Credits",
-      "24 Stat. 501", "24", "501", "stat/24/501", "24 Stat. 501"],
+      "24 Stat. 501", "24", "501", "stat/24/501", "24 Stat. 501", false],
   ]
 
   for (var i=0; i<cases.length; i++) {
@@ -28,7 +28,8 @@ exports["All patterns"] = function(test) {
       test.equal(citation.stat.id, details[5]);
       test.equal(citation.stat.volume, details[3]);
       test.equal(citation.stat.page, details[4]);
-      test.equal(citation.stat.links.usgpo.source.link, "http://www.gpo.gov");
+      if (details[7]) // is a link available?
+        test.equal(citation.stat.links.usgpo.source.link, "http://www.gpo.gov");
     }
     else
       console.log("No match found in: " + text);;
