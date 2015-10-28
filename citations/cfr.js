@@ -76,9 +76,10 @@ module.exports = {
   ],
 
   links: function(cite) {
-    var gpo_url = "http://api.fdsys.gov/link?collection=cfr&titlenum=" +
-        cite.title + "&partnum=" + cite.part + "&sectionnum=" +
-        cite.section + "&year=mostrecent";
+    var gpo_url = "http://api.fdsys.gov/link?collection=cfr&year=mostrecent"
+        + "&titlenum=" + cite.title + "&partnum=" + cite.part;
+    if (cite.section) // section, if present, is of the form PART.SECTION, and for the GPO url only include the (inner) section
+      gpo_url += "&sectionnum=" + cite.section.substring(cite.part.length+1) + "";
 
     return {
       usgpo: {
