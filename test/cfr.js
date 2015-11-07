@@ -48,6 +48,20 @@ var singles = [
     }
   ],
 
+  // Artificial test case
+  ["48 CFR §9903.201", "Simple Section (symbol, no space)",
+    {
+      match: "48 CFR §9903.201",
+      cfr: {
+        title: "48",
+        part: "9903",
+        section: "9903.201",
+        subsections: [],
+        id: "cfr/48/9903.201"
+      }
+    }
+  ],
+
   // http://gao.gov/products/GAO-11-166
   ["45 C.F.R. 3009.4", "Simple Section (Periods)",
     {
