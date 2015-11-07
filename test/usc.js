@@ -181,6 +181,20 @@ exports["Section symbol is ignored"] = function(test) {
   test.deepEqual(citation.usc.subsections, [])
   test.equal(citation.usc.id, "usc/5/552");
 
+  // https://twitter.com/CrimeADay/status/662802297588719616
+  var text = "16 U.S.C. §1375(b) & 50 C.F.R. §18.13(c) make it a federal crime to offer to buy a walrus.";
+
+  var found = Citation.find(text, {types: "usc"}).citations;
+  test.equal(found.length, 1);
+
+  var citation = found[0];
+  test.equal(citation.match, "16 U.S.C. §1375(b)");
+  test.equal(citation.citation, "16 U.S.C. 1375(b)");
+  test.equal(citation.usc.title, "16");
+  test.equal(citation.usc.section, "1375");
+  test.deepEqual(citation.usc.subsections, ["b"])
+  test.equal(citation.usc.id, "usc/16/1375/b");
+
   test.done();
 };
 
