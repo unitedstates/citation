@@ -18,9 +18,9 @@ module.exports = {
     {
       regex:
         "Va\\.? Code\\.?" +
-        "(?:\\s+Ann\\.?)?" +
-        "(?:\\s+§+)?" +
-        "\\s+([\\d\\.]+)\\-([\\d\\.:]+)" +
+        "(?:\\s+Ann\\.?)?\\s+" +
+        "(?:§+\\s*)?" +
+        "([\\d\\.]+)\\-([\\d\\.:]+)" +
         "(?:\\s+\\((?:West )?([12]\\d{3})\\))?",
       fields: ['title', 'section', 'year'],
       processor: function (captures) {
