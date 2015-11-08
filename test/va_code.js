@@ -38,7 +38,11 @@ exports["All patterns"] = function(test) {
     [ 'No Annotation or Period',
       "VA Code § 66-25.1:1",
       "66", "25.1:1", null,
-      'va-code/66/25.1:1', 'https://vacode.org/66-25.1:1/']
+      'va-code/66/25.1:1', 'https://vacode.org/66-25.1:1/'],
+    [ 'No space before section number',
+      'Va. Code Ann. §19.2-56.2 (2010)',
+      '19.2', '56.2', '2010',
+      'va-code/19.2/56.2', 'https://vacode.org/19.2-56.2/']
   ];
 
   for (var i=0; i<cases.length; i++) {

@@ -44,6 +44,12 @@ exports["Relative patterns"] = function(test) {
       '§ 1 -1163.33',
       '1', '1163.33', [], "http://dccode.org/simple/sections/1-1163.33.html"],
 
+    // hypothetical (modified from 1-1163.20 of the DC Code)
+    [ 'section-forgiving-no-space',
+      'contribution limits for the candidate as provided under §1-1163.33.',
+      '§1-1163.33',
+      '1', '1163.33', [], "http://dccode.org/simple/sections/1-1163.33.html"],
+
     // in 16-316 of the DC Code
     [ 'section-with-word-section',
       'case shall be subject to the limitation set forth in [section 16-2326.01(b)(2)].',

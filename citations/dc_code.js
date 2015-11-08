@@ -33,8 +33,8 @@ module.exports = {
     // section 16-2326.01
 
     var prefix_regex = "";
-    var section_regex = "(?:sections?|§+)\\s+";
-    var sections_regex = "(?:sections|§§)\\s+";
+    var section_regex = "(?:sections?\\s+|§+\\s*)";
+    var sections_regex = "(?:sections\\s+|§§\\s*)";
     if (context.source != "dc_code") {
       // Require "DC Official Code" but then make the section symbol optional.
       prefix_regex = "D\\.?C\\.? (?:Official )?Code\\s+";
