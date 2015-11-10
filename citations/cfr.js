@@ -28,7 +28,7 @@ module.exports = {
         "(\\d+)\\s?" +
         "C\\.?\\s?F\\.?\\s?R\\.?" +
         "(?:[\\s,]+(?:§+|parts?))?" +
-        "\\s*((?:\\d+\\.?\\d*(?:\\s*\\((?:[a-zA-Z\\d]{1,2}|[ixvIXV]+)\\))*)+)",
+        "\\s*((?:\\d+\\.?\\d*(?:[-–—]\\d+)?(?:\\s*\\((?:[a-zA-Z\\d]{1,2}|[ixvIXV]+)\\))*)+)",
 
       fields: ['title', 'sections'],
 
@@ -38,7 +38,7 @@ module.exports = {
 
         // separate subsections for each section being considered
         var split = captures.sections.split(/[\(\)]+/).filter(function(x) {return x;});
-        section = split[0].trim();
+        section = split[0].trim().replace(/[–—]/g, '-');
         subsections = split.splice(1);
 
         if (section.indexOf(".") > 0)
