@@ -144,6 +144,34 @@ var singles = [
         id: "cfr/47/54.506"
       }
     }
+  ],
+
+  // https://twitter.com/CrimeADay/status/654462486704467968
+  ["43 U.S.C. §1733, 43 C.F.R. §8360.0–7 & 8365.2–3(f) make it a federal crime to move a table in a federal picnic area.", "Section with dash",
+    {
+      match: "43 C.F.R. §8360.0–7",
+      cfr: {
+        title: "43",
+        part: "8360",
+        section: "8360.0-7",
+        subsections: [],
+        id: "cfr/43/8360.0-7"
+      }
+    }
+  ],
+
+  // Modified from https://twitter.com/CrimeADay/status/654462486704467968
+  ["43 U.S.C. §1733, 43 C.F.R. §8360.0-7 & 8365.2-3(f) make it a federal crime to move a table in a federal picnic area.", "Section with hyphen",
+    {
+      match: "43 C.F.R. §8360.0-7",
+      cfr: {
+        title: "43",
+        part: "8360",
+        section: "8360.0-7",
+        subsections: [],
+        id: "cfr/43/8360.0-7"
+      }
+    }
   ]
 ];
 
