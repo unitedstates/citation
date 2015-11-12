@@ -21,7 +21,7 @@ exports["Basic pattern"] = function(test) {
   test.equal(citation.usc.section, "552");
   test.deepEqual(citation.usc.subsections, [])
   test.equal(citation.usc.id, "usc/5/552");
-  test.equal(citation.usc.links.holrc.html, "http://uscode.house.gov/view.xhtml?req=(title%3A5%20section%3A552%20edition%3Aprelim)");
+  test.equal(citation.usc.links.house.html, "http://uscode.house.gov/view.xhtml?req=(title%3A5%20section%3A552%20edition%3Aprelim)");
   test.equal(citation.usc.links.usgpo.pdf, "http://api.fdsys.gov/link?collection=uscode&year=2014&title=5&section=552&type=usc");
   test.equal(citation.usc.links.cornell_lii.landing, "https://www.law.cornell.edu/uscode/text/5/552");
 
@@ -78,7 +78,7 @@ exports["Basic subsection parsing"] = function(test) {
   test.equal(citation.usc.section, "552");
   test.deepEqual(citation.usc.subsections, ["a", "1", "E"])
   test.equal(citation.usc.id, "usc/5/552/a/1/E");
-  test.equal(citation.usc.links.holrc.html, "http://uscode.house.gov/view.xhtml?req=(title%3A5%20section%3A552%20edition%3Aprelim)");
+  test.equal(citation.usc.links.house.html, "http://uscode.house.gov/view.xhtml?req=(title%3A5%20section%3A552%20edition%3Aprelim)");
   test.equal(citation.usc.links.usgpo.pdf, "http://api.fdsys.gov/link?collection=uscode&year=2014&title=5&section=552&type=usc");
   test.equal(citation.usc.links.cornell_lii.landing, "https://www.law.cornell.edu/uscode/text/5/552#a_1_E");
 
@@ -214,7 +214,7 @@ exports["'Appendix' titles"] = function(test) {
   test.equal(citation.usc.section, "595");
   test.deepEqual(citation.usc.subsections, [])
   test.equal(citation.usc.id, "usc/50-app/595");
-  test.equal(citation.usc.links.holrc.html, "http://uscode.house.gov/view.xhtml?req=(title%3A50a%20section%3A595%20edition%3Aprelim)");
+  test.equal(citation.usc.links.house.html, "http://uscode.house.gov/view.xhtml?req=(title%3A50a%20section%3A595%20edition%3Aprelim)");
   test.equal(citation.usc.links.usgpo.pdf, "http://api.fdsys.gov/link?collection=uscode&year=2013&title=50&section=595&type=uscappendix");
   test.equal(citation.usc.links.cornell_lii.landing, "https://www.law.cornell.edu/uscode/text/50a/595");
 
@@ -235,7 +235,7 @@ exports["'note' marks"] = function(test) {
   test.equal(citation.usc.section, "612c");
   test.deepEqual(citation.usc.subsections, ["note"])
   test.equal(citation.usc.id, "usc/7/612c/note");
-  test.equal(citation.usc.links.holrc.html, "http://uscode.house.gov/view.xhtml?req=(title%3A7%20section%3A612c%20edition%3Aprelim)");
+  test.equal(citation.usc.links.house.html, "http://uscode.house.gov/view.xhtml?req=(title%3A7%20section%3A612c%20edition%3Aprelim)");
   test.equal(citation.usc.links.usgpo.pdf, "http://api.fdsys.gov/link?collection=uscode&year=2014&title=7&section=612c&type=usc");
   test.equal(citation.usc.links.cornell_lii.landing, "https://www.law.cornell.edu/uscode/text/7/612c#note"); // incorrect but close enough
 
@@ -257,7 +257,7 @@ exports["'et seq' marks"] = function(test) {
   test.equal(citation.usc.section, "1081");
   test.deepEqual(citation.usc.subsections, ["et-seq"])
   test.equal(citation.usc.id, "usc/29/1081/et-seq");
-  test.equal(citation.usc.links.holrc.html, "http://uscode.house.gov/view.xhtml?req=(title%3A29%20section%3A1081%20edition%3Aprelim)");
+  test.equal(citation.usc.links.house.html, "http://uscode.house.gov/view.xhtml?req=(title%3A29%20section%3A1081%20edition%3Aprelim)");
   test.equal(citation.usc.links.usgpo.pdf, "http://api.fdsys.gov/link?collection=uscode&year=2013&title=29&section=1081&type=usc");
   test.equal(citation.usc.links.cornell_lii.landing, "https://www.law.cornell.edu/uscode/text/29/1081");
 
@@ -466,7 +466,7 @@ exports["Non-numeric section numbers"] = function(test) {
   test.equal(citation.usc.section, "460nnn-101");
   test.deepEqual(citation.usc.subsections, [])
   test.equal(citation.usc.id, "usc/16/460nnn-101");
-  test.equal(citation.usc.links.holrc.html, "http://uscode.house.gov/view.xhtml?req=(title%3A16%20section%3A460nnn-101%20edition%3Aprelim)");
+  test.equal(citation.usc.links.house.html, "http://uscode.house.gov/view.xhtml?req=(title%3A16%20section%3A460nnn-101%20edition%3Aprelim)");
   test.equal(citation.usc.links.usgpo.pdf, "http://api.fdsys.gov/link?collection=uscode&year=2013&title=16&section=460nnn-101&type=usc");
   test.equal(citation.usc.links.cornell_lii.landing, "https://www.law.cornell.edu/uscode/text/16/460nnn-101");
 
