@@ -124,10 +124,24 @@ module.exports = {
   ],
 
   links: function(cite) {
-    // US GPO
     var title = cite.title.replace(/-app$/, '');
+    var is_appendix = cite.title.indexOf("-app") != -1;
+
     var links = {};
 
+    // House OLRC
+    links.holrc = {
+        source: {
+            name: "Office of the Law Revision Counsel of the United States House of Representatives",
+            abbreviation: "House OLRC",
+            link: "http://uscode.house.gov/",
+            authoritative: true,
+            note: "Link is to most current version of the US Code."
+        },
+        html: "http://uscode.house.gov/view.xhtml?req=(" + encodeURIComponent("title:" + (title + (is_appendix ? "a" : "")) + " section:" + cite.section + " edition:prelim") + ")"
+    };
+
+    // US GPO
     var edition;
     for (var i = 0; i < us_code_editions.length; i++) {
         if (us_code_editions[i].titles == null || us_code_editions[i].titles.indexOf(title) >= 0) {
@@ -141,7 +155,7 @@ module.exports = {
       var url = "http://api.fdsys.gov/link?collection=uscode&year="
         + edition.edition + "&title=" + title
         + "&section=" + cite.section
-        + "&type=" + (cite.title.indexOf("-app") == -1 ? "usc" : "uscappendix");
+        + "&type=" + (!is_appendix ? "usc" : "uscappendix");
       
       links.usgpo = {
           source: {
@@ -169,7 +183,7 @@ module.exports = {
             authoritative: false,
             note: "Link is to most current version of the US Code, as available at law.cornell.edu."
         },
-        landing: "https://www.law.cornell.edu/uscode/text/" + (title + (cite.title.indexOf("-app") >= 0 ? "a" : ""))
+        landing: "https://www.law.cornell.edu/uscode/text/" + (title + (is_appendix ? "a" : ""))
                           + "/" + cite.section
                           + (subsections.length ? ("#" + subsections.join("_")) : "")
     };
