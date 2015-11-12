@@ -130,7 +130,7 @@ module.exports = {
     var links = {};
 
     // House OLRC
-    links.holrc = {
+    links.house = {
         source: {
             name: "Office of the Law Revision Counsel of the United States House of Representatives",
             abbreviation: "House OLRC",
