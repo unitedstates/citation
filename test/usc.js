@@ -444,3 +444,35 @@ exports["Ranges: basic subsections"] = function(test) {
 
   test.done();
 };
+
+
+exports["Non-numeric section numbers"] = function(test) {
+  // This is the longest string that is an actual citation to a section.
+  var text = "16 USC 460nnn-101";
+
+  var found = Citation.find(text, {types: "usc", links: true}).citations;
+  test.equal(found.length, 3);
+
+  var citation = found[0];
+  test.equal(citation.match, "16 USC 460nnn-101");
+  test.equal(citation.index, 0);
+  test.equal(citation.citation, "16 U.S.C. 460nnn-101");
+  test.equal(citation.usc.title, "16");
+  test.equal(citation.usc.section, "460nnn-101");
+  test.deepEqual(citation.usc.subsections, [])
+  test.equal(citation.usc.id, "usc/16/460nnn-101");
+  test.equal(citation.usc.links.usgpo.pdf, "http://api.fdsys.gov/link?collection=uscode&year=2013&title=16&section=460nnn-101&type=usc");
+  test.equal(citation.usc.links.cornell_lii.landing, "https://www.law.cornell.edu/uscode/text/16/460nnn-101");
+
+  var citation = found[1];
+  test.equal(citation.match, "16 USC 460nnn-101");
+  test.equal(citation.index, 0);
+  test.equal(citation.citation, "16 U.S.C. 460nnn");
+
+  var citation = found[2];
+  test.equal(citation.match, "16 USC 460nnn-101");
+  test.equal(citation.index, 0);
+  test.equal(citation.citation, "16 U.S.C. 101");
+
+  test.done();
+};
