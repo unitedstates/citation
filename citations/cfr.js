@@ -28,7 +28,7 @@ module.exports = {
         "(\\d+)\\s?" +
         "C\\.?\\s?F\\.?\\s?R\\.?" +
         "(?:[\\s,]+(?:§+|parts?))?" +
-        "\\s*((?:\\d+\\.?\\d*(?:[-–—]\\d+)?(?:\\s*\\((?:[a-zA-Z\\d]{1,2}|[ixvIXV]+)\\))*)+)",
+        "\\s*(\\d+(?:(?:[-–—]\\d+)?[a-z]?(?:\\.(?:\\d+T|T|\\d+[-–—]DD[-–—]|\\d+[-–—]WH[-–—])?\\d+[a-z]?(?:(?:(?:\\([a-z]\\))?[-–—]\\d+)+[a-z]?)?)?(?:(?:\\s*\\((?:[a-z\\d]{1,2}|[ixv]+)\\))+)?)?)",
 
       fields: ['title', 'sections'],
 
@@ -36,10 +36,22 @@ module.exports = {
         var title = captures.title;
         var part, section, subsections;
 
+        // convert all dashes to hyphens, deduplicate hyphens, and look for
+        // subsections starting after the last hyphen
+        var hyphen_split = captures.sections.split(/[-–—]+/);
+        var head, tail;
+        if (hyphen_split.length > 1) {
+          head = hyphen_split.slice(0, -1).join("-") + "-";
+          tail = hyphen_split[hyphen_split.length - 1];
+        } else {
+          head = "";
+          tail = hyphen_split[0];
+        }
+
         // separate subsections for each section being considered
-        var split = captures.sections.split(/[\(\)]+/).filter(function(x) {return x;});
-        section = split[0].trim().replace(/[–—]/g, '-');
-        subsections = split.splice(1);
+        var paren_split = tail.split(/[\(\)]+/).filter(function(x) {return x;});
+        section = head + paren_split[0].trim();
+        subsections = paren_split.splice(1);
 
         if (section.indexOf(".") > 0)
           part = section.split(".")[0];

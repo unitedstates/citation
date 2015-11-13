@@ -172,6 +172,253 @@ var singles = [
         id: "cfr/43/8360.0-7"
       }
     }
+  ],
+
+  ["12 CFR § 226.5a", "Trailing lowercase letter in section number",
+    {
+      match: "12 CFR § 226.5a",
+      cfr: {
+        title: "12",
+        part: "226",
+        section: "226.5a",
+        subsections: [],
+        id: "cfr/12/226.5a"
+      }
+    }
+  ],
+
+  ["10 CFR § 205.192A", "Trailing uppercase letter in section number",
+    {
+      match: "10 CFR § 205.192A",
+      cfr: {
+        title: "10",
+        part: "205",
+        section: "205.192A",
+        subsections: [],
+        id: "cfr/10/205.192A"
+      }
+    }
+  ],
+
+  ["17 CFR § 240.10b-21", "Lowercase letter, dash, and additional number in section number",
+    {
+      match: "17 CFR § 240.10b-21",
+      cfr: {
+        title: "17",
+        part: "240",
+        section: "240.10b-21",
+        subsections: [],
+        id: "cfr/17/240.10b-21"
+      }
+    }
+  ],
+
+  ["12 CFR § 708a.101", "Lowercase letter at the end of a part number",
+    {
+      match: "12 CFR § 708a.101",
+      cfr: {
+        title: "12",
+        part: "708a",
+        section: "708a.101",
+        subsections: [],
+        id: "cfr/12/708a.101"
+      }
+    }
+  ],
+
+  ["10 CFR § 960.3-1-1", "Multiple dashes and numbers in section numbers (case 1)",
+    {
+      match: "10 CFR § 960.3-1-1",
+      cfr: {
+        title: "10",
+        part: "960",
+        section: "960.3-1-1",
+        subsections: [],
+        id: "cfr/10/960.3-1-1"
+      }
+    }
+  ],
+
+  ["10 CFR § 960.3-1-4-1", "Multiple dashes and numbers in section numbers (case 2)",
+    {
+      match: "10 CFR § 960.3-1-4-1",
+      cfr: {
+        title: "10",
+        part: "960",
+        section: "960.3-1-4-1",
+        subsections: [],
+        id: "cfr/10/960.3-1-4-1"
+      }
+    }
+  ],
+
+  ["48 CFR 970.3102-05-30-70", "Multiple dashes and numbers in section numbers (case 3)",
+    {
+      match: "48 CFR 970.3102-05-30-70",
+      cfr: {
+        title: "48",
+        part: "970",
+        section: "970.3102-05-30-70",
+        subsections: [],
+        id: "cfr/48/970.3102-05-30-70"
+      }
+    }
+  ],
+
+  ["26 CFR § 1.1031(a)-1", "Letter in parentheses, trailing dash, and number in section",
+    {
+      match: "26 CFR § 1.1031(a)-1",
+      cfr: {
+        title: "26",
+        part: "1",
+        section: "1.1031(a)-1",
+        subsections: [],
+        id: "cfr/26/1.1031(a)-1"
+      }
+    }
+  ],
+
+  ["26 CFR § 1.1031(d)-1T", "Letter in parentheses, trailing dash, number, and \"T\" in section",
+    {
+      match: "26 CFR § 1.1031(d)-1T",
+      cfr: {
+        title: "26",
+        part: "1",
+        section: "1.1031(d)-1T",
+        subsections: [],
+        id: "cfr/26/1.1031(d)-1T"
+      }
+    }
+  ],
+
+  ["41 CFR § 128-1.5004", "Dash in part number",
+    {
+      match: "41 CFR § 128-1.5004",
+      cfr: {
+        title: "41",
+        part: "128-1",
+        section: "128-1.5004",
+        subsections: [],
+        id: "cfr/41/128-1.5004"
+      }
+    }
+  ],
+
+  ["41 CFR § 128-48.001-50", "Dash in both part number and section number",
+    {
+      match: "41 CFR § 128-48.001-50",
+      cfr: {
+        title: "41",
+        part: "128-48",
+        section: "128-48.001-50",
+        subsections: [],
+        id: "cfr/41/128-48.001-50"
+      }
+    }
+  ],
+
+  ["33 CFR § 100.35T01-0125", "\"T\" and dash in section number (case 1)",
+    {
+      match: "33 CFR § 100.35T01-0125",
+      cfr: {
+        title: "33",
+        part: "100",
+        section: "100.35T01-0125",
+        subsections: [],
+        id: "cfr/33/100.35T01-0125"
+      }
+    }
+  ],
+
+  ["33 CFR § 100.T07-0110", "\"T\" and dash in section number (case 2)",
+    {
+      match: "33 CFR § 100.T07-0110",
+      cfr: {
+        title: "33",
+        part: "100",
+        section: "100.T07-0110",
+        subsections: [],
+        id: "cfr/33/100.T07-0110"
+      }
+    }
+  ],
+
+  ["48 CFR 53.303-DD-254", "Dashes and capital letters in section numbers (case 1)",
+    {
+      match: "48 CFR 53.303-DD-254",
+      cfr: {
+        title: "48",
+        part: "53",
+        section: "53.303-DD-254",
+        subsections: [],
+        id: "cfr/48/53.303-DD-254"
+      }
+    }
+  ],
+
+  ["48 CFR 53.303-WH-347", "Dashes and capital letters in section numbers (case 2)",
+    {
+      match: "48 CFR 53.303-WH-347",
+      cfr: {
+        title: "48",
+        part: "53",
+        section: "53.303-WH-347",
+        subsections: [],
+        id: "cfr/48/53.303-WH-347"
+      }
+    }
+  ],
+
+  ["48 CFR 53.302-1419A", "Dash in section number, trailing capital letter",
+    {
+      match: "48 CFR 53.302-1419A",
+      cfr: {
+        title: "48",
+        part: "53",
+        section: "53.302-1419A",
+        subsections: [],
+        id: "cfr/48/53.302-1419A"
+      }
+    }
+  ],
+
+  ["17 CFR § 210.6A-01", "Capital letter and dash in section number",
+    {
+      match: "17 CFR § 210.6A-01",
+      cfr: {
+        title: "17",
+        part: "210",
+        section: "210.6A-01",
+        subsections: [],
+        id: "cfr/17/210.6A-01"
+      }
+    }
+  ],
+
+  ["12 CFR § 563d.3b-6", "Lowercase letter and dash in section number",
+    {
+      match: "12 CFR § 563d.3b-6",
+      cfr: {
+        title: "12",
+        part: "563d",
+        section: "563d.3b-6",
+        subsections: [],
+        id: "cfr/12/563d.3b-6"
+      }
+    }
+  ],
+
+  ["26 CFR § 1.1402(e)-1A", "Dash, number, and capital letter after subsection",
+    {
+      match: "26 CFR § 1.1402(e)-1A",
+      cfr: {
+        title: "26",
+        part: "1",
+        section: "1.1402(e)-1A",
+        subsections: [],
+        id: "cfr/26/1.1402(e)-1A"
+      }
+    }
   ]
 ];
 
