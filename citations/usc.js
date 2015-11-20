@@ -51,7 +51,7 @@ module.exports = {
         "U\\.?\\s?S\\.?\\s?C\\.?" +
         "(?:\\s+(App)\.?)?\\s+" + // appendix
         "(?:(§+)\\s*)?" + // symbol
-        "((?:\\-*\\d+[\\w\\d\\-]*(?:\\([^\\)]+\\))*)+)" + // sections
+        "((?:[-–—]*\\d+[\\w\\d\\-–—]*(?:\\([^\\)]+\\))*)+)" + // sections
         "(?:\\s+(note|et\\s+seq))?", // note
 
       fields: [
@@ -64,7 +64,8 @@ module.exports = {
         var title = match.title;
         if (match.appendix) title += "-app";
 
-        var sections = match.sections.split(/-+/);
+        var sections = match.sections.split(/[-–—]+/);
+        var match_sections_normalized = match.sections.replace(/[–—]/g, '-');
 
         var range = false;
 
@@ -74,8 +75,8 @@ module.exports = {
 
         // paren before dash is unambiguous
         else {
-          var dash = match.sections.indexOf("-");
-          var paren = match.sections.indexOf("(");
+          var dash = match_sections_normalized.indexOf("-");
+          var paren = match_sections_normalized.indexOf("(");
           if (dash > 0 && paren > 0 && paren < dash)
             range = true;
         }
@@ -83,7 +84,7 @@ module.exports = {
         // if there's a hyphen and the range is ambiguous,
         // also return the original section string as one
         if ((sections.length > 1) && !range)
-          sections.unshift(match.sections);
+          sections.unshift(match_sections_normalized);
 
         return sections.map(function(section) {
           // separate subsections for each section being considered
@@ -108,7 +109,7 @@ module.exports = {
     // "section 404o-1(a) of title 50"
     {
       regex:
-        "section (\\d+[\\w\\d\-]*)((?:\\([^\\)]+\\))*)" +
+        "section (\\d+[\\w\\d\\-–—]*)((?:\\([^\\)]+\\))*)" +
         "(?:\\s+of|\\,) title (\\d+)",
 
       fields: ['section', 'subsections', 'title'],
@@ -116,7 +117,7 @@ module.exports = {
       processor: function(match) {
         return {
           title: match.title,
-          section: match.section,
+          section: match.section.replace(/[–—]/g, '-'),
           subsections: match.subsections.split(/[\(\)]+/).filter(function(x) {return x})
         };
       }
