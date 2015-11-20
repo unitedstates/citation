@@ -484,6 +484,7 @@ exports["Non-numeric section numbers"] = function(test) {
 };
 
 exports["En-dash in section number"] = function(test) {
+  // https://github.com/unitedstates/citation/issues/123
   var text = "42 U.S.C. 288–1(a)";
 
   var found = Citation.find(text, {types: "usc", links: true}).citations;
