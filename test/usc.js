@@ -482,3 +482,35 @@ exports["Non-numeric section numbers"] = function(test) {
 
   test.done();
 };
+
+exports["En-dash in section number"] = function(test) {
+  // https://github.com/unitedstates/citation/issues/123
+  var text = "42 U.S.C. 288–1(a)";
+
+  var found = Citation.find(text, {types: "usc", links: true}).citations;
+  test.equal(found.length, 3);
+
+  var citation = found[0];
+  test.equal(citation.match, "42 U.S.C. 288–1(a)");
+  test.equal(citation.index, 0);
+  test.equal(citation.citation, "42 U.S.C. 288-1(a)");
+  test.equal(citation.usc.title, "42");
+  test.equal(citation.usc.section, "288-1");
+  test.deepEqual(citation.usc.subsections, ["a"])
+  test.equal(citation.usc.id, "usc/42/288-1/a");
+  test.equal(citation.usc.links.house.html, "http://uscode.house.gov/view.xhtml?req=(title%3A42%20section%3A288-1%20edition%3Aprelim)");
+  test.equal(citation.usc.links.usgpo.pdf, "http://api.fdsys.gov/link?collection=uscode&year=2013&title=42&section=288-1&type=usc");
+  test.equal(citation.usc.links.cornell_lii.landing, "https://www.law.cornell.edu/uscode/text/42/288-1#a");
+
+  var citation = found[1];
+  test.equal(citation.match, "42 U.S.C. 288–1(a)");
+  test.equal(citation.index, 0);
+  test.equal(citation.citation, "42 U.S.C. 288");
+
+  var citation = found[2];
+  test.equal(citation.match, "42 U.S.C. 288–1(a)");
+  test.equal(citation.index, 0);
+  test.equal(citation.citation, "42 U.S.C. 1(a)");
+
+  test.done();
+};
