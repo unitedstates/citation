@@ -419,6 +419,19 @@ var singles = [
         id: "cfr/26/1.1402(e)-1A"
       }
     }
+  ],
+
+  ["17 CFR § 240.3a12-12", "Numbers, lowercase letter, numbers, dash, numbers",
+    {
+      match: "17 CFR § 240.3a12-12",
+      cfr: {
+        title: "17",
+        part: "240",
+        section: "240.3a12-12",
+        subsections: [],
+        id: "cfr/17/240.3a12-12"
+      }
+    }
   ]
 ];
 
