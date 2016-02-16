@@ -432,6 +432,32 @@ var singles = [
         id: "cfr/17/240.3a12-12"
       }
     }
+  ],
+
+  ["17 CFR § 240.15Cc1-1", "Uppercase and lowercase letters in the section number, followed by a number, a dash, and a number",
+    {
+      match: "17 CFR § 240.15Cc1-1",
+      cfr: {
+        title: "17",
+        part: "240",
+        section: "240.15Cc1-1",
+        subsections: [],
+        id: "cfr/17/240.15Cc1-1"
+      }
+    }
+  ],
+
+  ["17 CFR § 240.15Ga-2", "Uppercase and lowercase letters in the section number, followed by a dash and a number",
+    {
+      match: "17 CFR § 240.15Ga-2",
+      cfr: {
+        title: "17",
+        part: "240",
+        section: "240.15Ga-2",
+        subsections: [],
+        id: "cfr/17/240.15Ga-2"
+      }
+    }
   ]
 ];
 
