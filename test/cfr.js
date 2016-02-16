@@ -458,6 +458,71 @@ var singles = [
         id: "cfr/17/240.15Ga-2"
       }
     }
+  ],
+
+  ["17 CFR § 275.206(3)-3T", "Parentheses inside section, depth 1",
+    {
+      match: "17 CFR § 275.206(3)-3T",
+      cfr: {
+        title: "17",
+        part: "275",
+        section: "275.206(3)-3T",
+        subsections: [],
+        id: "cfr/17/275.206(3)-3T"
+      }
+    }
+  ],
+
+  ["26 CFR § 1.411(a)(13)-1", "Parentheses inside section, depth 2",
+    {
+      match: "26 CFR § 1.411(a)(13)-1",
+      cfr: {
+        title: "26",
+        part: "1",
+        section: "1.411(a)(13)-1",
+        subsections: [],
+        id: "cfr/26/1.411(a)(13)-1"
+      }
+    }
+  ],
+
+  ["26 CFR § 301.6103(j)(1)-1T", "Parentheses inside section, depth 2, trailing T",
+    {
+      match: "26 CFR § 301.6103(j)(1)-1T",
+      cfr: {
+        title: "26",
+        part: "301",
+        section: "301.6103(j)(1)-1T",
+        subsections: [],
+        id: "cfr/26/301.6103(j)(1)-1T"
+      }
+    }
+  ],
+
+  ["26 CFR § 31.3401(a)(6)-1A", "Parentheses inside section, depth 2, trailing A",
+    {
+      match: "26 CFR § 31.3401(a)(6)-1A",
+      cfr: {
+        title: "26",
+        part: "31",
+        section: "31.3401(a)(6)-1A",
+        subsections: [],
+        id: "cfr/26/31.3401(a)(6)-1A"
+      }
+    }
+  ],
+
+  ["17 CFR § 275.202(a)(11)(G)-1", "Parentheses inside section, depth 3",
+    {
+      match: "17 CFR § 275.202(a)(11)(G)-1",
+      cfr: {
+        title: "17",
+        part: "275",
+        section: "275.202(a)(11)(G)-1",
+        subsections: [],
+        id: "cfr/17/275.202(a)(11)(G)-1"
+      }
+    }
   ]
 ];
 
