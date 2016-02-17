@@ -575,6 +575,19 @@ var singles = [
         id: "cfr/17/240.13h-l/d/2/xiii"
       }
     }
+  ],
+
+  ["41 CFR §109-38.301-1.50", "Section number with extra period",
+    {
+      match: "41 CFR §109-38.301-1.50",
+      cfr: {
+        title: "41",
+        part: "109-38",
+        section: "109-38.301-1.50",
+        subsections: [],
+        id: "cfr/41/109-38.301-1.50"
+      }
+    }
   ]
 ];
 
