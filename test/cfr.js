@@ -549,6 +549,32 @@ var singles = [
         id: "cfr/26/1.863-3AT"
       }
     }
+  ],
+
+  ["17 CFR § 240.13h-l", "Typo in Federal Register that got codified",
+    {
+      match: "17 CFR § 240.13h-l",
+      cfr: {
+        title: "17",
+        part: "240",
+        section: "240.13h-l",
+        subsections: [],
+        id: "cfr/17/240.13h-l"
+      }
+    }
+  ],
+
+  ["17 CFR § 240.13h-l(d)(2)(xiii)", "Typo in Federal Register that got codified (subsection)",
+    {
+      match: "17 CFR § 240.13h-l(d)(2)(xiii)",
+      cfr: {
+        title: "17",
+        part: "240",
+        section: "240.13h-l",
+        subsections: ["d", "2", "xiii"],
+        id: "cfr/17/240.13h-l/d/2/xiii"
+      }
+    }
   ]
 ];
 
