@@ -523,6 +523,32 @@ var singles = [
         id: "cfr/17/275.202(a)(11)(G)-1"
       }
     }
+  ],
+
+  ["33 CFR § 110.72aa", "Two trailing letters",
+    {
+      match: "33 CFR § 110.72aa",
+      cfr: {
+        title: "33",
+        part: "110",
+        section: "110.72aa",
+        subsections: [],
+        id: "cfr/33/110.72aa"
+      }
+    }
+  ],
+
+  ["26 CFR § 1.863-3AT", "Two trailing letters, with hyphen in section number",
+    {
+      match: "26 CFR § 1.863-3AT",
+      cfr: {
+        title: "26",
+        part: "1",
+        section: "1.863-3AT",
+        subsections: [],
+        id: "cfr/26/1.863-3AT"
+      }
+    }
   ]
 ];
 

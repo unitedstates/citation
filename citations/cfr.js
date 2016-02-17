@@ -29,7 +29,7 @@ module.exports = {
         "C\\.?\\s?F\\.?\\s?R\\.?" +  // CFR
         "(?:[\\s,]+(?:§+|parts?))?" +  // Extra separators (section sign, part)
         "\\s*(\\d+(?:(?:[-–—]\\d+)?[a-z]?" +  // Part number
-        "(?:\\.(?:\\d+T|T|\\d+[-–—]DD[-–—]|\\d+[-–—]WH[-–—]|\\d+[a-z]{1,2}\\d*[-–—])?\\d+[a-z]?(?:(?:(?:\\([a-z\\d]{1,2}\\))*[-–—]\\d+)+[a-z]?)?)?" +  // Optionally: period and section number
+        "(?:\\.(?:\\d+T|T|\\d+[-–—]DD[-–—]|\\d+[-–—]WH[-–—]|\\d+[a-z]{1,2}\\d*[-–—])?\\d+[a-z]{0,2}(?:(?:(?:\\([a-z\\d]{1,2}\\))*[-–—]\\d+)+[a-z]{0,2})?)?" +  // Optionally: period and section number
         "(?:(?:\\s*\\((?:[a-z\\d]{1,2}|[ixv]+)\\))+)?)?)",  // Optionally: subsections, if there was a section number
 
       fields: ['title', 'sections'],
