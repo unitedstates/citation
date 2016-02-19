@@ -30,7 +30,7 @@
     "express": "^4.13.4",
     "method-override": "^2.3.5",
     "minimist": "^1.2.0",
-    "parse5": "^1.5.0",
+    "parse5": "^2.1.5",
     "walverine": "^0.0.7",
     "xmldom": "^0.1.22"
   },
