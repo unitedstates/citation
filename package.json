@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "deep-equal": "^1.0.1",
-    "gulp": "^3.6.2",
+    "gulp": "^3.9.1",
     "gulp-browserify": "^0.5.0",
     "gulp-gzip": "0.0.8",
     "gulp-rename": "^1.2.0",
