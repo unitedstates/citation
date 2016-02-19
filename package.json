@@ -27,7 +27,7 @@
   "dependencies": {
     "body-parser": "^1.15.0",
     "errorhandler": "^1.4.3",
-    "express": "4.x",
+    "express": "^4.13.4",
     "method-override": "^2.3.5",
     "minimist": "^1.2.0",
     "parse5": "^1.5.0",
