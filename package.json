@@ -25,25 +25,23 @@
     "start": "node bin/cite-server"
   },
   "dependencies": {
-    "walverine": "*",
-
-    "express": "4.x",
-    "body-parser": "*",
-    "method-override": "*",
-    "errorhandler": "*",
-
-    "minimist": "*",
-    "parse5": "^1.5.0",
-    "xmldom": "*"
+    "body-parser": "^1.15.0",
+    "errorhandler": "^1.4.3",
+    "express": "^4.13.4",
+    "method-override": "^2.3.5",
+    "minimist": "^1.2.0",
+    "parse5": "^2.1.5",
+    "walverine": "^0.0.7",
+    "xmldom": "^0.1.22"
   },
   "devDependencies": {
-    "deep-equal": "*",
-    "gulp": "^3.6.2",
+    "deep-equal": "^1.0.1",
+    "gulp": "^3.9.1",
     "gulp-browserify": "^0.5.0",
-    "gulp-gzip": "0.0.8",
+    "gulp-gzip": "^1.2.0",
     "gulp-rename": "^1.2.0",
-    "gulp-uglify": "^0.2.1",
-    "nodeunit": "*"
+    "gulp-uglify": "^1.5.2",
+    "nodeunit": "^0.9.1"
   },
   "engines": {
     "node": ">=0.10"

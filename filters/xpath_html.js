@@ -1,4 +1,4 @@
-var Parser = require("parse5").Parser;
+var parse5 = require("parse5");
 
 function recurse(node, partialXpath, extract) {
   if (node.nodeName == "#text") {
@@ -54,9 +54,7 @@ module.exports = {
 
   from: function(text, options, extract) {
     // Parse the input text
-    var parser, doc;
-    parser = new Parser();
-    doc = parser.parse(text);
+    var doc = parse5.parse(text);
 
     // Hand off to recursive function, which will walk the DOM
     recurse(doc, '', extract);
