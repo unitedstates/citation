@@ -25,7 +25,7 @@
     "start": "node bin/cite-server"
   },
   "dependencies": {
-    "body-parser": "^1.14.1",
+    "body-parser": "^1.15.0",
     "errorhandler": "^1.4.2",
     "express": "4.x",
     "method-override": "^2.3.5",
