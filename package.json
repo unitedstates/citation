@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "body-parser": "^1.15.0",
-    "errorhandler": "^1.4.2",
+    "errorhandler": "^1.4.3",
     "express": "4.x",
     "method-override": "^2.3.5",
     "minimist": "^1.2.0",
