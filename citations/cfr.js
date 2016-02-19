@@ -25,10 +25,12 @@ module.exports = {
     // 23 CFR 650, Subpart A
     {
       regex:
-        "(\\d+)\\s?" +
-        "C\\.?\\s?F\\.?\\s?R\\.?" +
-        "(?:[\\s,]+(?:§+|parts?))?" +
-        "\\s*(\\d+(?:(?:[-–—]\\d+)?[a-z]?(?:\\.(?:\\d+T|T|\\d+[-–—]DD[-–—]|\\d+[-–—]WH[-–—])?\\d+[a-z]?(?:(?:(?:\\([a-z]\\))?[-–—]\\d+)+[a-z]?)?)?(?:(?:\\s*\\((?:[a-z\\d]{1,2}|[ixv]+)\\))+)?)?)",
+        "(\\d+)\\s?" +  // Title number
+        "C\\.?\\s?F\\.?\\s?R\\.?" +  // CFR
+        "(?:[\\s,]+(?:§+|parts?))?" +  // Extra separators (section sign, part)
+        "\\s*(\\d+(?:(?:[-–—]\\d+)?[a-z]?" +  // Part number
+        "(?:\\.(?:13h[-–—]l|\\d+[-–—]?\\d*\\.5\\d|(?:\\d+T|T|\\d+[-–—]DD[-–—]|\\d+[-–—]WH[-–—]|\\d+[a-z]{1,2}\\d*[-–—])?\\d+)[a-z]{0,2}(?:(?:(?:\\([a-z\\d]{1,2}\\))*[-–—]\\d+)+[a-z]{0,2})?)?" +  // Optionally: period and section number
+        "(?:(?:\\s*\\((?:[a-z\\d]{1,2}|[ixv]+)\\))+)?)?)",  // Optionally: subsections, if there was a section number
 
       fields: ['title', 'sections'],
 

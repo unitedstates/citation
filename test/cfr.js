@@ -419,6 +419,175 @@ var singles = [
         id: "cfr/26/1.1402(e)-1A"
       }
     }
+  ],
+
+  ["17 CFR § 240.3a12-12", "Numbers, lowercase letter, numbers, dash, numbers",
+    {
+      match: "17 CFR § 240.3a12-12",
+      cfr: {
+        title: "17",
+        part: "240",
+        section: "240.3a12-12",
+        subsections: [],
+        id: "cfr/17/240.3a12-12"
+      }
+    }
+  ],
+
+  ["17 CFR § 240.15Cc1-1", "Uppercase and lowercase letters in the section number, followed by a number, a dash, and a number",
+    {
+      match: "17 CFR § 240.15Cc1-1",
+      cfr: {
+        title: "17",
+        part: "240",
+        section: "240.15Cc1-1",
+        subsections: [],
+        id: "cfr/17/240.15Cc1-1"
+      }
+    }
+  ],
+
+  ["17 CFR § 240.15Ga-2", "Uppercase and lowercase letters in the section number, followed by a dash and a number",
+    {
+      match: "17 CFR § 240.15Ga-2",
+      cfr: {
+        title: "17",
+        part: "240",
+        section: "240.15Ga-2",
+        subsections: [],
+        id: "cfr/17/240.15Ga-2"
+      }
+    }
+  ],
+
+  ["17 CFR § 275.206(3)-3T", "Parentheses inside section, depth 1",
+    {
+      match: "17 CFR § 275.206(3)-3T",
+      cfr: {
+        title: "17",
+        part: "275",
+        section: "275.206(3)-3T",
+        subsections: [],
+        id: "cfr/17/275.206(3)-3T"
+      }
+    }
+  ],
+
+  ["26 CFR § 1.411(a)(13)-1", "Parentheses inside section, depth 2",
+    {
+      match: "26 CFR § 1.411(a)(13)-1",
+      cfr: {
+        title: "26",
+        part: "1",
+        section: "1.411(a)(13)-1",
+        subsections: [],
+        id: "cfr/26/1.411(a)(13)-1"
+      }
+    }
+  ],
+
+  ["26 CFR § 301.6103(j)(1)-1T", "Parentheses inside section, depth 2, trailing T",
+    {
+      match: "26 CFR § 301.6103(j)(1)-1T",
+      cfr: {
+        title: "26",
+        part: "301",
+        section: "301.6103(j)(1)-1T",
+        subsections: [],
+        id: "cfr/26/301.6103(j)(1)-1T"
+      }
+    }
+  ],
+
+  ["26 CFR § 31.3401(a)(6)-1A", "Parentheses inside section, depth 2, trailing A",
+    {
+      match: "26 CFR § 31.3401(a)(6)-1A",
+      cfr: {
+        title: "26",
+        part: "31",
+        section: "31.3401(a)(6)-1A",
+        subsections: [],
+        id: "cfr/26/31.3401(a)(6)-1A"
+      }
+    }
+  ],
+
+  ["17 CFR § 275.202(a)(11)(G)-1", "Parentheses inside section, depth 3",
+    {
+      match: "17 CFR § 275.202(a)(11)(G)-1",
+      cfr: {
+        title: "17",
+        part: "275",
+        section: "275.202(a)(11)(G)-1",
+        subsections: [],
+        id: "cfr/17/275.202(a)(11)(G)-1"
+      }
+    }
+  ],
+
+  ["33 CFR § 110.72aa", "Two trailing letters",
+    {
+      match: "33 CFR § 110.72aa",
+      cfr: {
+        title: "33",
+        part: "110",
+        section: "110.72aa",
+        subsections: [],
+        id: "cfr/33/110.72aa"
+      }
+    }
+  ],
+
+  ["26 CFR § 1.863-3AT", "Two trailing letters, with hyphen in section number",
+    {
+      match: "26 CFR § 1.863-3AT",
+      cfr: {
+        title: "26",
+        part: "1",
+        section: "1.863-3AT",
+        subsections: [],
+        id: "cfr/26/1.863-3AT"
+      }
+    }
+  ],
+
+  ["17 CFR § 240.13h-l", "Typo in Federal Register that got codified",
+    {
+      match: "17 CFR § 240.13h-l",
+      cfr: {
+        title: "17",
+        part: "240",
+        section: "240.13h-l",
+        subsections: [],
+        id: "cfr/17/240.13h-l"
+      }
+    }
+  ],
+
+  ["17 CFR § 240.13h-l(d)(2)(xiii)", "Typo in Federal Register that got codified (subsection)",
+    {
+      match: "17 CFR § 240.13h-l(d)(2)(xiii)",
+      cfr: {
+        title: "17",
+        part: "240",
+        section: "240.13h-l",
+        subsections: ["d", "2", "xiii"],
+        id: "cfr/17/240.13h-l/d/2/xiii"
+      }
+    }
+  ],
+
+  ["41 CFR §109-38.301-1.50", "Section number with extra period",
+    {
+      match: "41 CFR §109-38.301-1.50",
+      cfr: {
+        title: "41",
+        part: "109-38",
+        section: "109-38.301-1.50",
+        subsections: [],
+        id: "cfr/41/109-38.301-1.50"
+      }
+    }
   ]
 ];
 
