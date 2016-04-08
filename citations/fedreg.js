@@ -23,21 +23,5 @@ module.exports = {
         };
       }
     }
-  ],
-
-  links: function(cite) {
-    var gpo_url = "http://api.fdsys.gov/link?collection=fr&volume=" + cite.volume + "&page=" + cite.page;
-    
-    return {
-      usgpo: {
-        source: {
-          name: "U.S. Government Publishing Office",
-          abbreviation: "US GPO",
-          link: "http://www.gpo.gov",
-          authoritative: true
-        },
-        pdf: gpo_url
-      }
-    };
-  }
+  ]
 };

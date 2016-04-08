@@ -17,6 +17,9 @@ Citation = {
   // filters that can pre-process text and post-process citations
   filters: {},
 
+  // link sources that add permalink information to citations
+  links: {},
+
   // TODO: document this inline
   // check a block of text for citations of a given type -
   // return an array of matches, with citation broken out into fields
@@ -205,12 +208,36 @@ Citation = {
           if ('canonical' in Citation.types[type])
             result.citation = Citation.types[type].canonical(cite);
 
-          // cite-level info, plus ID standardization and permalinks if supported
-          // by the citator
+          // cite-level info, plus ID standardization
           result[type] = cite;
           result[type].id = Citation.types[type].id(cite);
-          if (options.links && result[type].id && 'links' in Citation.types[type])
-            result[type].links = Citation.types[type].links(cite);
+
+          // add permalinks if requested and a link source exists for this citation
+          // type
+          if (options.links) {
+            result[type].links = {};
+            for (var link_source in Citation.links) {
+              var link_source_module = Citation.links[link_source];
+              if (type in link_source_module.citations) {
+                // This link source provides link info for this type of citation.
+                // The function may return null if it doesn't provide a link for
+                // the particular citation.
+                var link_info = link_source_module.citations[type](cite);
+                if (link_info) {
+                  // Add source metadata.
+                  link_info.source = {
+                    name: link_source_module.name,
+                    abbreviation: link_source_module.abbreviation,
+                    link: link_source_module.link,
+                    authoritative: link_source_module.authoritative
+                  };
+
+                  // Add to citation.
+                  result[type].links[link_source_module.id] = link_info;
+                }
+              }
+            }
+          }
 
           results.push(result);
 
@@ -362,7 +389,7 @@ Citation = {
 };
 
 
-// TODO: load only the citation types asked for
+// TODO: load only the citation types, filters, and link sources asked for
 if (typeof(require) !== "undefined") {
   Citation.types.usc = require("./citations/usc");
   Citation.types.law = require("./citations/law");
@@ -381,6 +408,19 @@ if (typeof(require) !== "undefined") {
   Citation.filters.lines = require("./filters/lines");
   Citation.filters.xpath_html = require("./filters/xpath_html");
   Citation.filters.xpath_xml = require("./filters/xpath_xml");
+
+  Citation.links.cornell_lii = require("./links/cornell_lii");
+  Citation.links.courtlistener = require("./links/courtlistener");
+  Citation.links.dccode = require("./links/dccode");
+  Citation.links.dccodeorg = require("./links/dccodeorg");
+  Citation.links.dcdecoded = require("./links/dcdecoded");
+  Citation.links.govtrack = require("./links/govtrack");
+  Citation.links.gpo = require("./links/gpo");
+  Citation.links.house = require("./links/house");
+  Citation.links.legislink = require("./links/legislink");
+  Citation.links.libraryofcongress = require("./links/libraryofcongress");
+  Citation.links.nara = require("./links/nara");
+  Citation.links.vadecoded = require("./links/vadecoded");
 }
 
 // auto-load in-browser
