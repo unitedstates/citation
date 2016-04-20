@@ -31,20 +31,5 @@ module.exports = {
         };
       }
     }
-  ],
-
-  links: function(cite) {
-    return {
-      vadecoded: {
-        source: {
-            name: "Virginia Decoded",
-            abbreviation: "VACode.org",
-            link: "https://vacode.org",
-            authoritative: false
-        },
-
-        landing: "https://vacode.org/" + cite.title + "-" + cite.section + "/"
-      }
-    };
-  }
+  ]
 };

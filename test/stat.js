@@ -29,7 +29,7 @@ exports["All patterns"] = function(test) {
       test.equal(citation.stat.volume, details[3]);
       test.equal(citation.stat.page, details[4]);
       if (details[7]) // is a link available?
-        test.equal(citation.stat.links.usgpo.source.link, "http://www.gpo.gov");
+        test.equal(citation.stat.links.usgpo.source.link, "https://www.gpo.gov");
     }
     else
       console.log("No match found in: " + text);;

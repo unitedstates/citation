@@ -90,31 +90,6 @@ module.exports = {
         }
       }
     ];
-  },
-
-  links: function(cite) {
-    return {
-      dccodeorg: {
-        source: {
-            name: "DCCode.org",
-            abbreviation: "DCCode.org",
-            link: "http://www.dccode.org",
-            authoritative: false
-        },
-
-        landing: "http://dccode.org/simple/sections/" + cite.title + "-" + cite.section + ".html"
-      },
-      dcdecoded: {
-        source: {
-            name: "DC Decoded",
-            abbreviation: "DCDecoded.org",
-            link: "http://dcdecoded.org",
-            authoritative: false
-        },
-
-        landing: "http://dcdecoded.org/" + cite.title + "-" + cite.section + "/"
-      }
-    };
   }
 };
 
