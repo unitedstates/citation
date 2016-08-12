@@ -213,31 +213,9 @@ Citation = {
           result[type].id = Citation.types[type].id(cite);
 
           // add permalinks if requested and a link source exists for this citation
-          // type
-          if (options.links) {
-            result[type].links = {};
-            for (var link_source in Citation.links) {
-              var link_source_module = Citation.links[link_source];
-              if (type in link_source_module.citations) {
-                // This link source provides link info for this type of citation.
-                // The function may return null if it doesn't provide a link for
-                // the particular citation.
-                var link_info = link_source_module.citations[type](cite);
-                if (link_info) {
-                  // Add source metadata.
-                  link_info.source = {
-                    name: link_source_module.name,
-                    abbreviation: link_source_module.abbreviation,
-                    link: link_source_module.link,
-                    authoritative: link_source_module.authoritative
-                  };
-
-                  // Add to citation.
-                  result[type].links[link_source_module.id] = link_info;
-                }
-              }
-            }
-          }
+          // type.
+          if (options.links)
+            result[type].links = Citation.getLinksForCitation(type, cite);
 
           results.push(result);
 
@@ -356,6 +334,38 @@ Citation = {
       types = Object.keys(Citation.types);
 
     return types;
+  },
+
+  getLinksForCitation: function(type, cite) {
+    // Create a place to store the links.
+    var links = {};
+
+    // Check each link source to see if it provides a link for this type
+    // of citation.
+    for (var link_source in Citation.links) {
+      var link_source_module = Citation.links[link_source];
+      if (type in link_source_module.citations) {
+
+        // This link source provides link info for this type of citation.
+        // The function may return null if it doesn't provide a link for
+        // the particular citation.
+        var link_info = link_source_module.citations[type](cite);
+        if (link_info) {
+          // Add source metadata.
+          link_info.source = {
+            name: link_source_module.name,
+            abbreviation: link_source_module.abbreviation,
+            link: link_source_module.link,
+            authoritative: link_source_module.authoritative
+          };
+
+          // Add to citation.
+          links[link_source_module.id] = link_info;
+        }
+      }
+    }
+
+    return links;
   },
 
   // small replacement for several functions previously served by
