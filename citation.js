@@ -213,7 +213,7 @@ Citation = {
           result[type].id = Citation.types[type].id(cite);
 
           // add permalinks if requested and a link source exists for this citation
-          // type
+          // type.
           if (options.links)
             result[type].links = Citation.getLinksForCitation(type, cite);
 
