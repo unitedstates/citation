@@ -421,9 +421,7 @@ if (typeof(require) !== "undefined") {
 
   Citation.links.cornell_lii = require("./links/cornell_lii");
   Citation.links.courtlistener = require("./links/courtlistener");
-  Citation.links.dccode = require("./links/dccode");
-  Citation.links.dccodeorg = require("./links/dccodeorg");
-  Citation.links.dcdecoded = require("./links/dcdecoded");
+  Citation.links.dc_council = require("./links/dc_council");
   Citation.links.govtrack = require("./links/govtrack");
   Citation.links.gpo = require("./links/gpo");
   Citation.links.house = require("./links/house");
