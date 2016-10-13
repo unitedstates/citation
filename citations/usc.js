@@ -8,7 +8,7 @@ module.exports = {
   },
 
   canonical: function(cite) {
-    // title, which alos may specify it is an appendix title
+    // title, which also may specify it is an appendix title
     var title = cite.title;
     var app = "";
     var title_without_app = cite.title.replace(/-app$/, '');
@@ -111,6 +111,25 @@ module.exports = {
       regex:
         "section (\\d+[\\w\\d\\-–—]*)((?:\\([^\\)]+\\))*)" +
         "(?:\\s+of|\\,) title (\\d+)",
+
+      fields: ['section', 'subsections', 'title'],
+
+      processor: function(match) {
+        return {
+          title: match.title,
+          section: match.section.replace(/[–—]/g, '-'),
+          subsections: match.subsections.split(/[\(\)]+/).filter(function(x) {return x})
+        };
+      }
+    },
+
+    // "Section 14123(a)(2) of 49 U.S.C."
+    // "Section 14123(a)(2), 49 U.S.C."
+    {
+      regex:
+        "section (\\d+[\\w\\d\\-–—]*)((?:\\([^\\)]+\\))*)" +
+        "(?:\\s+of|\\,) (\\d+) " +
+        "U\\.?\\s?S\\.?\\s?C\\.?",
 
       fields: ['section', 'subsections', 'title'],
 

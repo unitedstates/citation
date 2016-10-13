@@ -514,3 +514,24 @@ exports["En-dash in section number"] = function(test) {
 
   test.done();
 };
+
+exports["Section number before title"] = function(test) {
+  // https://github.com/unitedstates/citation/issues/34
+  var text = "Section 14123(a)(2) of 49 U.S.C.";
+
+  var found = Citation.find(text, {types: "usc", links: true}).citations;
+  test.equal(found.length, 1);
+
+  var citation = found[0];
+  test.equal(citation.match, "Section 14123(a)(2) of 49 U.S.C.");
+  test.equal(citation.index, 0);
+  test.equal(citation.citation, "49 U.S.C. 14123(a)(2)");
+  test.equal(citation.usc.title, "49");
+  test.equal(citation.usc.section, "14123");
+  test.deepEqual(citation.usc.subsections, ["a", "2"]);
+  test.equal(citation.usc.id, "usc/49/14123/a/2");
+  test.equal(citation.usc.links.house.html, "http://uscode.house.gov/view.xhtml?req=(title%3A49%20section%3A14123%20edition%3Aprelim)");
+  test.equal(citation.usc.links.cornell_lii.landing, "https://www.law.cornell.edu/uscode/text/49/14123#a_2");
+
+  test.done();
+}
