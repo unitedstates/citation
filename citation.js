@@ -415,6 +415,8 @@ if (typeof(require) !== "undefined") {
   Citation.types.usconst = require("./citations/usconst");
 
 
+  Citation.types.supreme_court = require("./citations/supreme_court");
+
   Citation.filters.lines = require("./filters/lines");
   Citation.filters.xpath_html = require("./filters/xpath_html");
   Citation.filters.xpath_xml = require("./filters/xpath_xml");
