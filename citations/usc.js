@@ -49,7 +49,7 @@ module.exports = {
       regex:
         "(\\d+)\\s+" + // title
         "U\\.?\\s?S\\.?\\s?C\\.?" +
-        "(?:\\s+(App)\.?)?\\s+" + // appendix
+        "(?:\\s+(App)\.?)?\\s*" + // appendix
         "(?:(§+)\\s*)?" + // symbol
         "((?:[-–—]*\\d+[\\w\\d\\-–—]*(?:\\([^\\)]+\\))*)+)" + // sections
         "(?:\\s+(note|et\\s+seq))?", // note
