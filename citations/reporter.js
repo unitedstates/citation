@@ -15,7 +15,7 @@ module.exports = {
       regex:
         "(\\d{1,3})\\s" +
         "(\\w+(?:\\.\\w+(?:\\.)?)?(?:\\.\\dd)?|U\\.?\\s?S\\.?|F\\. Supp\\.(?:\\s\\dd)?)\\s" +
-        "(\\d{1,4})",
+        "(\\d{1,4}|_{1,4})",
       fields: ['volume',  'reporter', 'page'],
       processor: function(match) {
         return {

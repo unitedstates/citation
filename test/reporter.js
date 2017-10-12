@@ -19,6 +19,12 @@ exports["Absolute patterns"] = function(test) {
   '558 U. S. 310',
   '558', 'U. S.', '310'],
 
+    // Supreme Court Opinion with unassigned page
+    [ 'Supreme Court Opinion Underscore',
+      'See, e.g., Herbert v. Kitchen 571 U. S. ___ (2014);',
+      '571 U. S. ___',
+      '571', 'U. S.', '___'
+      ],
 
       //  Atlantic Reporter
       ["Atlantic",
