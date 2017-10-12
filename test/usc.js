@@ -535,3 +535,23 @@ exports["Section number before title"] = function(test) {
 
   test.done();
 }
+
+exports["No space before section"] = function(test) {
+  // https://github.com/unitedstates/citation/issues/122
+  var text = "42 U.S.C.285t–2(a)";
+
+  var found = Citation.find(text, {types: "usc", links: true}).citations;
+  test.equal(found.length, 3);
+
+  var citation = found[0];
+  test.equal(citation.type, "usc");
+  test.equal(citation.match, "42 U.S.C.285t–2(a)");
+  test.equal(citation.index, 0);
+  test.equal(citation.citation, "42 U.S.C. 285t-2(a)");
+  test.equal(citation.usc.title, "42");
+  test.equal(citation.usc.section, "285t-2");
+  test.deepEqual(citation.usc.subsections, ["a"]);
+  test.equal(citation.usc.id, "usc/42/285t-2/a");
+  test.done();
+}
+
