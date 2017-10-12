@@ -23,7 +23,7 @@ exports["Absolute patterns"] = function(test) {
     [ 'Supreme Court Opinion Underscore',
       'See, e.g., Herbert v. Kitchen 571 U. S. ___ (2014);',
       '571 U. S. ___',
-      '571', 'U. S.', '___'
+      '571', 'U. S.', 'blank'
       ],
 
       //  Atlantic Reporter

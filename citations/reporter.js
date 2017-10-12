@@ -21,7 +21,7 @@ module.exports = {
         return {
           volume: match.volume,
           reporter: match.reporter,
-          page: match.page,
+          page: match.page.indexOf('_') === -1 ? match.page : 'blank',
         };
       }
     }
