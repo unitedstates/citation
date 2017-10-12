@@ -59,7 +59,9 @@ exports["Absolute patterns"] = function(test) {
 
 
   ];
-
+  //----------------------
+  // Positive Test Cases
+  //----------------------
   for (var i=0; i<cases.length; i++) {
     var details = cases[i];
     var text = details[1];
@@ -79,6 +81,26 @@ exports["Absolute patterns"] = function(test) {
       test.deepEqual(citation.reporter.page, details[5]);
     } else
       console.log("No match found in: " + text);
+  }
+
+  var negativeCases = [
+      'See supra, at 666 and nn. 17 and 26, supra.', // The regex matched '17 and 26' previously; It should not match and.
+      'See supra, at 666 and nn. 1234 F. Supp. 26, supra' // If the first number is greater than 3 digits, it will pull off the last three digits. It should not.
+  ];
+
+  //----------------------
+  // Negative Test Cases
+  //----------------------
+
+  for (var i=0; i< negativeCases.length; i++) {
+    var text = negativeCases[i];
+
+    var found = Citation.find(text, {
+        types: ["reporter"],
+        context: {}
+    }).citations;
+
+    test.equal(found.length, 0);
   }
 
   test.done();
