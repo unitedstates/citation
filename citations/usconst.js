@@ -19,6 +19,8 @@ var part_types = {
 module.exports = {
   type: "regex",
 
+  name: "United States Constitution",
+
   // normalize all cites to an ID
   id: function(cite) {
     return ["usconst"].concat((cite.part || []).map(function(part) {

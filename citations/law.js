@@ -1,5 +1,8 @@
+
 module.exports = {
   type: "regex",
+
+  name: "U.S. Law",
 
   id: function(cite) {
     return ["us-law", cite.type, cite.congress, cite.number]

@@ -1,6 +1,8 @@
 module.exports = {
   type: "regex",
 
+  name: "District of Columbia Law",
+
   id: function(cite) {
     return ["dc-law", cite.period, cite.number].join("/");
   },

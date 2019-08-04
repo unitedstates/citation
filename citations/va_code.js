@@ -1,6 +1,8 @@
 module.exports = {
   type: "regex",
 
+  name: "Code of Virginia",
+
   id: function(data) {
     return ["va-code", data.title, data.section].join("/");
   },

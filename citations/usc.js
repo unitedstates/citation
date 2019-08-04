@@ -1,6 +1,8 @@
 module.exports = {
   type: "regex",
 
+  name: "United States Code",
+
   id: function(cite) {
     return ["usc", cite.title, cite.section]
       .concat(cite.subsections || [])

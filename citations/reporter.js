@@ -1,6 +1,8 @@
 module.exports = {
   type: "regex",
 
+  name: "Case Law",
+
   // normalize all cites to an ID
   id: function(cite) {
     return ["reporter", cite.volume, cite.reporter, cite.page].join("/")

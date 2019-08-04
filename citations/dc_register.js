@@ -1,6 +1,8 @@
 module.exports = {
   type: "regex",
 
+  name: "District of Columbia Register",
+
   id: function(cite) {
     return ["dc-register", cite.volume, cite.page].join("/");
   },

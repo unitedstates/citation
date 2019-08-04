@@ -194,6 +194,7 @@ Citation = {
 
           // match-level info
           Citation._.extend(result, matchInfo);
+          result.type_name = Citation.types[type].name;
 
           // handle _submatch, which lets the user-level citator override the
           // match and index with a sub-part of the whole matched regex
