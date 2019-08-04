@@ -25,10 +25,10 @@
     "start": "node bin/cite-server"
   },
   "dependencies": {
-    "body-parser": "^1.15.0",
+    "body-parser": "^1.19.0",
     "errorhandler": "^1.4.3",
-    "express": "^4.13.4",
-    "method-override": "^2.3.5",
+    "express": "^4.17.1",
+    "method-override": "^2.3.10",
     "minimist": "^1.2.0",
     "nomar": "^1.1.0",
     "parse5": "^2.1.5",
@@ -42,7 +42,7 @@
     "gulp-gzip": "^1.2.0",
     "gulp-rename": "^1.2.0",
     "gulp-uglify": "^1.5.2",
-    "nodeunit": "^0.9.1"
+    "nodeunit": "^0.11.3"
   },
   "engines": {
     "node": ">=0.10"
