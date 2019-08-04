@@ -10,7 +10,7 @@ module.exports = {
   citations: {
     usconst: function(cite) {
       return {
-        landing: "http://www.archives.gov/exhibits/charters/constitution_transcript.html"
+        html: "https://www.archives.gov/founding-docs/constitution-transcript"
       }
     }
   }

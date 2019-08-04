@@ -16,7 +16,7 @@ module.exports = {
       var subsections = (cite.subsections.slice() || []); // clone
       if (subsections.length && subsections[subsections.length-1] == "et-seq") subsections.pop(); // don't include eq-seq in a link
       return {
-        landing: "https://www.law.cornell.edu/uscode/text/" + (title + (is_appendix ? "a" : ""))
+        html: "https://www.law.cornell.edu/uscode/text/" + (title + (is_appendix ? "a" : ""))
                           + "/" + cite.section
                           + (subsections.length ? ("#" + subsections.join("_")) : ""),
         note: "Link is to most current version of the US Code, as available at law.cornell.edu."

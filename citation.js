@@ -455,7 +455,6 @@ if (typeof(require) !== "undefined") {
   Citation.links.govtrack = require("./links/govtrack");
   Citation.links.gpo = require("./links/gpo");
   Citation.links.house = require("./links/house");
-  Citation.links.legislink = require("./links/legislink");
   Citation.links.libraryofcongress = require("./links/libraryofcongress");
   Citation.links.nara = require("./links/nara");
   Citation.links.vadecoded = require("./links/vadecoded");

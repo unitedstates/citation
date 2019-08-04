@@ -12,49 +12,49 @@ exports["Relative patterns"] = function(test) {
     [ 'standard',
       'as that term is defined in § 32-701(4), to the deceased',
       '§ 32-701(4)',
-      '32', '701', ['4'], "https://beta.code.dccouncil.us/dc/council/code/sections/32-701.html"],
+      '32', '701', ['4'], "https://code.dccouncil.us/dc/council/code/sections/32-701.html"],
 
     // in 3-101 of the DC Code:
     [ 'into-newline',
       'as provided in § 1-603.01(13).\n\n(b) In addition to the',
       '§ 1-603.01(13)',
-      '1', '603.01', ['13'], "https://beta.code.dccouncil.us/dc/council/code/sections/1-603.01.html"],
+      '1', '603.01', ['13'], "https://code.dccouncil.us/dc/council/code/sections/1-603.01.html"],
 
     // in 3-101 of the DC Code
     [ 'section-with-dot',
       'required under § 3-101.01, the Commission',
       '§ 3-101.01',
-      '3', '101.01', [], "https://beta.code.dccouncil.us/dc/council/code/sections/3-101.01.html"],
+      '3', '101.01', [], "https://code.dccouncil.us/dc/council/code/sections/3-101.01.html"],
 
     // in 1-611.1 of the DC Code
     [ 'section-ending-with-dot',
       'accordance with the policies of § 1-611.01.',
       '§ 1-611.01',
-      '1', '611.01', [], "https://beta.code.dccouncil.us/dc/council/code/sections/1-611.01.html"],
+      '1', '611.01', [], "https://code.dccouncil.us/dc/council/code/sections/1-611.01.html"],
 
     // in 1-1163.20 of the DC Code
     [ 'section-forgiving-with-space',
       'contribution limits for the candidate as provided under § 1- 1163.33.',
       '§ 1- 1163.33',
-      '1', '1163.33', [], "https://beta.code.dccouncil.us/dc/council/code/sections/1-1163.33.html"],
+      '1', '1163.33', [], "https://code.dccouncil.us/dc/council/code/sections/1-1163.33.html"],
 
     // hypothetical (modified from 1-1163.20 of the DC Code)
     [ 'section-forgiving-with-space',
       'contribution limits for the candidate as provided under § 1 -1163.33.',
       '§ 1 -1163.33',
-      '1', '1163.33', [], "https://beta.code.dccouncil.us/dc/council/code/sections/1-1163.33.html"],
+      '1', '1163.33', [], "https://code.dccouncil.us/dc/council/code/sections/1-1163.33.html"],
 
     // hypothetical (modified from 1-1163.20 of the DC Code)
     [ 'section-forgiving-no-space',
       'contribution limits for the candidate as provided under §1-1163.33.',
       '§1-1163.33',
-      '1', '1163.33', [], "https://beta.code.dccouncil.us/dc/council/code/sections/1-1163.33.html"],
+      '1', '1163.33', [], "https://code.dccouncil.us/dc/council/code/sections/1-1163.33.html"],
 
     // in 16-316 of the DC Code
     [ 'section-with-word-section',
       'case shall be subject to the limitation set forth in [section 16-2326.01(b)(2)].',
       'section 16-2326.01(b)(2)',
-      '16', '2326.01', ['b', '2'], "https://beta.code.dccouncil.us/dc/council/code/sections/16-2326.01.html"]
+      '16', '2326.01', ['b', '2'], "https://code.dccouncil.us/dc/council/code/sections/16-2326.01.html"]
   ];
 
   for (var i=0; i<cases.length; i++) {
