@@ -8,6 +8,15 @@ module.exports = {
     return ["stat", cite.volume, cite.page].join("/")
   },
 
+  fromId: function(id) {
+    var parts = id.split("/");
+    if (parts[0] != "stat") return;
+    return {
+      volume: parts[1],
+      page: parts[2]
+    };
+  },
+
   canonical: function(cite) {
     return cite.volume + " Stat. " + cite.page;
   },

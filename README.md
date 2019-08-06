@@ -122,6 +122,11 @@ Citation.find("that term in section 5362(5) of title 31, United States Code.", {
 }]
 ```
 
+### `Citation.fromId(id, options)`
+
+Returns the same information as `Citation.find`, but instead of passing a textual citation, an identifier
+in the format of the `id` given in the output of `Citation.find` (see above) is given.
+
 ## HTTP API
 
 Start the API on a given port (defaults to 3000):

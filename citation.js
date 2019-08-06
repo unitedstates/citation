@@ -395,8 +395,37 @@ Citation = {
 
       return impl(array, []);
     }
-  }
+  },
 
+  fromId: function(id, options) {
+    // Offer the id to each Citator class that has a fromId
+    // function. If it returns an object, then it has parsed
+    // the id into the reverse of the data structure given to
+    // a Citator 'id' method.
+    var type;
+    var citator;
+    var citeobj;
+    for (type in Citation.types) {
+      citator = Citation.types[type];
+      if (!citator.fromId) continue;
+      citeobj = citator.fromId(id);
+      if (citeobj) break;
+    }
+    if (!citeobj)
+      return; // no parse found
+
+    // Construct the resulting citation object.
+    var cite = {
+      type: type,
+      type_name: citator.name,
+      citation: citator.canonical ? citator.canonical(citeobj) : null,
+    };
+    cite[type] = citeobj;
+    cite[type].id = citator.id(citeobj);
+    if (options && options.links)
+      cite[type].links = Citation.getLinksForCitation(type, cite[type]);
+    return cite;
+  }
 };
 
 

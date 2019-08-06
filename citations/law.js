@@ -10,6 +10,17 @@ module.exports = {
       .join("/");
   },
 
+  fromId: function(id) {
+    var parts = id.split("/");
+    if (parts[0] != "us-law") return;
+    return {
+      type: parts[1],
+      congress: parts[2],
+      number: parts[3],
+      sections: parts.slice(4) || undefined
+    };
+  },
+
   canonical: function(cite) {
     if (!cite.sections || cite.sections.length == 0)
       // this style matches GPO at http://www.gpo.gov/fdsys/browse/collection.action?collectionCode=PLAW&browsePath=112&isCollapsed=false&leafLevelBrowse=false&ycord=0
