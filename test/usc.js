@@ -23,7 +23,7 @@ exports["Basic pattern"] = function(test) {
   test.equal(citation.usc.id, "usc/5/552");
   test.equal(citation.usc.links.house.html, "https://uscode.house.gov/view.xhtml?req=(title%3A5%20section%3A552%20edition%3Aprelim)");
   test.equal(citation.usc.links.usgpo.pdf, "https://www.govinfo.gov/link/uscode/5/552?type=usc&link-type=pdf");
-  test.equal(citation.usc.links.cornell_lii.landing, "https://www.law.cornell.edu/uscode/text/5/552");
+  test.equal(citation.usc.links.cornell_lii.html, "https://www.law.cornell.edu/uscode/text/5/552");
 
   var foundExcerpt = Citation.find(text, {types: "usc", excerpt: 5}).citations;
   test.equal(foundExcerpt.length, 1);
@@ -80,7 +80,7 @@ exports["Basic subsection parsing"] = function(test) {
   test.equal(citation.usc.id, "usc/5/552/a/1/E");
   test.equal(citation.usc.links.house.html, "https://uscode.house.gov/view.xhtml?req=(title%3A5%20section%3A552%20edition%3Aprelim)");
   test.equal(citation.usc.links.usgpo.pdf, "https://www.govinfo.gov/link/uscode/5/552?type=usc&link-type=pdf");
-  test.equal(citation.usc.links.cornell_lii.landing, "https://www.law.cornell.edu/uscode/text/5/552#a_1_E");
+  test.equal(citation.usc.links.cornell_lii.html, "https://www.law.cornell.edu/uscode/text/5/552#a_1_E");
 
   test.done();
 }
@@ -216,7 +216,7 @@ exports["'Appendix' titles"] = function(test) {
   test.equal(citation.usc.id, "usc/50-app/595");
   test.equal(citation.usc.links.house.html, "https://uscode.house.gov/view.xhtml?req=(title%3A50a%20section%3A595%20edition%3Aprelim)");
   test.equal(citation.usc.links.usgpo.pdf, "https://www.govinfo.gov/link/uscode/50/595?type=uscappendix&link-type=pdf");
-  test.equal(citation.usc.links.cornell_lii.landing, "https://www.law.cornell.edu/uscode/text/50a/595");
+  test.equal(citation.usc.links.cornell_lii.html, "https://www.law.cornell.edu/uscode/text/50a/595");
 
   test.done();
 };
@@ -237,7 +237,7 @@ exports["'note' marks"] = function(test) {
   test.equal(citation.usc.id, "usc/7/612c/note");
   test.equal(citation.usc.links.house.html, "https://uscode.house.gov/view.xhtml?req=(title%3A7%20section%3A612c%20edition%3Aprelim)");
   test.equal(citation.usc.links.usgpo.pdf, "https://www.govinfo.gov/link/uscode/7/612c?type=usc&link-type=pdf");
-  test.equal(citation.usc.links.cornell_lii.landing, "https://www.law.cornell.edu/uscode/text/7/612c#note"); // incorrect but close enough
+  test.equal(citation.usc.links.cornell_lii.html, "https://www.law.cornell.edu/uscode/text/7/612c#note"); // incorrect but close enough
 
   test.done();
 }
@@ -259,7 +259,7 @@ exports["'et seq' marks"] = function(test) {
   test.equal(citation.usc.id, "usc/29/1081/et-seq");
   test.equal(citation.usc.links.house.html, "https://uscode.house.gov/view.xhtml?req=(title%3A29%20section%3A1081%20edition%3Aprelim)");
   test.equal(citation.usc.links.usgpo.pdf, "https://www.govinfo.gov/link/uscode/29/1081?type=usc&link-type=pdf");
-  test.equal(citation.usc.links.cornell_lii.landing, "https://www.law.cornell.edu/uscode/text/29/1081");
+  test.equal(citation.usc.links.cornell_lii.html, "https://www.law.cornell.edu/uscode/text/29/1081");
 
   test.done();
 }
@@ -468,7 +468,7 @@ exports["Non-numeric section numbers"] = function(test) {
   test.equal(citation.usc.id, "usc/16/460nnn-101");
   test.equal(citation.usc.links.house.html, "https://uscode.house.gov/view.xhtml?req=(title%3A16%20section%3A460nnn-101%20edition%3Aprelim)");
   test.equal(citation.usc.links.usgpo.pdf, "https://www.govinfo.gov/link/uscode/16/460nnn-101?type=usc&link-type=pdf");
-  test.equal(citation.usc.links.cornell_lii.landing, "https://www.law.cornell.edu/uscode/text/16/460nnn-101");
+  test.equal(citation.usc.links.cornell_lii.html, "https://www.law.cornell.edu/uscode/text/16/460nnn-101");
 
   var citation = found[1];
   test.equal(citation.match, "16 USC 460nnn-101");
@@ -500,7 +500,7 @@ exports["En-dash in section number"] = function(test) {
   test.equal(citation.usc.id, "usc/42/288-1/a");
   test.equal(citation.usc.links.house.html, "https://uscode.house.gov/view.xhtml?req=(title%3A42%20section%3A288-1%20edition%3Aprelim)");
   test.equal(citation.usc.links.usgpo.pdf, "https://www.govinfo.gov/link/uscode/42/288-1?type=usc&link-type=pdf");
-  test.equal(citation.usc.links.cornell_lii.landing, "https://www.law.cornell.edu/uscode/text/42/288-1#a");
+  test.equal(citation.usc.links.cornell_lii.html, "https://www.law.cornell.edu/uscode/text/42/288-1#a");
 
   var citation = found[1];
   test.equal(citation.match, "42 U.S.C. 288–1(a)");
@@ -531,7 +531,7 @@ exports["Section number before title"] = function(test) {
   test.deepEqual(citation.usc.subsections, ["a", "2"]);
   test.equal(citation.usc.id, "usc/49/14123/a/2");
   test.equal(citation.usc.links.house.html, "https://uscode.house.gov/view.xhtml?req=(title%3A49%20section%3A14123%20edition%3Aprelim)");
-  test.equal(citation.usc.links.cornell_lii.landing, "https://www.law.cornell.edu/uscode/text/49/14123#a_2");
+  test.equal(citation.usc.links.cornell_lii.html, "https://www.law.cornell.edu/uscode/text/49/14123#a_2");
 
   test.done();
 }
