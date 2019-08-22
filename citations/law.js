@@ -43,11 +43,12 @@ module.exports = {
     // "Priv. L. No. 98-23"
     // "section 552 of Public Law 111-89"
     // "section 4402(e)(1) of Public Law 110-2"
+    // "Pub. Law 67-45-46", "Pub. Law 74-770½", "Pub. Law 79-160-A" (see https://github.com/unitedstates/legisworks-historical-statutes)
     {
       regex:
         "(?:section (\\d+[\\w\\d\-]*)((?:\\([^\\)]+\\))*) of )?" +
         "(pub(?:lic)?|priv(?:ate)?)\\.?\\s*l(?:aw)?\\.?(?:\\s*No\\.?)?" +
-        " +(\\d+)[-–]+(\\d+)",
+        " +(\\d+)[-–]+(\\d+[-A½\\d]*)",
       fields: ['section', 'subsections', 'type', 'congress', 'number'],
       processor: function(captures) {
         var sections = [];
@@ -70,7 +71,7 @@ module.exports = {
     {
       regex:
         "(?:section (\\d+[\\w\\d\-]*)((?:\\([^\\)]+\\))*) of )?" +
-        "P\\.?L\\.? +(\\d+)[-–](\\d+)",
+        "P\\.?L\\.? +(\\d+)[-–](\\d+[-A½\\d]*)",
       fields: ['section', 'subsections', 'congress', 'number'],
       processor: function(captures) {
         sections = [];
