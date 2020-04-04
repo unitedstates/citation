@@ -14,6 +14,8 @@ exports["Basic pattern"] = function(test) {
   test.equal(found.length, 1);
 
   var citation = found[0];
+  test.equal(citation.type, 'usc');
+  test.equal(citation.type_name, 'United States Code');
   test.equal(citation.match, "5 U.S.C. 552");
   test.equal(citation.index, 37);
   test.equal(citation.citation, "5 U.S.C. 552");

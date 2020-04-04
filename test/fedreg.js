@@ -23,6 +23,8 @@ exports["All patterns"] = function(test) {
 
     if (found.length == 1) {
       var citation = found[0];
+      test.equal(citation.type, 'fedreg');
+      test.equal(citation.type_name, 'Federal Register');
       test.equal(citation.match, details[2]);
       test.equal(citation.fedreg.volume, details[3]);
       test.equal(citation.fedreg.page, details[4]);

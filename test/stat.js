@@ -17,22 +17,30 @@ exports["All patterns"] = function(test) {
   for (var i=0; i<cases.length; i++) {
     var details = cases[i];
 
+    // Search the text string for a citation.
     var text = details[0];
     var found = Citation.find(text, {types: "stat", links: true}).citations;
     test.equal(found.length, 1);
+    if (found.length != 1) continue;
 
-    if (found.length == 1) {
-      var citation = found[0];
-      test.equal(citation.match, details[2]);
-      test.equal(citation.citation, details[6]);
-      test.equal(citation.stat.id, details[5]);
-      test.equal(citation.stat.volume, details[3]);
-      test.equal(citation.stat.page, details[4]);
-      if (details[7]) // is a link available?
-        test.equal(citation.stat.links.usgpo.source.link, "https://govinfo.gov");
-    }
-    else
-      console.log("No match found in: " + text);;
+    // Check the fields of the found citation.
+    var citation = found[0];
+    test.equal(citation.type, 'stat');
+    test.equal(citation.type_name, 'U.S. Statutes at Large');
+    test.equal(citation.match, details[2]);
+    test.equal(citation.citation, details[6]);
+    test.equal(citation.stat.id, details[5]);
+    test.equal(citation.stat.volume, details[3]);
+    test.equal(citation.stat.page, details[4]);
+    if (details[7]) // is a link available?
+      test.equal(citation.stat.links.usgpo.source.link, "https://govinfo.gov");
+
+    
+    // Check that fromId round-trips properly. It will be missing the 'match' and 'index'
+    // properties so delete those.
+    delete citation.match;
+    delete citation.index;
+    test.deepEqual(Citation.fromId(citation.stat.id, { links: true }), citation);
   };
 
   test.done();

@@ -23,6 +23,8 @@ exports["All patterns"] = function(test) {
 
     if (found.length == 1) {
       var citation = found[0];
+      test.equal(citation.type, 'dc_law');
+      test.equal(citation.type_name, 'District of Columbia Law');
       test.equal(citation.match, details[0]);
       test.equal(citation.dc_law.id, details[1]);
       test.equal(citation.dc_law.period, details[2]);

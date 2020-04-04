@@ -81,6 +81,8 @@ exports["Absolute patterns"] = function(test) {
 
     if (found.length == 1) {
       var citation = found[0];
+      test.equal(citation.type, 'reporter');
+      test.equal(citation.type_name, 'Case Law');
       test.equal(citation.match, details[2], details[0]);
       test.equal(citation.reporter.volume, details[3]);
       test.equal(citation.reporter.reporter, details[4]);

@@ -606,6 +606,8 @@ singles.forEach(function(single) {
       if (found.length == 1) {
         var citation = found[0];
         test.equal(citation.match, expected.match);
+        test.equal(citation.type, 'cfr');
+        test.equal(citation.type_name, 'U.S. Code of Federal Regulations');
         test.deepEqual(citation.cfr, expected.cfr);
       } else
         console.log(found);

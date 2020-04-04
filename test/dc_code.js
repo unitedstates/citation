@@ -73,6 +73,8 @@ exports["Relative patterns"] = function(test) {
 
     if (found.length == 1) {
       var citation = found[0];
+      test.equal(citation.type, 'dc_code');
+      test.equal(citation.type_name, 'Code of the District of Columbia');
       test.equal(citation.match, details[2], details[0]);
       test.equal(citation.dc_code.title, details[3]);
       test.equal(citation.dc_code.section, details[4]);

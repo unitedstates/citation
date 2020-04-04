@@ -20,6 +20,8 @@ exports["All patterns"] = function(test) {
 
     if (found.length == 1) {
       var citation = found[0];
+      test.equal(citation.type, 'dc_stat');
+      test.equal(citation.type_name, 'D.C. Statutes at Large');
       test.equal(citation.match, details[2]);
       test.equal(citation.dc_stat.id, details[5]);
       test.equal(citation.dc_stat.volume, details[3]);

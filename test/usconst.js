@@ -25,6 +25,8 @@ exports["All patterns"] = function(test) {
 
     if (found.length == 1) {
       var citation = found[0];
+      test.equal(citation.type, 'usconst');
+      test.equal(citation.type_name, 'United States Constitution');
       test.equal(citation.usconst.id, details[1]);
     }
     else

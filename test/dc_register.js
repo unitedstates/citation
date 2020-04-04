@@ -24,6 +24,8 @@ exports["All patterns"] = function(test) {
 
     if (found.length == 1) {
       var citation = found[0];
+      test.equal(citation.type, 'dc_register');
+      test.equal(citation.type_name, 'District of Columbia Register');
       test.equal(citation.match, details[2], details[0]);
       test.equal(citation.dc_register.volume, details[3]);
       test.equal(citation.dc_register.page, details[4]);
