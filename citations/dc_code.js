@@ -7,6 +7,8 @@ var base_regex =
 module.exports = {
   type: "regex",
 
+  name: "Code of the District of Columbia",
+
   // normalize all cites to an ID, with and without subsections
   id: function(cite) {
     return ["dc-code", cite.title, cite.section]

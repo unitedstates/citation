@@ -194,6 +194,7 @@ Citation = {
 
           // match-level info
           Citation._.extend(result, matchInfo);
+          result.type_name = Citation.types[type].name;
 
           // handle _submatch, which lets the user-level citator override the
           // match and index with a sub-part of the whole matched regex
@@ -394,8 +395,37 @@ Citation = {
 
       return impl(array, []);
     }
-  }
+  },
 
+  fromId: function(id, options) {
+    // Offer the id to each Citator class that has a fromId
+    // function. If it returns an object, then it has parsed
+    // the id into the reverse of the data structure given to
+    // a Citator 'id' method.
+    var type;
+    var citator;
+    var citeobj;
+    for (type in Citation.types) {
+      citator = Citation.types[type];
+      if (!citator.fromId) continue;
+      citeobj = citator.fromId(id);
+      if (citeobj) break;
+    }
+    if (!citeobj)
+      return; // no parse found
+
+    // Construct the resulting citation object.
+    var cite = {
+      type: type,
+      type_name: citator.name,
+      citation: citator.canonical ? citator.canonical(citeobj) : null,
+    };
+    cite[type] = citeobj;
+    cite[type].id = citator.id(citeobj);
+    if (options && options.links)
+      cite[type].links = Citation.getLinksForCitation(type, cite[type]);
+    return cite;
+  }
 };
 
 
@@ -425,7 +455,6 @@ if (typeof(require) !== "undefined") {
   Citation.links.govtrack = require("./links/govtrack");
   Citation.links.gpo = require("./links/gpo");
   Citation.links.house = require("./links/house");
-  Citation.links.legislink = require("./links/legislink");
   Citation.links.libraryofcongress = require("./links/libraryofcongress");
   Citation.links.nara = require("./links/nara");
   Citation.links.vadecoded = require("./links/vadecoded");

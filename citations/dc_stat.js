@@ -1,6 +1,8 @@
 module.exports = {
   type: "regex",
 
+  name: "D.C. Statutes at Large",
+
   // normalize all cites to an ID
   id: function(cite) {
     return ["dcstat", cite.volume, cite.page].join("/")

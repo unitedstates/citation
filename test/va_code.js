@@ -54,6 +54,8 @@ exports["All patterns"] = function(test) {
 
     if (found.length == 1) {
       var citation = found[0];
+      test.equal(citation.type, 'va_code');
+      test.equal(citation.type_name, 'Code of Virginia');
       test.equal(citation.match, details[1], details[0]);
       test.equal(citation.va_code.title, details[2]);
       test.equal(citation.va_code.section, details[3]);

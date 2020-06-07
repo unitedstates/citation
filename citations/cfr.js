@@ -1,6 +1,8 @@
 module.exports = {
   type: "regex",
 
+  name: "U.S. Code of Federal Regulations",
+
   id: function(data) {
     return ["cfr", data.title, (data.section || data.part)]
       .concat(data.subsections || [])

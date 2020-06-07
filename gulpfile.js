@@ -58,7 +58,7 @@ gulp.task('walverine-browser-gzip', function () {
     .pipe(gulp.dest('browser'));
 });
 
-gulp.task('default', [
+gulp.task('default', gulp.series(
     'browser', 'browser-minified', 'browser-gzip',
     'walverine-browser', 'walverine-browser-minified', 'walverine-browser-gzip'
-]);
+));

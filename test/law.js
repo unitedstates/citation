@@ -51,24 +51,43 @@ exports["Basic patterns"] = function(test) {
       "Nuclear Energy Authorization Act of 1980 (Priv L No 96-164; ", "Pvt. L. 96-164"],
     ["Private Law 96–164", "us-law/private/96/164", "private", "96", "164",
       "Nuclear Energy Authorization Act of 1980 (Private Law 96–164; ", "Pvt. L. 96-164"],
+
+    // historical anomalies (https://github.com/unitedstates/legisworks-historical-statutes)
+    ["Pub. L. 61-167½", "us-law/public/61/167½", "public", "61", "167½" ],
+    ["Pub. L. 65-246½",  "us-law/public/65/246½", "public", "65", "246½" ],
+    ["Pub. L. 67-45-46", "us-law/public/67/45-46", "public", "67", "45-46" ],
+    ["Pub. L. 69-439½",  "us-law/public/69/439½", "public", "69", "439½" ],
+    ["Pub. L. 74-297½",  "us-law/public/74/297½", "public", "74", "297½" ],
+    ["Pub. L. 74-770½",  "us-law/public/74/770½", "public", "74", "770½" ],
+    ["Pub. L. 79-160-A", "us-law/public/79/160-A", "public", "79", "160-A" ]
   ];
 
   for (var i=0; i<cases.length; i++) {
     var details = cases[i];
 
-    var text = details[5];
+    // Search the text string for a citation. The details[5] holds the string
+    // to search, or if not given, then details[0].
+    var text = details[5] || details[0];
     var found = Citation.find(text, {types: "law"}).citations;
     test.equal(found.length, 1, "No match found in: " + text);
+    if (found.length != 1) continue;
 
-    if (found.length == 1) {
-      var citation = found[0];
-      test.equal(citation.match, details[0]);
-      test.equal(citation.citation, details[6]);
-      test.equal(citation.law.id, details[1]);
-      test.equal(citation.law.type, details[2]);
-      test.equal(citation.law.congress, details[3]);
-      test.equal(citation.law.number, details[4]);
-    }
+    // Check the fields of the found citation.
+    var citation = found[0];
+    test.equal(citation.type, 'law');
+    test.equal(citation.type_name, 'U.S. Law');
+    test.equal(citation.match, details[0]);
+    test.equal(citation.citation, details[6] || details[0]); // compare to canonical form in details[6] if given
+    test.equal(citation.law.id, details[1]);
+    test.equal(citation.law.type, details[2]);
+    test.equal(citation.law.congress, details[3]);
+    test.equal(citation.law.number, details[4]);
+
+    // Check that fromId round-trips properly. It will be missing the 'match' and 'index'
+    // properties so delete those.
+    delete citation.match;
+    delete citation.index;
+    test.deepEqual(Citation.fromId(citation.law.id), citation);
   }
 
   test.done();
@@ -92,20 +111,27 @@ exports["Subsections"] = function(test) {
   for (var i=0; i<cases.length; i++) {
     var details = cases[i];
 
+    // Search the text string for a citation.
     var text = details[6];
     var found = Citation.find(text, {types: "law"}).citations;
     test.equal(found.length, 1, "No match found in: " + text);
+    if (found.length != 1) continue;
 
-    if (found.length == 1) {
-      var citation = found[0];
-      test.equal(citation.match, details[0]);
-      test.equal(citation.citation, details[7]);
-      test.equal(citation.law.id, details[1]);
-      test.equal(citation.law.type, details[2]);
-      test.equal(citation.law.congress, details[3]);
-      test.equal(citation.law.number, details[4]);
-      test.deepEqual(citation.law.sections, details[5]);
-    }
+    // Check the fields of the found citation.
+    var citation = found[0];
+    test.equal(citation.match, details[0]);
+    test.equal(citation.citation, details[7]);
+    test.equal(citation.law.id, details[1]);
+    test.equal(citation.law.type, details[2]);
+    test.equal(citation.law.congress, details[3]);
+    test.equal(citation.law.number, details[4]);
+    test.deepEqual(citation.law.sections, details[5]);
+
+    // Check that fromId round-trips properly. It will be missing the 'match' and 'index'
+    // properties so delete those.
+    delete citation.match;
+    delete citation.index;
+    test.deepEqual(Citation.fromId(citation.law.id), citation);
   }
 
   test.done();

@@ -13,7 +13,7 @@ module.exports = {
       var is_appendix = cite.title.indexOf("-app") != -1;
       return {
         note: "Link is to most current version of the US Code.",
-        html: "http://uscode.house.gov/view.xhtml?req=(" + encodeURIComponent("title:" + (title + (is_appendix ? "a" : "")) + " section:" + cite.section + " edition:prelim") + ")"
+        html: "https://uscode.house.gov/view.xhtml?req=(" + encodeURIComponent("title:" + (title + (is_appendix ? "a" : "")) + " section:" + cite.section + " edition:prelim") + ")"
       }
     }
   }

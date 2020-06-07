@@ -8,6 +8,7 @@ module.exports = {
   authoritative: true,
 
   citations: {
+    /*
     stat: function(cite) {
       // LoC organizes the volumes by Congress and, for some Congresses, by chapter
       // number. This is well and good but awful for direct linking of citations
@@ -20,6 +21,7 @@ module.exports = {
         note: "Link is to LoC's general Statutes at Large landing page."
       };
     },
+    */
 
     usconst: function(cite) {
       return {

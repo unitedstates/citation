@@ -10,12 +10,12 @@ module.exports = {
   citations: {
     dc_law: function(cite) {
       return {
-        landing: "https://beta.code.dccouncil.us/dc/council/laws/" + cite.period + "-" + cite.number + ".html"
+        landing: "https://code.dccouncil.us/dc/council/laws/" + cite.period + "-" + cite.number + ".html"
       };
     },
     dc_code: function(cite) {
       return {
-        landing: "https://beta.code.dccouncil.us/dc/council/code/sections/" + cite.title + "-" + cite.section + ".html"
+        landing: "https://code.dccouncil.us/dc/council/code/sections/" + cite.title + "-" + cite.section + ".html"
       };
     }
   }
