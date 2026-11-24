@@ -18,7 +18,7 @@ var route = function(req, res) {
   var pretty = req.param("pretty");
 
   if (text) {
-    text = decodeURIComponent(text);
+    text = String(text);
 
     // allow citation types to be comma-separated
     if (options && options.types)
